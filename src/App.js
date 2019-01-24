@@ -3,10 +3,17 @@ import './journeys.css';
 import Forest from './components/Forest';
 import Tree from './components/Tree';
 import Footer from './components/Footer';
-
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import HeaderComponent from './components/HeaderComponent';
 import { Provider } from 'react-redux';
 import store from './store';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTree } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faTree)
+
 
 class Journeys extends Component {
   render() {
@@ -15,6 +22,7 @@ class Journeys extends Component {
       <div className="container">
         <HeaderComponent></HeaderComponent>
         <nav>
+        
           <Forest/>
         </nav>
         <main>

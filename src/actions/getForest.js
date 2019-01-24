@@ -1,7 +1,11 @@
 import {
     FETCH_ALL_FORESTS_BEGIN, 
     FETCH_ALL_FORESTS_SUCCESS, 
-    FETCH_ALL_FORESTS_FAILURE
+    FETCH_ALL_FORESTS_FAILURE,
+    FETCH_FOREST_BEGIN,
+    FETCH_FOREST_SUCCESS,
+    FETCH_FOREST_FAILURE,
+    SET_ACTIVE_FOREST
 } from './types';
 
 
@@ -36,6 +40,38 @@ export function getAllForests(){
     }
 }
 
+export function getSingleForest(){
+    return dispatch =>{
+        dispatch(fetchSingleForestBegin());
+        return fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+            method:'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify({
+                controller:'Forest',
+                action:'getSingleForest',
+                // data:activeAnswer.ID
+            })
+        })
+            .then(handleErrors)
+            .then(res => res.json())
+            .then(json => { 
+                if(!json.success) 
+                {
+                    dispatch(fetchSingleFailure(json.errormsg));
+                }
+                else
+                {
+                    dispatch(fetchSingleSuccess(json.data));
+                    return json.data;
+                }
+            })
+            .catch(error => dispatch(fetchSingleFailure(error)));
+    }
+    
+}
+
 function handleErrors(response)
 {
     if(!response.ok){ 
@@ -43,6 +79,25 @@ function handleErrors(response)
     }
     return response;
 }
+
+export const setActiveForest = (forest) =>({
+    type:SET_ACTIVE_FOREST,
+    payload:{forest}
+})
+
+export const fetchSingleForestBegin = () => ({
+    type: FETCH_FOREST_BEGIN
+});
+  
+export const fetchSingleSuccess = forests => ({
+    type: FETCH_FOREST_SUCCESS,
+    payload:{ forests }
+});
+
+export const fetchSingleFailure = error => ({
+    type: FETCH_FOREST_FAILURE,
+    payload: { error }
+});
 
 export const fetchAllForestsBegin = () => ({
     type: FETCH_ALL_FORESTS_BEGIN
