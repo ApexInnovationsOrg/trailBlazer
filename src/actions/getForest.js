@@ -40,8 +40,10 @@ export function getAllForests(){
     }
 }
 
-export function getSingleForest(){
+export function getSingleForest(forest){
     return dispatch =>{
+
+        dispatch(setActiveForest(forest));
         dispatch(fetchSingleForestBegin());
         return fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
             method:'POST',
@@ -51,7 +53,7 @@ export function getSingleForest(){
             body:JSON.stringify({
                 controller:'Forest',
                 action:'getSingleForest',
-                // data:activeAnswer.ID
+                data:forest.ID
             })
         })
             .then(handleErrors)
@@ -63,6 +65,7 @@ export function getSingleForest(){
                 }
                 else
                 {
+                    console.log('single success',json.data);
                     dispatch(fetchSingleSuccess(json.data));
                     return json.data;
                 }
@@ -89,9 +92,9 @@ export const fetchSingleForestBegin = () => ({
     type: FETCH_FOREST_BEGIN
 });
   
-export const fetchSingleSuccess = forests => ({
+export const fetchSingleSuccess = trees => ({
     type: FETCH_FOREST_SUCCESS,
-    payload:{ forests }
+    payload:{ trees }
 });
 
 export const fetchSingleFailure = error => ({

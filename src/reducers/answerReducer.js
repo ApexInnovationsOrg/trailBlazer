@@ -16,7 +16,6 @@ const initialState = {
 
 
 export default function(state=initialState, action){
-    console.log('in the reducer', action);
     switch(action.type){
         // case SELECT_ANSWER:
         //     console.log('heres the action',action)

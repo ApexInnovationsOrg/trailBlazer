@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {getAllForests,setActiveForest} from '../actions/getForest';
+import {getAllForests,getSingleForest} from '../actions/getForest';
+import {getTree} from '../actions/getTree';
 import store from '../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -11,6 +12,49 @@ class Forest extends Component {
     {
         this.props.dispatch(getAllForests());
     }
+
+    selectTree(tree)
+    {
+        console.log('selecting tree',tree);
+        this.props.dispatch(getTree(tree));
+    }
+    treeList()
+    {
+        if(this.props.singleForest.error)
+        {
+            return (
+                <div style={{'color':'red'}}>Error: {this.props.singleForest.error}</div>
+            )
+        }
+        if(this.props.singleForest.loading)
+        {
+            return (
+                <div>Loading...</div>
+            )
+        }
+        if(this.props.singleForest.trees.length === 0)
+        {
+            return (
+                <ul>
+
+                    <li>No Trees</li>
+                </ul>
+            )
+        }
+        else
+        {
+            return(
+                <div>
+                    <ul>
+                        {this.props.singleForest.trees.map(tree => <li key={tree.ID}><span onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>)}
+                    </ul>
+                </div>
+            )
+            
+
+        }
+    }
+
 
     listForests()
     {
@@ -32,20 +76,23 @@ class Forest extends Component {
                 
         }
 
+        
 
 
         return this.props.forests.forests.map((forest)=>{
-            console.log('prop',this.props.activeForest);
             if(this.props.activeForest.ID === forest.ID)
             {
                 return (
-                    <li className="forest" onClick={() => store.dispatch(setActiveForest(forest))} key={forest.ID}>> {forest.Name} - {forest['Tree Count']} Trees {getTrees(forest)}</li>
+                    <li key={forest.ID}>
+                       <span className="forest">  > {forest.Name} - {forest['Tree Count']} Trees {getTrees(forest)}</span>
+                           {this.treeList()}
+                    </li>
                     )
             }
             else
             {
                 return (
-                    <li className="forest" onClick={() => store.dispatch(setActiveForest(forest))} key={forest.ID}>{forest.Name} - {forest['Tree Count']} Trees {getTrees(forest)}</li>
+                    <li onClick={() => store.dispatch(getSingleForest(forest))} key={forest.ID}><span className="forest">{forest.Name} - {forest['Tree Count']} Trees {getTrees(forest)}</span></li>
                     )
             }
             
@@ -79,7 +126,9 @@ function mapStateToProps(state){
     console.log('what state are we in',state);
     return {
         forests: state.forests,
-        activeForest: state.activeForest
+        activeForest: state.activeForest,
+        singleForest:state.singleForest
+        // tree:state.trees
     }
 }
 

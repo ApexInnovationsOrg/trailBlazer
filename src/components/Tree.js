@@ -5,21 +5,40 @@ import { bindActionCreators } from 'redux';
 
 
 class Tree extends Component {
+
+    displayQuestions()
+    {
+        return this.props.tree.questions.map(question => 
+        <li key={question.ID}>
+            {question.QuestionText}
+            <ul>
+
+                {question.Answers.map(answer=><li>{answer.AnswerText}</li>)}
+
+            </ul>
+        </li>)
+    }
+
     render() {
         return(
-            <div>Tree</div>
+            <div>
+                <div>Tree</div>
+
+                <ul>
+                    {this.displayQuestions()}
+                </ul>
+            </div>
         )
     }
 }
 
 
-// function mapStateToProps(state)
-// {
-//     return {
-//         activeAnswer: state.activeAnswer,
-//         answeredQuestions:state.answeredQuestions
-//     }
-// }
+function mapStateToProps(state)
+{
+    return {
+        tree: state.tree,
+    }
+}
 
 // function matchDispatchToProps(dispatch)
 // {
@@ -29,4 +48,4 @@ class Tree extends Component {
 
 // export default connect(mapStateToProps,matchDispatchToProps)(Tree);
 
-export default Tree;
+export default connect(mapStateToProps,null)(Tree);
