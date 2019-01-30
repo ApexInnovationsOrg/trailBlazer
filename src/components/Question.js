@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-
+import randomColor from 'randomcolor';
 class Questions extends Component {
-
+    
 
     findQuestion(questionID)
     {
@@ -11,34 +11,48 @@ class Questions extends Component {
         for(let i in this.props.tree.questions)
         {
             let question = this.props.tree.questions[i];
-            console.log(question.ID,questionID);
             if(question.ID === questionID)
             {
                 return question;
             }
         }
+        return false;
     }
     renderAnswers(question)
     {
+        question.Answers.forEach(answer => {
+            answer.specialColor = randomColor();
+        });
         return question.Answers.map(answer=>
-            <div>
-                {answer.AnswerText}
+            <div style={{background:answer.specialColor}}>
+                {answer.AnswerText} (follow up is: {this.findQuestion(answer['NextQuestionID']).QuestionText})
             </div>
         )
     }
 
     renderNextQuestions(question)
     {
-        for(let i in question.Answers)
-        {
-            let followupQuestion = question.Answers[i];
-
-            
-        }
+        // let usedQuestions = [];
+        return question.Answers.map((answer) =>{
+                   
+                let followupQuestion = this.findQuestion(answer['NextQuestionID']);
+                // const color = randomColor();
+                // console.log('following up ',followupQuestion);
+                if(followupQuestion)
+                {
+                    // if(usedQuestions.indexOf(followupQuestion.ID) === -1)
+                    // {   
+                        // console.log('using ', followupQuestion.ID);
+                        // usedQuestions.push(followupQuestion.ID);
+                        return this.questionFunction(followupQuestion,false,answer.specialColor);
+                    // }
+                }
+        })
     }
 
-    questionFunction(question,masterQuestion,previousQuestion = false)
+    questionFunction(question,masterQuestion,backgroundColor = '#fff')
     {
+        
         let classes = "question";
         if(masterQuestion)
         {
@@ -46,11 +60,14 @@ class Questions extends Component {
         }
         return  <div>
 
-                    <div className={classes}>Question: {question.QuestionText}
+                    <div style={{'background':backgroundColor}} className={classes}>Question: {question.QuestionText}
                         <div className="weight">Weight: {question.Weight}</div>
                         <div className="answerArea">
                             
                             Answers:{this.renderAnswers(question)}
+                        </div>
+                        <div>
+                                    
                         </div>
                     </div>
                     
