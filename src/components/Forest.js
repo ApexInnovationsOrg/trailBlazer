@@ -15,8 +15,23 @@ class Forest extends Component {
 
     selectTree(tree)
     {
-        console.log('selecting tree',tree);
         this.props.dispatch(getTree(tree));
+    }
+    listTrees()
+    {
+        const trees = this.props.singleForest.trees.map((tree) => {
+
+                if(this.props.activeTree.ID == tree.ID)
+                {
+                    return <li key={tree.ID} style={{'cursor':'pointer','background':'blue'}}><span onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>
+                }
+                else
+                {
+                    return <li key={tree.ID} style={{'cursor':'pointer'}}><span onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>
+                }
+            }
+        )
+        return trees;
     }
     treeList()
     {
@@ -36,7 +51,6 @@ class Forest extends Component {
         {
             return (
                 <ul>
-
                     <li>No Trees</li>
                 </ul>
             )
@@ -46,7 +60,7 @@ class Forest extends Component {
             return(
                 <div>
                     <ul>
-                        {this.props.singleForest.trees.map(tree => <li key={tree.ID}><span onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>)}
+                        {this.listTrees()}
                     </ul>
                 </div>
             )
@@ -127,7 +141,8 @@ function mapStateToProps(state){
     return {
         forests: state.forests,
         activeForest: state.activeForest,
-        singleForest:state.singleForest
+        singleForest:state.singleForest,
+        activeTree:state.activeTree
         // tree:state.trees
     }
 }

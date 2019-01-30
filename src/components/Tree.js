@@ -2,31 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import store from '../store';
 import { bindActionCreators } from 'redux';
+import Questions from './Question';
 
 
 class Tree extends Component {
 
-    displayQuestions()
-    {
-        return this.props.tree.questions.map(question => 
-        <li key={question.ID}>
-            {question.QuestionText}
-            <ul>
-
-                {question.Answers.map(answer=><li>{answer.AnswerText}</li>)}
-
-            </ul>
-        </li>)
-    }
-
     render() {
         return(
             <div>
-                <div>Tree</div>
+                <div>{this.props.activeForest.Name} - {this.props.activeTree.Name}</div>
 
-                <ul>
-                    {this.displayQuestions()}
-                </ul>
+                <Questions/>
             </div>
         )
     }
@@ -37,6 +23,8 @@ function mapStateToProps(state)
 {
     return {
         tree: state.tree,
+        activeTree:state.activeTree,
+        activeForest:state.activeForest,
     }
 }
 

@@ -1,12 +1,14 @@
 import {
     FETCH_TREE_BEGIN,
     FETCH_TREE_SUCCESS,
-    FETCH_TREE_FAILURE
+    FETCH_TREE_FAILURE,
+    SET_ACTIVE_TREE
 } from './types';
 
 export function getTree(tree){
     return dispatch =>{
         console.log('getting tree',tree);
+        dispatch(setActiveTree(tree));
         dispatch(fetchTreeBegin());
         return fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
             method:'POST',
@@ -44,6 +46,10 @@ function handleErrors(response)
     }
     return response;
 }
+export const setActiveTree = tree => ({
+    type: SET_ACTIVE_TREE,
+    payload:{tree}
+  });
 
 export const fetchTreeBegin = () => ({
     type: FETCH_TREE_BEGIN
