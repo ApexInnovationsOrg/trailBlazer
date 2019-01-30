@@ -1,9 +1,9 @@
 import { SET_ACTIVE_TREE } from '../actions/types';
 
 const initialState = {
-    id:-1,
+    ID:'-1',
     treeName:'none selected',
-    masterQuestion:-1
+    MasterQuestionID:'-1'
 }
     
 

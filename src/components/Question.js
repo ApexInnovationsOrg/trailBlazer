@@ -1,39 +1,84 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 class Questions extends Component {
-    // constructor(props)
-    // {
-    //     super(props);
 
-    //     console.log(props);
-    //     // this.props.selectAnswer = this.props.selectAnswer.bind(this);
-    // }
-    questionFunction(question)
+
+    findQuestion(questionID)
     {
-        console.log(question);
-        return <div>Question: {question.QuestionText}
+        console.log(this.props);
+        for(let i in this.props.tree.questions)
+        {
+            let question = this.props.tree.questions[i];
+            console.log(question.ID,questionID);
+            if(question.ID === questionID)
+            {
+                return question;
+            }
+        }
+    }
+    renderAnswers(question)
+    {
+        return question.Answers.map(answer=>
+            <div>
+                {answer.AnswerText}
+            </div>
+        )
+    }
+
+    renderNextQuestions(question)
+    {
+        for(let i in question.Answers)
+        {
+            let followupQuestion = question.Answers[i];
+
+            
+        }
+    }
+
+    questionFunction(question,masterQuestion,previousQuestion = false)
+    {
+        let classes = "question";
+        if(masterQuestion)
+        {
+            classes = classes + " masterQuestion";
+        }
+        return  <div>
+
+                    <div className={classes}>Question: {question.QuestionText}
+                        <div className="weight">Weight: {question.Weight}</div>
+                        <div className="answerArea">
+                            
+                            Answers:{this.renderAnswers(question)}
+                        </div>
+                    </div>
                     
+                    {this.renderNextQuestions(question)}
                 </div>
     }
 
     renderQuestions()
     { 
-        for(let i in this.props.tree.questions)
+        let questionsJSX;
+        let masterQuestion = this.findQuestion(this.props.activeTree.MasterQuestionID);
+        if(this.props.activeTree.ID === '-1')
         {
-            let question = this.props.tree.questions[i];
-            console.log(question.ID,this.props.activeTree.MasterQuestionID,question.ID == this.props.activeTree.MasterQuestionID);
-            if(question.ID == this.props.activeTree.MasterQuestionID)
-            {
-                return this.questionFunction(question);
-            }
+            return;
         }
+
+        if(this.props.tree.questions.length === 0)
+        {
+            return <div>No Questions Yet</div>
+        }
+
+        questionsJSX = this.questionFunction(masterQuestion,true);
+
+        return questionsJSX;
     }
 
     render(){
-    
-        console.log(this.props.tree);
+     
         return <div>
             {this.renderQuestions()}
         </div>;

@@ -175,3 +175,10 @@ footer{
 .forest.selected:hover{
   background:black !important;
 }
+
+
+.question{
+  border:1px solid black;
+  background:#d0e5ff;
+  padding:1em;
+}
