@@ -21,7 +21,7 @@ class Forest extends Component {
     {
         const trees = this.props.singleForest.trees.map((tree) => {
 
-                if(this.props.activeTree.ID == tree.ID)
+                if(this.props.activeTree.ID === tree.ID)
                 {
                     return <li key={tree.ID} style={{'cursor':'pointer','background':'blue'}}><span onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>
                 }
