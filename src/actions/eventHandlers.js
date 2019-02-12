@@ -2,6 +2,7 @@ import { IConnectionParams } from "react-dag";
 
 export function onConnectionEventHandler(connObj) {
   connObj.connection.endpoints.forEach((endpoint) => {
+    console.log('conneeeeeeeeeeect');
     const uuid = endpoint.getUuid();
     if (!uuid) {
       return;

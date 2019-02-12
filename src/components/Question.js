@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import randomColor from 'randomcolor';
+import * as SRD from "storm-react-diagrams"
+
 import ReactDAG, {DefaultNode, INode} from "react-dag";
 import NodeType1 from "./NodeType1";
 import NodeType2 from "./NodeType2";
@@ -131,15 +133,80 @@ const dagWrapperStyles = css({
 
     retrieveQuestionNodes()
     {
-        this.props.tree.questions.map((question)=>{
-            return {
-                config:{
-                    label:question.QuestionText,
-                    type:"source",
-                },
-                id:question.ID
-            }
+
+        let questionX = 0;
+
+        return this.props.tree.questions.map((question)=>{
+            
+            var questionNode = new SRD.DefaultNodeModel(question.QuestionText, "rgb(0,192,255)");
+            questionNode._id = question.ID;
+            questionNode.setPosition(questionX, 100);
+            questionX += 400;
+            var inPort = questionNode.addInPort(' ');
+            inPort.inletPort = true;
+            question.Answers.map((answer)=>{
+                let answerPort = questionNode.addOutPort(answer.AnswerText);
+                
+                answerPort.NextQuestionID = answer.NextQuestionID;
+                answerPort.inletPort = false;
+                
+            })
+            return questionNode;
+
         });
+    }
+
+    retrieveConnections(questionNodes)
+    {
+        let links = [];
+        for(let q in questionNodes)
+        {
+            let question = questionNodes[q];
+            // return questionNodes.map((question)=>{
+                for(let i in question.ports)
+                {
+                    
+                    let port = question.ports[i];
+                    if(port.NextQuestionID && !port.inletPort)
+                    {
+
+                        try{
+                            let questionPort = this.findQuestionNodePort(port.NextQuestionID,questionNodes);
+                            
+                            if(questionPort)
+                            {   
+                                links.push(port.link(questionPort));
+                            }
+                            
+                        }catch(e)
+                        {
+                            return console.error('could not find or draw question/answer connection');
+                        }
+                    }
+                        
+                }
+                
+            // })
+        }
+        return links;
+    }    
+        
+    findQuestionNodePort(id,questionNodes)
+    {
+        for(let i in questionNodes)
+        {
+            let node = questionNodes[i];
+            if(node._id === id)
+            {
+                for(let q in node.ports)
+                {
+                    if(node.ports[q].inletPort)
+                    {
+                        return node.ports[q];
+                    }
+                }
+            }
+        }
     }
 
     renderQuestions()
@@ -184,60 +251,49 @@ const dagWrapperStyles = css({
         }
     }
 
-    retrieveConnections()
-    {
-        let connections = [];
-        if(this.props.tree.questions)
-        {
-            for(let i in this.props.tree.questions)
-            {
-                let question = this.props.tree.questions[i];
-                if(question.Answers)
-                {
-                    for(let q in question.Answer)
-                    {
-                        let answer = question.Answer[q];
-                        connections.push(
-                            {
-                                sourceId:question.ID,
-                                targetId:answer.NextQuestionID
-                            }
-                        )
-                    }
-                }
-            }
-        }
-        console.log('connecting connections',connections);
-        return connections;
-    }
+
 
     render(){
+
+        const questionNodes = this.retrieveQuestionNodes(this.props.tree.questions);
+        const connectionData = this.retrieveConnections(questionNodes);
+        // console.log(questionNodes);
+        console.log('connection connection-----------------------------',connectionData);
+
+        // 1) setup the diagram engine
+        var engine = new SRD.DiagramEngine();
+        engine.installDefaultFactories();
+
+        // 2) setup the diagram model
+        var model = new SRD.DiagramModel();
+
+        // 3) create a default node
+        var node1 = new SRD.DefaultNodeModel("Node 1", "rgb(0,192,255)");
+        let port1 = node1.addOutPort("Out");
+        node1.addOutPort('really out');
+        // let port2 = node1.addOutPort("Out 2");
+        // let port3 = node1.addOutPort("Out 3");
+        node1.setPosition(100, 100);
+
+        // 4) create another default node
+        var node2 = new SRD.DefaultNodeModel("Node 2", "rgb(192,255,0)");
+        let port2 = node2.addInPort("In");
+        node2.setPosition(400, 100);
+
+        // 5) link the ports
+        let link1 = port1.link(port2);
+
+        // 6) add the models to the root graph
+        model.addAll(...questionNodes,...connectionData);
+
+        // 7) load model into engine
+        engine.setDiagramModel(model);
+        console.log('errr',engine);
+
         return <div>
-            {/* {this.renderQuestions()} */}
-            <ReactDAG
-                className={`${dagWrapperStyles}`}
-                key="dag"
-                connections={this.retrieveConnections(this.props.tree.questions)}
-                nodes={this.retrieveQuestionNodes(this.props.tree.questions)}
-                jsPlumbSettings={defaultSettings}
-                connectionDecoders={[
-                transformConnectionDecoder,
-                conditionConnectionDecoder,
-                ]}
-                connectionEncoders={[
-                transformConnectionEncoder,
-                conditionConnectionEncoder,
-                ]}
-                eventListeners={eventListeners}
-                registerTypes={registerTypes}
-                onChange={({ nodes, connections }) => {
-                this.setState({ nodes, connections }); // un-necessary cycle??
-                }}
-                zoom={1}
-            >
-                
-                {this.drawNodes()}
-            </ReactDAG>
+         
+            <SRD.DiagramWidget diagramEngine={engine} />
+
         </div>;
       }
 }
