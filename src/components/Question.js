@@ -60,6 +60,16 @@ const dagWrapperStyles = css({
 
   class Questions extends Component {
       
+    constructor()
+    {
+        super();
+        // 1) setup the diagram engine
+        this.engine = new SRD.DiagramEngine();
+        this.engine.installDefaultFactories();
+
+        // 2) setup the diagram model
+        this.model = new SRD.DiagramModel();
+    }
 
     findQuestion(questionID)
     {
@@ -209,46 +219,24 @@ const dagWrapperStyles = css({
         }
     }
 
-    renderQuestions()
-    { 
-        let questionsJSX;
-        let masterQuestion = this.findQuestion(this.props.activeTree.MasterQuestionID);
-        if(this.props.activeTree.ID === '-1')
-        {
-            return;
-        }
 
-        if(this.props.tree.questions.length === 0)
-        {
-            return <div>No Questions Yet</div>
-        }
 
-        questionsJSX = this.questionFunction(masterQuestion,true);
 
-        return questionsJSX;
-    }
-
-    drawNodes()
+    addNode = () =>
     {
 
-        if(this.props.tree.questions)
-        {
-            return this.props.tree.questions.map((node, i) => {
-                const Component = getComponent('action');
-                // console.log('here is the component',Component);
-                console.log('iiiiiiiiiiiiiii node',INode);
+        let questionText = prompt('What is your question text?')
+        // let newNode = new SRD.DefaultLabelModel('New Question',"#666");
+        // // newNode.setPosition(200,200);
+        var node2 = new SRD.DefaultNodeModel(questionText, "rgb(192,255,0)");
+        // let port2 = node2.addInPort("In");
+        node2.setPosition(400, 100);
 
-                // const configClass = INodeConfig;
-                // console.log('config Class',INodeConfig);?
-                // let configProp = {
-                //     label:node.QuestionText
-                // }
-                return <Component config={{label:node.QuestionText,width:100,height:100}} key={i} id={node.ID} />;
-            })
-        }
-        else{
-            return false;
-        }
+        var inPort = node2.addInPort(' ');
+        inPort.inletPort = true;
+
+        this.model.addAll(node2,inPort);
+        this.engine.repaintCanvas();
     }
 
 
@@ -260,40 +248,35 @@ const dagWrapperStyles = css({
         // console.log(questionNodes);
         console.log('connection connection-----------------------------',connectionData);
 
-        // 1) setup the diagram engine
-        var engine = new SRD.DiagramEngine();
-        engine.installDefaultFactories();
 
-        // 2) setup the diagram model
-        var model = new SRD.DiagramModel();
 
         // 3) create a default node
-        var node1 = new SRD.DefaultNodeModel("Node 1", "rgb(0,192,255)");
-        let port1 = node1.addOutPort("Out");
-        node1.addOutPort('really out');
-        // let port2 = node1.addOutPort("Out 2");
-        // let port3 = node1.addOutPort("Out 3");
-        node1.setPosition(100, 100);
+        // var node1 = new SRD.DefaultNodeModel("Node 1", "rgb(0,192,255)");
+        // let port1 = node1.addOutPort("Out");
+        // node1.addOutPort('really out');
+        // // let port2 = node1.addOutPort("Out 2");
+        // // let port3 = node1.addOutPort("Out 3");
+        // node1.setPosition(100, 100);
 
-        // 4) create another default node
-        var node2 = new SRD.DefaultNodeModel("Node 2", "rgb(192,255,0)");
-        let port2 = node2.addInPort("In");
-        node2.setPosition(400, 100);
+        // // 4) create another default node
+        // var node2 = new SRD.DefaultNodeModel("Node 2", "rgb(192,255,0)");
+        // let port2 = node2.addInPort("In");
+        // node2.setPosition(400, 100);
 
-        // 5) link the ports
-        let link1 = port1.link(port2);
+        // // 5) link the ports
+        // let link1 = port1.link(port2);
 
         // 6) add the models to the root graph
-        model.addAll(...questionNodes,...connectionData);
+        this.model.addAll(...questionNodes,...connectionData);
 
         // 7) load model into engine
-        engine.setDiagramModel(model);
-        console.log('errr',engine);
+        this.engine.setDiagramModel(this.model);
+        console.log('errr',this.engine);
 
         return <div>
          
-            <SRD.DiagramWidget diagramEngine={engine} />
-
+            <SRD.DiagramWidget diagramEngine={this.engine} />
+            <button onClick={this.addNode}>Add Question</button>
         </div>;
       }
 }
