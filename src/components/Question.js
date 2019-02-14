@@ -4,59 +4,10 @@ import {connect} from 'react-redux';
 import randomColor from 'randomcolor';
 import * as SRD from "storm-react-diagrams"
 
-import ReactDAG, {DefaultNode, INode} from "react-dag";
-import NodeType1 from "./NodeType1";
-import NodeType2 from "./NodeType2";
-import NodeType3 from "./NodeType3";
-
-import {
-    conditionConnectionDecoder,
-    conditionConnectionEncoder,
-    transformConnectionDecoder,
-    transformConnectionEncoder,
-  } from "../reducers/connectionReducers";
-
-import {
-    defaultSettings,
-    dottedConnectionStyle,
-    selectedConnectionStyle,
-  } from "../settings/dag-settings";
-import { onConnectionEventHandler, onEndPointClick } from "../actions/eventHandlers";
-import { css } from "glamor";
-
-const cloneDeep = require("lodash.clonedeep");
-const HEIGHT_OF_HEADER = 90;
-const HEIGHT_OF_BUTTON_PANEL = 50;
-const dagWrapperStyles = css({
-    background: "rgba(100,100,100,0.2)",
-    height: `calc(100vh - ${HEIGHT_OF_HEADER}px - ${HEIGHT_OF_BUTTON_PANEL +
-      1}px)`,
-    width: "100vw",
-  });
-  
-  const eventListeners = {
-      click: onEndPointClick,
-      connection: onConnectionEventHandler,
-      endpointClick: onEndPointClick,
-  };
-  const registerTypes = {
-    connections: {
-      dotted: dottedConnectionStyle,
-      selected: selectedConnectionStyle,
-    },
-    endpoints: {},
-  }; 
-  const typeToComponentMap = {
-    action: NodeType2,
-    condition: NodeType3,
-    sink: NodeType1,
-    source: DefaultNode,
-    transform: NodeType1,
-  };
-
-  const getComponent = (type) =>
-  typeToComponentMap[type] ? typeToComponentMap[type] : DefaultNode;
-
+import {updateNewQuestion} from '../actions/questionActions';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import AnswerInput from './AnswerInput';
 
   class Questions extends Component {
       
@@ -69,8 +20,25 @@ const dagWrapperStyles = css({
 
         // 2) setup the diagram model
         this.model = new SRD.DiagramModel();
+
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    
+        this.stepFunction = this.stepFunction.bind(this);
+        this.state = {
+          show: false,
+        };
     }
 
+    handleClose() {
+        this.setState({ show: false });
+    }
+
+    handleShow() {
+        this.setState({ show: true });
+    }
+
+    
     findQuestion(questionID)
     {
         // console.log(this.props);
@@ -84,37 +52,7 @@ const dagWrapperStyles = css({
         }
         return false;
     }
-    renderAnswers(question)
-    {
-        question.Answers.forEach(answer => {
-            answer.specialColor = randomColor();
-        });
-        return question.Answers.map(answer=>
-            <div style={{background:answer.specialColor}}>
-                {answer.AnswerText} (follow up is: {this.findQuestion(answer['NextQuestionID']).QuestionText})
-            </div>
-        )
-    }
-
-    renderNextQuestions(question)
-    {
-        // let usedQuestions = [];
-        return question.Answers.map((answer) =>{
-                   
-                let followupQuestion = this.findQuestion(answer['NextQuestionID']);
-                // const color = randomColor();
-                // console.log('following up ',followupQuestion);
-                if(followupQuestion)
-                {
-                    // if(usedQuestions.indexOf(followupQuestion.ID) === -1)
-                    // {   
-                        // console.log('using ', followupQuestion.ID);
-                        // usedQuestions.push(followupQuestion.ID);
-                        return this.questionFunction(followupQuestion,false,answer.specialColor);
-                    // }
-                }
-        })
-    }
+  
 
     questionFunction(question,masterQuestion,backgroundColor = '#fff')
     {
@@ -235,48 +173,84 @@ const dagWrapperStyles = css({
         var inPort = node2.addInPort(' ');
         inPort.inletPort = true;
 
+        // console.log(node2);
         this.model.addAll(node2,inPort);
         this.engine.repaintCanvas();
     }
 
+    renderNewAnswers()
+    {
+        return this.props.newQuestion.answers.map((answer,index)=>{
+            return <AnswerInput key={index} number={index}/>
+        })
+    }
 
+    stepFunction(e)
+    {
+        console.log(e.target.value);
+        updateNewQuestion(e.target.value)
+    }
 
     render(){
 
         const questionNodes = this.retrieveQuestionNodes(this.props.tree.questions);
         const connectionData = this.retrieveConnections(questionNodes);
-        // console.log(questionNodes);
-        console.log('connection connection-----------------------------',connectionData);
-
-
-
-        // 3) create a default node
-        // var node1 = new SRD.DefaultNodeModel("Node 1", "rgb(0,192,255)");
-        // let port1 = node1.addOutPort("Out");
-        // node1.addOutPort('really out');
-        // // let port2 = node1.addOutPort("Out 2");
-        // // let port3 = node1.addOutPort("Out 3");
-        // node1.setPosition(100, 100);
-
-        // // 4) create another default node
-        // var node2 = new SRD.DefaultNodeModel("Node 2", "rgb(192,255,0)");
-        // let port2 = node2.addInPort("In");
-        // node2.setPosition(400, 100);
-
-        // // 5) link the ports
-        // let link1 = port1.link(port2);
 
         // 6) add the models to the root graph
         this.model.addAll(...questionNodes,...connectionData);
 
         // 7) load model into engine
         this.engine.setDiagramModel(this.model);
-        console.log('errr',this.engine);
+        
 
         return <div>
          
             <SRD.DiagramWidget diagramEngine={this.engine} />
+
+            <Button variant="primary" onClick={this.handleShow}>
+                Add Question
+            </Button>
             <button onClick={this.addNode}>Add Question</button>
+
+            <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Add Question</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form className="form-horizontal">
+                <fieldset>
+                <div className="form-group">
+                    <label className="col-md-4 control-label">Question Text</label>  
+                    <div className="col-md-12 p-4" style={{'background':'#e8e8e8'}}>
+                    <input id="textinput" name="textinput" type="text" placeholder="What time is it?" className="form-control input-lg" onChange={this.stepFunction} value={this.props.newQuestion.questionText}/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-md-4 control-label">Answers</label>
+                    <div className="col-md-12 p-4" style={{'background':'#e8e8e8'}}>
+                            {this.renderNewAnswers()}
+                            <div className="row float-right mb-5">
+                                <div className="col-md-12">
+                                    <Button variant="success" className="mt-2 float-right" style={{'borderRadius':'100%'}}><strong>+</strong></Button>
+                                </div>
+                            </div>
+                    </div>
+                    
+                </div>
+
+                </fieldset>
+                </form>
+
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                Close
+                </Button>
+                <Button variant="primary" onClick={this.handleClose}>
+                Save Changes
+                </Button>
+            </Modal.Footer>
+            </Modal>
         </div>;
       }
 }
@@ -284,12 +258,13 @@ const dagWrapperStyles = css({
 
 function mapStateToProps(state)
 {
-    // console.log('connections',state);
+    console.log('connections',state);
     return {
         tree: state.tree,
         activeTree:state.activeTree,
         connections:state.connections.connections,
-        nodes:state.connections.nodes
+        nodes:state.connections.nodes,
+        newQuestion:state.newQuestion
     }
 }
 

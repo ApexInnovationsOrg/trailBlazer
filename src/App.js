@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './journeys.css';
+import './bootstrap.min.css';
 import Forest from './components/Forest';
 import Tree from './components/Tree';
 import Footer from './components/Footer';

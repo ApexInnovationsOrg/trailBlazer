@@ -5,6 +5,7 @@ import activeTreeReducer from './activeTreeReducer';
 import singleForestReducer from './singleForestReducer';
 import treeReducer from './treeReducer';
 import connectionsReducer from './connectionsReducer';
+import questionReducer from './questionReducer';
 
 export default combineReducers({
    forests: forestReducer,
@@ -12,6 +13,7 @@ export default combineReducers({
    activeForest:activeForestReducer,
    activeTree:activeTreeReducer,
    tree:treeReducer,
-   connections:connectionsReducer
+   connections:connectionsReducer,
+   newQuestion:questionReducer
 })
 
