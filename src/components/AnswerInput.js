@@ -15,29 +15,17 @@ class AnswerInput extends Component {
         
     }
 
-    hide = ()=>
-    {
-        // console.log('now hide?');
-        this.setState({'showAnswer':false});
-    }
 
     render(){
         let rowClasses = this.props.number === 0 ? "row" : "row mt-4";
-        console.log('what state we in?',this.state);
-        if(!this.state || !this.state.showAnswer)
-        {
-            return null;
-        }
-        else
-        {
 
             return <div className={rowClasses}>
-                    <input name={this.props.number} className="col-md-9 form-control input-md mt-1" placeholder="1:00pm" type="text"></input>
+                    <input name={this.props.number} onChange={()=>this.props.updateAnswer(this.props.answerObject)} className="col-md-9 form-control input-md mt-1" placeholder="1:00pm" type="text"></input>
                     <div className="col-md-2">
-                        <Button className="float-right mt-1" variant="outline-danger" onClick={this.hide} style={{'borderRadius':'100%'}}>-</Button>
+                        <Button className="float-right mt-1" variant="outline-danger" onClick={()=>{this.props.removeAnswer(this.props.number)}} style={{'borderRadius':'100%'}}>-</Button>
                     </div>
                 </div>
-        }
+        
         
       }
 }

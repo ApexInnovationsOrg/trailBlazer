@@ -25,11 +25,20 @@ import AnswerInput from './AnswerInput';
         this.handleClose = this.handleClose.bind(this);
     
         this.stepFunction = this.stepFunction.bind(this);
+        this.addNewAnswerOption = this.addNewAnswerOption.bind(this);
+        this.removeAnswer = this.removeAnswer.bind(this);
+        this.updateAnswer = this.updateAnswer.bind(this);
         this.state = {
           show: false,
         };
     }
-
+    componentDidMount()
+    {
+        this.setState({
+            newQuestionText:this.props.newQuestion.questionText,
+            newAnswersArray:this.props.newQuestion.answers
+        })
+    }
     handleClose() {
         this.setState({ show: false });
     }
@@ -177,18 +186,56 @@ import AnswerInput from './AnswerInput';
         this.model.addAll(node2,inPort);
         this.engine.repaintCanvas();
     }
+    
+    removeAnswer(index)
+    {
+
+
+        var answersArr = [...this.state.newAnswersArray];
+        if(index !== -1 && answersArr.length > 1)
+        {
+            answersArr.splice(index,1);
+            this.setState({newAnswersArray:answersArr});
+        }
+        else
+        {
+            alert("You have to have at least one answer");
+        }
+    }
+
+    updateAnswer(answer)
+    {
+        console.log(answer);
+    }
 
     renderNewAnswers()
     {
-        return this.props.newQuestion.answers.map((answer,index)=>{
-            return <AnswerInput key={index} number={index}/>
+        if(this.state.newAnswersArray)
+        {
+            return this.state.newAnswersArray.map((answer,index)=>{
+                return <AnswerInput key={index} number={index} answerObject={answer} removeAnswer={this.removeAnswer} updateAnswer={this.updateAnswer} />
+            })
+        }
+    }
+
+    addNewAnswerOption()
+    {
+        var added = this.state.newAnswersArray.concat({
+            answerText:''
+        })
+        this.setState({
+            newAnswersArray:added
         })
     }
 
     stepFunction(e)
     {
-        console.log(e.target.value);
-        updateNewQuestion(e.target.value)
+        this.setState({
+            newQuestionText:e.target.value
+        })
+        // this.props.dispatch(updateNewQuestion(
+        //     e.target.value,this.props.newQuestion.answers
+        //     ));
     }
 
     render(){
@@ -222,7 +269,7 @@ import AnswerInput from './AnswerInput';
                 <div className="form-group">
                     <label className="col-md-4 control-label">Question Text</label>  
                     <div className="col-md-12 p-4" style={{'background':'#e8e8e8'}}>
-                    <input id="textinput" name="textinput" type="text" placeholder="What time is it?" className="form-control input-lg" onChange={this.stepFunction} value={this.props.newQuestion.questionText}/>
+                    <input id="textinput" name="textinput" type="text" placeholder="What time is it?" className="form-control input-lg" onChange={this.stepFunction} value={this.state.newQuestionText}/>
                     </div>
                 </div>
                 <div className="form-group">
@@ -231,7 +278,7 @@ import AnswerInput from './AnswerInput';
                             {this.renderNewAnswers()}
                             <div className="row float-right mb-5">
                                 <div className="col-md-12">
-                                    <Button variant="success" className="mt-2 float-right" style={{'borderRadius':'100%'}}><strong>+</strong></Button>
+                                    <Button variant="success" className="mt-2 float-right" style={{'borderRadius':'100%'}} onClick={this.addNewAnswerOption}><strong>+</strong></Button>
                                 </div>
                             </div>
                     </div>
@@ -269,4 +316,4 @@ function mapStateToProps(state)
 }
 
 
-export default connect(mapStateToProps,null)(Questions);
+export default connect(mapStateToProps)(Questions);

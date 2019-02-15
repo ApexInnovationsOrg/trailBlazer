@@ -14,10 +14,11 @@ const initialState = {
 
 
 export default function(state=initialState, action){
+    console.log('hmmm',action);
     switch(action.type){
         
         case SET_NEW_ANSWERS:
-
+                console.log('setting new answers');
                 return action.payload;
         default:
             return state;
