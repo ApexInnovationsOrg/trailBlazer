@@ -11,9 +11,9 @@ import store from './store';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTree } from '@fortawesome/free-solid-svg-icons'
+import { faTree, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faTree)
+library.add(...[faTree,faSpinner])
 
 
 class Journeys extends Component {

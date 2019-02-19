@@ -4,11 +4,11 @@ import {connect} from 'react-redux';
 import randomColor from 'randomcolor';
 import * as SRD from "storm-react-diagrams"
 
-import {updateNewQuestion} from '../actions/questionActions';
+import {updateNewQuestion,saveQuestion} from '../actions/questionActions';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AnswerInput from './AnswerInput';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
   class Questions extends Component {
       
     constructor()
@@ -29,7 +29,7 @@ import AnswerInput from './AnswerInput';
         this.removeAnswer = this.removeAnswer.bind(this);
         this.updateAnswer = this.updateAnswer.bind(this);
         this.state = {
-          show: false,
+            show: false,
         };
     }
     componentDidMount()
@@ -203,9 +203,9 @@ import AnswerInput from './AnswerInput';
         }
     }
 
-    updateAnswer(answer)
+    updateAnswer(value,answer)
     {
-        console.log(answer);
+        
     }
 
     renderNewAnswers()
@@ -213,7 +213,7 @@ import AnswerInput from './AnswerInput';
         if(this.state.newAnswersArray)
         {
             return this.state.newAnswersArray.map((answer,index)=>{
-                return <AnswerInput key={index} number={index} answerObject={answer} removeAnswer={this.removeAnswer} updateAnswer={this.updateAnswer} />
+                return <AnswerInput key={index} number={index} answerObject={answer} value={this.state.value} onChange={(event)=>{this.setState({value:event.target.value})}} removeAnswer={this.removeAnswer} updateAnswer={this.updateAnswer} />
             })
         }
     }
@@ -236,6 +236,25 @@ import AnswerInput from './AnswerInput';
         // this.props.dispatch(updateNewQuestion(
         //     e.target.value,this.props.newQuestion.answers
         //     ));
+    }
+
+    saveNewQuestion = ()=>{
+       this.props.dispatch(saveQuestion({
+            treeID:this.props.activeTree.ID,
+            question:this.state.newQuestionText,
+            answers:this.state.newAnswersArray
+       }));
+    }
+
+    saveButton()
+    {
+        if(this.props.savingQuestion.loading)
+        {
+            return <Button variant="primary" disabled={true}><FontAwesomeIcon icon="spinner" spin /></Button>
+        }
+        return <Button variant="primary" onClick={this.handleClose && this.saveNewQuestion}>
+                Save Changes
+                </Button>
     }
 
     render(){
@@ -293,9 +312,7 @@ import AnswerInput from './AnswerInput';
                 <Button variant="secondary" onClick={this.handleClose}>
                 Close
                 </Button>
-                <Button variant="primary" onClick={this.handleClose}>
-                Save Changes
-                </Button>
+                {this.saveButton()}
             </Modal.Footer>
             </Modal>
         </div>;
@@ -311,7 +328,8 @@ function mapStateToProps(state)
         activeTree:state.activeTree,
         connections:state.connections.connections,
         nodes:state.connections.nodes,
-        newQuestion:state.newQuestion
+        newQuestion:state.newQuestion,
+        savingQuestion:state.savingQuestion
     }
 }
 
