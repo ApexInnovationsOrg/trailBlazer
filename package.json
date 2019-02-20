@@ -30,6 +30,7 @@
     "redux-thunk": "^2.3.0",
     "storm-react-diagrams": "^5.2.1",
     "thunk": "0.0.1",
+    "typescript": "^3.3.3",
     "uuid-v4": "^0.1.0"
   },
   "scripts": {

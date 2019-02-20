@@ -9,6 +9,15 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AnswerInput from './AnswerInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
+// import the custom models
+import { DiamondNodeModel } from "./customNodes/DiamondNodeModel";
+import { DiamondNodeFactory } from "./customNodes/DiamondNodeFactory";
+import { SimplePortFactory } from "./customNodes/SimplePortFactory";
+import { DiamondPortModel } from "./customNodes/DiamondPortModel";
+
+
   class Questions extends Component {
       
     constructor()
@@ -28,9 +37,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         this.addNewAnswerOption = this.addNewAnswerOption.bind(this);
         this.removeAnswer = this.removeAnswer.bind(this);
         this.updateAnswer = this.updateAnswer.bind(this);
+        this.drawDiagram = this.drawDiagram.bind(this);
+        this.clearAllNodes = this.clearAllNodes.bind(this);
         this.state = {
             show: false,
+            renderedTree:-1
         };
+
+
+        
     }
     componentDidMount()
     {
@@ -38,7 +53,49 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
             newQuestionText:this.props.newQuestion.questionText,
             newAnswersArray:this.props.newQuestion.answers
         })
+
+        // this.drawDiagram();
+
+
+       
     }
+
+
+    drawDiagram()
+    {
+        this.clearAllNodes();
+        const questionNodes = this.retrieveQuestionNodes(this.props.tree.questions);
+        const connectionData = this.retrieveConnections(questionNodes);
+
+
+        this.engine.registerPortFactory(new SimplePortFactory("diamond", config => new DiamondPortModel()));
+        this.engine.registerNodeFactory(new DiamondNodeFactory());
+        var node2 = new DiamondNodeModel();
+        node2.setPosition(250, 108);
+        this.model.addAll(node2);
+
+        // 6) add the models to the root graph
+        this.model.addAll(...questionNodes,...connectionData);
+
+        
+        // 7) load model into engine
+        this.engine.setDiagramModel(this.model);
+    }
+
+    clearAllNodes()
+    {
+        const nodes = this.model.getNodes();
+        for(let i in nodes)
+        {   
+            
+            
+                    nodes[i].remove();
+            
+        }
+        
+    }
+
+
     handleClose() {
         this.setState({ show: false });
     }
@@ -108,6 +165,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
                 answerPort.inletPort = false;
                 
             })
+
+            questionNode.onClick = ()=>{
+                console.log('you are clicking me');
+            }
+            console.log(questionNode);
             return questionNode;
 
         });
@@ -184,6 +246,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
         // console.log(node2);
         this.model.addAll(node2,inPort);
+
+        console.log(node2);
         this.engine.repaintCanvas();
     }
     
@@ -203,9 +267,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         }
     }
 
-    updateAnswer(value,answer)
+    updateAnswer(value,index)
     {
-        
+            
+            const updatedAnswersArray = this.state.newAnswersArray.map((item,i)=>{
+                if(index === i)
+                {
+                    
+                    item.answerText = value;
+                    return item;
+
+                }
+                else
+                {
+                    return item;
+                }
+            })
+            
+        this.setState({newAnswersArray:updatedAnswersArray});            
     }
 
     renderNewAnswers()
@@ -213,7 +292,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         if(this.state.newAnswersArray)
         {
             return this.state.newAnswersArray.map((answer,index)=>{
-                return <AnswerInput key={index} number={index} answerObject={answer} value={this.state.value} onChange={(event)=>{this.setState({value:event.target.value})}} removeAnswer={this.removeAnswer} updateAnswer={this.updateAnswer} />
+                return <AnswerInput key={index} number={index} answerObject={answer} value={this.state.value} onChange={this.updateAnswer} removeAnswer={this.removeAnswer} updateAnswer={this.updateAnswer} />
             })
         }
     }
@@ -259,15 +338,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
     render(){
 
-        const questionNodes = this.retrieveQuestionNodes(this.props.tree.questions);
-        const connectionData = this.retrieveConnections(questionNodes);
+    //     console.log(this.props.activeTree.ID,this.state.renderedTree,'what?');
+    //    if(this.props.activeTree.ID !== this.state.renderedTree && this.props.activeTree.ID !== "-1")
+    //    {
+    //         console.log('what the fuck are you',this.props.activeTree.ID);
+        //    this.setState({'renderedTree':this.props.activeTree.ID});
+            this.drawDiagram();
+    //    }
 
-        // 6) add the models to the root graph
-        this.model.addAll(...questionNodes,...connectionData);
-
-        // 7) load model into engine
-        this.engine.setDiagramModel(this.model);
-        
+    
 
         return <div>
          
@@ -322,7 +401,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function mapStateToProps(state)
 {
-    console.log('connections',state);
     return {
         tree: state.tree,
         activeTree:state.activeTree,
