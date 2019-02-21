@@ -12,10 +12,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 // import the custom models
-import { DiamondNodeModel } from "./customNodes/DiamondNodeModel";
-import { DiamondNodeFactory } from "./customNodes/DiamondNodeFactory";
+import { QuestionNodeModel } from "./customNodes/QuestionNodeModel";
+import { QuestionNodeFactory } from "./customNodes/QuestionNodeFactory";
 import { SimplePortFactory } from "./customNodes/SimplePortFactory";
-import { DiamondPortModel } from "./customNodes/DiamondPortModel";
+import { QuestionPortModel } from "./customNodes/QuestionPortModel";
 
 
   class Questions extends Component {
@@ -68,11 +68,12 @@ import { DiamondPortModel } from "./customNodes/DiamondPortModel";
         const connectionData = this.retrieveConnections(questionNodes);
 
 
-        this.engine.registerPortFactory(new SimplePortFactory("diamond", config => new DiamondPortModel()));
-        this.engine.registerNodeFactory(new DiamondNodeFactory());
-        var node2 = new DiamondNodeModel();
-        node2.setPosition(250, 108);
-        this.model.addAll(node2);
+        this.engine.registerPortFactory(new SimplePortFactory("diamond", config => new QuestionPortModel('hello')));
+        this.engine.registerNodeFactory(new QuestionNodeFactory());
+        // var node2 = new QuestionNodeModel('This should be the question');
+        // node2.setPosition(250, 108);
+        // this.model.addAll(node2);
+        
 
         // 6) add the models to the root graph
         this.model.addAll(...questionNodes,...connectionData);
@@ -107,7 +108,6 @@ import { DiamondPortModel } from "./customNodes/DiamondPortModel";
     
     findQuestion(questionID)
     {
-        // console.log(this.props);
         for(let i in this.props.tree.questions)
         {
             let question = this.props.tree.questions[i];
@@ -152,19 +152,19 @@ import { DiamondPortModel } from "./customNodes/DiamondPortModel";
 
         return this.props.tree.questions.map((question)=>{
             
-            var questionNode = new SRD.DefaultNodeModel(question.QuestionText, "rgb(0,192,255)");
+            var questionNode = new QuestionNodeModel("Question", question.QuestionText ,question.Answers);
             questionNode._id = question.ID;
             questionNode.setPosition(questionX, 100);
             questionX += 400;
-            var inPort = questionNode.addInPort(' ');
-            inPort.inletPort = true;
-            question.Answers.map((answer)=>{
-                let answerPort = questionNode.addOutPort(answer.AnswerText);
+            // var inPort = questionNode.addInPort(' ');
+            // inPort.inletPort = true;
+            // question.Answers.map((answer)=>{
+            //     let answerPort = questionNode.addOutPort(answer.AnswerText);
                 
-                answerPort.NextQuestionID = answer.NextQuestionID;
-                answerPort.inletPort = false;
+            //     answerPort.NextQuestionID = answer.NextQuestionID;
+            //     answerPort.inletPort = false;
                 
-            })
+            // })
 
             questionNode.onClick = ()=>{
                 console.log('you are clicking me');

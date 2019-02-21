@@ -2,15 +2,15 @@ import { FETCH_TREE_BEGIN, FETCH_TREE_SUCCESS, FETCH_TREE_FAILURE } from '../act
 
 const initialState = {
     questions:[
-        {
-            'ID' : '1',
-            'QuestionText' :'Questions booting',
-            'Active' : 'Y',
-            'CreationDate' : '0000-00-00 00:00:00',
-            'Weight' : '2',
-            'TreeID' : '-1',
-            'Answers' : []
-        }
+        // {
+        //     'ID' : '1',
+        //     'QuestionText' :'Questions booting',
+        //     'Active' : 'Y',
+        //     'CreationDate' : '0000-00-00 00:00:00',
+        //     'Weight' : '2',
+        //     'TreeID' : '-1',
+        //     'Answers' : []
+        // }
     ],
     error:null,
     loading:false
@@ -28,15 +28,15 @@ export default function(state=initialState, action){
                     loading:true,
                     error:null,
                     questions:[
-                        {
-                            'ID' : '1',
-                            'QuestionText' :'Questions booting',
-                            'Active' : 'Y',
-                            'CreationDate' : '0000-00-00 00:00:00',
-                            'Weight' : '2',
-                            'TreeID' : '-1',
-                            'Answers' : []
-                        }
+                        // {
+                        //     'ID' : '1',
+                        //     'QuestionText' :'Questions booting',
+                        //     'Active' : 'Y',
+                        //     'CreationDate' : '0000-00-00 00:00:00',
+                        //     'Weight' : '2',
+                        //     'TreeID' : '-1',
+                        //     'Answers' : []
+                        // }
                     ]
                 }
         case FETCH_TREE_SUCCESS:
@@ -49,15 +49,15 @@ export default function(state=initialState, action){
         case FETCH_TREE_FAILURE:
             return {
                 questions:[
-                    {
-                        'ID' : '1',
-                        'QuestionText' :'Questions booting',
-                        'Active' : 'Y',
-                        'CreationDate' : '0000-00-00 00:00:00',
-                        'Weight' : '2',
-                        'TreeID' : '-1',
-                        'Answers' : []
-                    }
+                    // {
+                    //     'ID' : '1',
+                    //     'QuestionText' :'Questions booting',
+                    //     'Active' : 'Y',
+                    //     'CreationDate' : '0000-00-00 00:00:00',
+                    //     'Weight' : '2',
+                    //     'TreeID' : '-1',
+                    //     'Answers' : []
+                    // }
                 ],
                 error:action.payload.error,
                 loading:false
