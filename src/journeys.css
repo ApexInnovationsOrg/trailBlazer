@@ -216,10 +216,52 @@ background-size: 50px 50px;
   background:rgb(255, 255, 255);
   padding:.5em;
   margin-top:5px;
+  position:relative;
 }
 .answerListNode
 {
-  margin-top:25px;
+  margin:25px 0 0 0;
   list-style-type: none;
   padding:0;
+  
+}
+.port
+{
+  position: absolute;
+  height:20px;
+  width:20px;
+  background:rgb(195,31,93);
+  border-radius:100%;
+  cursor:pointer; 
+}
+.questionPort
+{
+  left:-10px;
+  top:35px
+
+}
+.answerPort
+{
+  transform: translateY(-50%);
+  right:-25px;
+  top:50%;
+}
+
+.questionNotch
+{
+  position:absolute;
+	width:100%;
+	height:20px;
+	left:0;
+	top:0;
+	background:rgb(32,53,105);
+}
+
+.questionLabel
+{
+  
+  position:relative;
+  color:yellow;
+  padding:2em 0 0 1em;
+  
 }

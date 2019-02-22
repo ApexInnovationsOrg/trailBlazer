@@ -2,22 +2,22 @@ import * as _ from "lodash";
 import { LinkModel, DiagramEngine, PortModel, DefaultLinkModel } from "storm-react-diagrams";
 
 export class QuestionPortModel extends PortModel {
-	position: string | "1" | "2" | "3" | "4" | "in";
+	name: string;
 
-	constructor(pos: string = "1") {
-		super(pos, "diamond");
-		this.position = pos;
+	constructor(name: string = "1") {
+		super(name, "question");
+		this.name = name;
 	}
 
 	serialize() {
 		return _.merge(super.serialize(), {
-			position: this.position
+			name: this.name
 		});
 	}
 
 	deSerialize(data: any, engine: DiagramEngine) {
 		super.deSerialize(data, engine);
-		this.position = data.position;
+		this.name = data.name;
 	}
 
 	createLinkModel(): LinkModel {

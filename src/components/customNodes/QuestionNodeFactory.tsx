@@ -5,7 +5,7 @@ import * as React from "react";
 
 export class QuestionNodeFactory extends SRD.AbstractNodeFactory {
 	constructor() {
-		super("diamond");
+		super("question");
 	}
 
 	generateReactWidget(diagramEngine: SRD.DiagramEngine, node: QuestionNodeModel): JSX.Element {

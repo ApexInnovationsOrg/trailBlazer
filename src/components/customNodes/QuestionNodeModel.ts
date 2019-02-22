@@ -3,19 +3,23 @@ import { QuestionPortModel } from "./QuestionPortModel";
 
 export class QuestionNodeModel extends NodeModel {
 	name: string;
-	question: string;
+	question: Object;
 	answers: Array<Object>;
 
-	constructor(name: string = "Question", question: string = "No question", answers: Array<Object> = []) {
-		super("diamond");
+	constructor(name: string = "Question", question: Object = {}, answers: Array<Object> = []) {
+		super("question");
 
 		this.name = name;
 		this.question = question;
 		this.answers = answers;
-		// this.name = name;
-		this.addPort(new QuestionPortModel("in"));
-		// this.addPort(new DiamondPortModel("left"));
-		// this.addPort(new DiamondPortModel("bottom"));
-		// this.addPort(new DiamondPortModel("right"));
+	}
+
+
+	addInPort(label: string): QuestionPortModel {
+		return this.addPort(new QuestionPortModel(label));
+	}
+
+	addOutPort(label: string): QuestionPortModel {
+		return this.addPort(new QuestionPortModel(label));
 	}
 }

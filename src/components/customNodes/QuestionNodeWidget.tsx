@@ -1,6 +1,7 @@
 import * as React from "react";
 import { QuestionNodeModel } from "./QuestionNodeModel";
 import { PortWidget } from "storm-react-diagrams";
+import { QuestionPortModel } from "./QuestionPortModel";
 
 export interface QuestionNodeWidgetProps {
 	node: QuestionNodeModel;
@@ -30,8 +31,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 
 	render() {
-
-		// console.log('this is the props inside the custom node',this.props);
+		// this.props.node.addInPort(index.toString(ques));
 		return (
 			<div
 				style={{
@@ -44,42 +44,52 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 			<div
 				style={{
 					width:"100%",
-					height:"50px",
+					height:"70px",
 					background:"rgb(0,87,157)"
 				}}
 			>
 
-			<div
-				style={{
-					position:"absolute",
-					width:"100%",
-					height:"10px",
-					left:"0",
-					top:"0",
-					background:"rgb(32,53,105)"
-				}}
-			/>
+			<div className={"questionNotch"}/>
+
+			<div className={"port questionPort"}>
+				<PortWidget name={'questionID_' + this.props.node.question['ID']} node={this.props.node} />
+			</div>
+			
 			<div style={{
 				position:'relative',
 				color:'white',
-				padding:'1em 0 0 1em'
+				padding:'2em 0 0 1em'
 			}}>
 				{this.props.node.name}
 			</div>
+
+			
 			</div>
 				<div className={"questionAndAnswerAreaOnNodeContainer"}//that's a little verbose
 				>
 					<div className={"questionAreaNode"}
 					>
-						{this.props.node.question}
+						{this.props.node.question['QuestionText']}
 					</div>
 					<div className={"answerAreaNode"}
 					/>
 						<ul className={"answerListNode"}>
 
-							{this.props.node.answers.map((answer)=>{
+							{this.props.node.answers.map((answer,index)=>{
+								// let actualPort = new QuestionPortModel(index.toString());
+								// actualPort.setParent(actualPort);
+								// console.log('answer me this',answer);
+								let answerID = 'answerID_' + answer['ID'];
+								this.props.node.addOutPort(answerID);
 
-								return <li>{answer['AnswerText']}</li>;
+								// console.log('here is the actual port',actualPort);
+								return <li key={index}>
+								
+									{answer['AnswerText']}
+									<div className={"port answerPort"}>
+										<PortWidget  name={answerID} node={this.props.node} />
+									</div>
+								</li>;
 							})
 							
 							}

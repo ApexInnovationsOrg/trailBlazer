@@ -65,10 +65,12 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
     {
         this.clearAllNodes();
         const questionNodes = this.retrieveQuestionNodes(this.props.tree.questions);
+
+        console.log('what the heck',questionNodes);
         const connectionData = this.retrieveConnections(questionNodes);
 
 
-        this.engine.registerPortFactory(new SimplePortFactory("diamond", config => new QuestionPortModel('hello')));
+        this.engine.registerPortFactory(new SimplePortFactory("question", config => new QuestionPortModel('hello')));
         this.engine.registerNodeFactory(new QuestionNodeFactory());
         // var node2 = new QuestionNodeModel('This should be the question');
         // node2.setPosition(250, 108);
@@ -152,10 +154,11 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
 
         return this.props.tree.questions.map((question)=>{
             
-            var questionNode = new QuestionNodeModel("Question", question.QuestionText ,question.Answers);
+            var questionNode = new QuestionNodeModel("Question", question ,question.Answers);
             questionNode._id = question.ID;
             questionNode.setPosition(questionX, 100);
-            questionX += 400;
+            questionX += 500;
+            // console.log(questionNode);
             // var inPort = questionNode.addInPort(' ');
             // inPort.inletPort = true;
             // question.Answers.map((answer)=>{
@@ -166,10 +169,6 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
                 
             // })
 
-            questionNode.onClick = ()=>{
-                console.log('you are clicking me');
-            }
-            console.log(questionNode);
             return questionNode;
 
         });
@@ -180,10 +179,13 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
         let links = [];
         for(let q in questionNodes)
         {
+
             let question = questionNodes[q];
+            console.log('my question',question);
             // return questionNodes.map((question)=>{
                 for(let i in question.ports)
                 {
+                    console.log('mah question port',question.ports[i]);
                     
                     let port = question.ports[i];
                     if(port.NextQuestionID && !port.inletPort)
