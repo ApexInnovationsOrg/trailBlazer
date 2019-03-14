@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './journeys.css';
+import './styles/journeys.scss';
 import './bootstrap.min.css';
 import Forest from './components/Forest';
 import Tree from './components/Tree';
@@ -11,9 +11,17 @@ import store from './store';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTree, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faTree, faSpinner, faHome } from '@fortawesome/free-solid-svg-icons'
 
-library.add(...[faTree,faSpinner])
+import SideNav, { Toggle, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+ 
+// Be sure to include styles at some point, probably during your bootstraping
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
+library.add(...[faTree,faSpinner,faHome])
+
 
 
 class Journeys extends Component {
@@ -22,10 +30,19 @@ class Journeys extends Component {
     <Provider store={store}>
       <div className="container">
         <HeaderComponent></HeaderComponent>
-        <nav>
-        
-          <Forest/>
-        </nav>
+        <SideNav>
+          <Toggle/>
+          <SideNav.Nav defaultSelected="home">
+          <NavItem eventKey="home">
+            <NavIcon>
+                <FontAwesomeIcon icon="tree" style={{ fontSize: '1.75em' }} />
+            </NavIcon>
+            <NavText>
+              <Forest/>
+            </NavText>
+        </NavItem>
+          </SideNav.Nav>
+        </SideNav>
         <main>
           {/* <Content /> */}
           <Tree/>

@@ -7,21 +7,21 @@ import {
 
 export function updateNewQuestion(question,answers){
     return dispatch =>{
-        console.log('updating new question');
+        // console.log('updating new question');
         dispatch(alterQuestion({
             questionText:question,
             answers:answers
         }));
 
-        const initialState = {
-            questionText:'',
-            answers:[
-            {
-                answerText:''
-            },{
-                answerText:''
-            }]
-        }
+        // const initialState = {
+        //     questionText:'',
+        //     answers:[
+        //     {
+        //         answerText:''
+        //     },{
+        //         answerText:''
+        //     }]
+        // }
     }
 
 }

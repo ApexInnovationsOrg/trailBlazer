@@ -9,10 +9,12 @@ export class QuestionNodeFactory extends SRD.AbstractNodeFactory {
 	}
 
 	generateReactWidget(diagramEngine: SRD.DiagramEngine, node: QuestionNodeModel): JSX.Element {
-		return <QuestionNodeWidget node={node} />;
+		return React.createElement(QuestionNodeWidget,{
+			node:node})
 	}
 
 	getNewInstance() {
 		return new QuestionNodeModel();
 	}
 }
+

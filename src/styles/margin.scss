@@ -1,0 +1,55 @@
+$margin-sm: 0.4em;
+$margin-md: 0.7em;
+$margin-lg: 1em;
+
+.margin-left,
+.margin-left-sm {
+	margin-left: $margin-sm;
+}
+
+.margin-left-md {
+	margin-left: $margin-md;
+}
+
+.margin-left-lg {
+	margin-left: $margin-lg;
+}
+
+.margin-right,
+.margin-right-sm {
+	margin-right: $margin-sm;
+}
+
+.margin-right-md {
+	margin-right: $margin-md;
+}
+
+.margin-right-lg {
+	margin-right: $margin-lg;
+}
+
+.margin-top,
+.margin-left-sm {
+	margin-top: $margin-sm;
+}
+
+.margin-top-md {
+	margin-top: $margin-md;
+}
+
+.margin-top-lg {
+	margin-top: $margin-lg;
+}
+
+.margin-bottom,
+.margin-bottom-sm {
+	margin-bottom: $margin-sm;
+}
+
+.margin-bottom-md {
+	margin-bottom: $margin-md;
+}
+
+.margin-bottom-lg {
+	margin-bottom: $margin-lg;
+}

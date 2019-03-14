@@ -2,6 +2,7 @@ import * as React from "react";
 import { QuestionNodeModel } from "./QuestionNodeModel";
 import { PortWidget } from "storm-react-diagrams";
 import { QuestionPortModel } from "./QuestionPortModel";
+import Mousetrap from "mousetrap";
 
 export interface QuestionNodeWidgetProps {
 	node: QuestionNodeModel;
@@ -24,36 +25,52 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 		this.state = {};
 	}
 
-	clickThing()
+	destroyLink(answerName)
 	{
-		alert('You clicked me~!');
+		console.log('destroyyyyyyyyyyyy');
+
+		// console.log(answerName);
+		this.props.node.removeLink(answerName);
+	}
+	deleteCheck(answerName)
+	{
+		console.log('possibleDelete');
+		// Mousetrap
+	}
+	getQuestionPort = ()=>
+	{	
+		if(!this.props.node.masterQuestion)
+		{
+			return <div className={"port questionPort"}>
+						<PortWidget name="question" node={this.props.node} />
+					</div>
+		}
 	}
 
-
 	render() {
-		// this.props.node.addInPort(index.toString(ques));
+
 		return (
 			<div
 				style={{
 					position: "relative",
 					width: this.props.size * 1.5,
-					height: this.props.size,
-					
+					height: this.props.size
 				}}
 			>
 			<div
 				style={{
 					width:"100%",
 					height:"70px",
-					background:"rgb(0,87,157)"
+					background: this.props.node.masterQuestion ? 'green' : "rgb(0,87,157)"
 				}}
 			>
 
 			<div className={"questionNotch"}/>
 
-			<div className={"port questionPort"}>
-				<PortWidget name={'questionID_' + this.props.node.question['ID']} node={this.props.node} />
-			</div>
+
+
+				{this.getQuestionPort()}
+				
 			
 			<div style={{
 				position:'relative',
@@ -63,7 +80,9 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 				{this.props.node.name}
 			</div>
 
-			
+			<div className={"editNodeContainer"}>
+				<button className={"editNodeButton btn btn-primary"}>Edit</button>
+			</div>
 			</div>
 				<div className={"questionAndAnswerAreaOnNodeContainer"}//that's a little verbose
 				>
@@ -76,18 +95,18 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 						<ul className={"answerListNode"}>
 
 							{this.props.node.answers.map((answer,index)=>{
-								// let actualPort = new QuestionPortModel(index.toString());
-								// actualPort.setParent(actualPort);
-								// console.log('answer me this',answer);
-								let answerID = 'answerID_' + answer['ID'];
-								this.props.node.addOutPort(answerID);
 
-								// console.log('here is the actual port',actualPort);
+
+								let answerID = 'answerID_' + answer['ID'];
+								
+
+								let answerName = "answer" + index;
+
 								return <li key={index}>
 								
 									{answer['AnswerText']}
-									<div className={"port answerPort"}>
-										<PortWidget  name={answerID} node={this.props.node} />
+									<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} className={"port answerPort"}>
+										<PortWidget  name={answerName} node={this.props.node} />
 									</div>
 								</li>;
 							})

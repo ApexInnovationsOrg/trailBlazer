@@ -23,7 +23,7 @@ class Forest extends Component {
 
                 if(this.props.activeTree.ID === tree.ID)
                 {
-                    return <li key={tree.ID} style={{'cursor':'pointer','background':'blue'}}><span onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>
+                    return <li key={tree.ID} style={{'cursor':'pointer'}}><span style={{background:'rgba(228, 228, 225, 0.7)',padding:'1em'}} onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>
                 }
                 else
                 {

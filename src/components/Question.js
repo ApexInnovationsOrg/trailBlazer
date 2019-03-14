@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import randomColor from 'randomcolor';
+// import randomColor from 'randomcolor';
 import * as SRD from "storm-react-diagrams"
 
-import {updateNewQuestion,saveQuestion} from '../actions/questionActions';
+import {saveQuestion} from '../actions/questionActions';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AnswerInput from './AnswerInput';
@@ -66,7 +66,7 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
         this.clearAllNodes();
         const questionNodes = this.retrieveQuestionNodes(this.props.tree.questions);
 
-        console.log('what the heck',questionNodes);
+        // console.log('what the heck',questionNodes);
         const connectionData = this.retrieveConnections(questionNodes);
 
 
@@ -150,14 +150,18 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
     retrieveQuestionNodes()
     {
 
-        let questionX = 0;
 
         return this.props.tree.questions.map((question)=>{
             
             var questionNode = new QuestionNodeModel("Question", question ,question.Answers);
             questionNode._id = question.ID;
-            questionNode.setPosition(questionX, 100);
-            questionX += 500;
+
+            // console.log(this.props.activeTree.MasterQuestionID,question.ID);
+            if(this.props.activeTree.MasterQuestionID === question.ID)
+            {
+                questionNode.setMaster();
+            }
+            questionNode.setPosition(parseInt(question.PositionX), parseInt(question.PositionY));
             // console.log(questionNode);
             // var inPort = questionNode.addInPort(' ');
             // inPort.inletPort = true;
@@ -173,40 +177,43 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
 
         });
     }
-
+// 
     retrieveConnections(questionNodes)
     {
         let links = [];
+        // console.log('--------------------',questionNodes,this.model);
         for(let q in questionNodes)
         {
 
             let question = questionNodes[q];
-            console.log('my question',question);
+            // console.log('my question',question);
+            // console.log(Object.keys(question.ports));
             // return questionNodes.map((question)=>{
-                for(let i in question.ports)
-                {
-                    console.log('mah question port',question.ports[i]);
-                    
-                    let port = question.ports[i];
-                    if(port.NextQuestionID && !port.inletPort)
-                    {
 
-                        try{
-                            let questionPort = this.findQuestionNodePort(port.NextQuestionID,questionNodes);
-                            
-                            if(questionPort)
-                            {   
-                                links.push(port.link(questionPort));
-                            }
-                            
-                        }catch(e)
-                        {
-                            return console.error('could not find or draw question/answer connection');
-                        }
-                    }
+                    for(let i in question.ports)
+                    {
+                        // console.log('mah question port',question.ports[i]);
                         
-                }
-                
+                        let port = question.ports[i];
+                        if(port.NextQuestionID && !port.in)
+                        {
+                            // console.log('the thing');   
+                            try{
+                                let questionPort = this.findQuestionNodePort(port.NextQuestionID,questionNodes);
+                                
+                                if(questionPort)
+                                {   
+                                    links.push(port.link(questionPort,false));
+                                }
+                                
+                            }catch(e)
+                            {
+                                return console.error('could not find or draw question/answer connection');
+                            }
+                        }
+                        
+                    }
+                    // this.model.addAll(links);
             // })
         }
         return links;
@@ -214,14 +221,16 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
         
     findQuestionNodePort(id,questionNodes)
     {
+        // console.log('finding question node port');
         for(let i in questionNodes)
         {
             let node = questionNodes[i];
+            // console.log('node id',node,id);
             if(node._id === id)
             {
                 for(let q in node.ports)
                 {
-                    if(node.ports[q].inletPort)
+                    if(node.ports[q].in)
                     {
                         return node.ports[q];
                     }
@@ -249,7 +258,6 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
         // console.log(node2);
         this.model.addAll(node2,inPort);
 
-        console.log(node2);
         this.engine.repaintCanvas();
     }
     
@@ -357,7 +365,7 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
             <Button variant="primary" onClick={this.handleShow}>
                 Add Question
             </Button>
-            <button onClick={this.addNode}>Add Question</button>
+            
 
             <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
