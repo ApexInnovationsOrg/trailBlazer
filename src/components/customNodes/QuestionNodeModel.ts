@@ -10,6 +10,7 @@ export class QuestionNodeModel extends NodeModel {
 	_y:number;
 	waiting:boolean;
 	masterQuestion:boolean;
+	editing:boolean;
 
 	constructor(name: string = "Question", question: Object = {}, answers: Array<Object> = []) {
 		super("question");
@@ -32,6 +33,7 @@ export class QuestionNodeModel extends NodeModel {
 		})
 		// console.log('de question', this.question);
 		this.masterQuestion = false;
+		this.editing = false;
 		this.setMaster.bind(this);
 	}
 
@@ -55,8 +57,66 @@ export class QuestionNodeModel extends NodeModel {
 	{
 		this.masterQuestion = true;
 	}
-	
 
+	toggleEdit=()=>
+	{
+		// console.log('why toggle',this['_engine']);
+		this.editing = !this.editing;
+		this.repaintCanvas();
+	}
+
+	saveChanges = ()=>
+	{
+		console.log('saving changes');
+		let questionID = this.question['ID'];
+		let questionText = this.question['QuestionText'];
+		fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+			method:'POST',
+			headers:{
+				'content-type':'application/json'
+			},
+			body:JSON.stringify({
+				controller:'Question',
+				action:'updateQuestion',
+				questionID: questionID,				
+				questionText: questionText				
+			})
+		}).then(res=>res.json())
+        .then(json=>{
+            console.log(json);
+        })
+
+		this.question['Answers'].map((answer,index)=>{
+			let answerID = answer.ID;
+			let answerText = answer.AnswerText;
+			fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+				method:'POST',
+				headers:{
+					'content-type':'application/json'
+				},
+				body:JSON.stringify({
+					controller:'Answer',
+					action:'updateAnswer',
+					answerID: answerID,				
+					answerText: answerText				
+				})
+			})
+		})
+
+		this.toggleEdit();
+
+	}
+	
+	repaintCanvas=()=>
+	{	
+		try{
+			this['_engine'].repaintCanvas();
+		}
+		catch(e)
+		{
+			console.error('no engine so canvas cannot be repainted');
+		}
+	}
 	updatePosition()
 	{
 		if(!this.question)
@@ -83,6 +143,25 @@ export class QuestionNodeModel extends NodeModel {
 			})
 		})
 		
+	}
+
+	deleteNode()
+	{
+		console.log('deleting node');
+		let questionID = this.question['ID'];
+		fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+			method:'POST',
+			headers:{
+				'content-type':'application/json'
+			},
+			body:JSON.stringify({
+				controller:'Question',
+				action:'deleteQuestion',
+				questionID: questionID				
+			})
+		})
+		this.remove();
+		this.repaintCanvas();
 	}
 
 	startTimer()
@@ -122,6 +201,7 @@ export class QuestionNodeModel extends NodeModel {
 						})
 					})
 					answerPort.links[q].remove();
+					this.repaintCanvas();
 				}
 			}
 		}

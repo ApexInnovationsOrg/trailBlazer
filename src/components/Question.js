@@ -54,8 +54,8 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
             newAnswersArray:this.props.newQuestion.answers
         })
 
-        // this.drawDiagram();
-
+        
+        
 
        
     }
@@ -70,7 +70,7 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
         const connectionData = this.retrieveConnections(questionNodes);
 
 
-        this.engine.registerPortFactory(new SimplePortFactory("question", config => new QuestionPortModel('hello')));
+        this.engine.registerPortFactory(new SimplePortFactory("question", config => new QuestionPortModel()));
         this.engine.registerNodeFactory(new QuestionNodeFactory());
         // var node2 = new QuestionNodeModel('This should be the question');
         // node2.setPosition(250, 108);
@@ -79,10 +79,15 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
 
         // 6) add the models to the root graph
         this.model.addAll(...questionNodes,...connectionData);
-
+        
+        this.engine.repaintCanvas();
         
         // 7) load model into engine
         this.engine.setDiagramModel(this.model);
+        setTimeout(()=>{
+            this.engine.repaintCanvas();
+            this.engine.zoomToFit()
+        },250);
     }
 
     clearAllNodes()
@@ -155,6 +160,7 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
             
             var questionNode = new QuestionNodeModel("Question", question ,question.Answers);
             questionNode._id = question.ID;
+            questionNode._engine = this.engine;
 
             // console.log(this.props.activeTree.MasterQuestionID,question.ID);
             if(this.props.activeTree.MasterQuestionID === question.ID)
@@ -216,6 +222,7 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
                     // this.model.addAll(links);
             // })
         }
+        
         return links;
     }    
         
@@ -355,7 +362,7 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
         //    this.setState({'renderedTree':this.props.activeTree.ID});
             this.drawDiagram();
     //    }
-
+        
     
 
         return <div>
