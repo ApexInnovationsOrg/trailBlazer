@@ -11,6 +11,7 @@ export class QuestionNodeModel extends NodeModel {
 	waiting:boolean;
 	masterQuestion:boolean;
 	editing:boolean;
+	savePositions:boolean;
 
 	constructor(name: string = "Question", question: Object = {}, answers: Array<Object> = []) {
 		super("question");
@@ -35,6 +36,7 @@ export class QuestionNodeModel extends NodeModel {
 		this.masterQuestion = false;
 		this.editing = false;
 		this.setMaster.bind(this);
+		this.savePositions = false;
 	}
 
 	set x(newVal) {
@@ -52,6 +54,13 @@ export class QuestionNodeModel extends NodeModel {
 	get y() {
 		return this._y;
 	}
+	
+	enableSavePositions()
+	{
+		this.savePositions = true;
+	}
+
+	
 
 	setMaster()
 	{
@@ -166,7 +175,7 @@ export class QuestionNodeModel extends NodeModel {
 
 	startTimer()
 	{
-		if(this.waiting)
+		if(this.waiting || !this.savePositions)
 		{
 			return;
 		}
@@ -177,6 +186,8 @@ export class QuestionNodeModel extends NodeModel {
 			this.updatePosition();
 		},1000)
 	}
+
+	
 
 	removeLink = (answerName)=>
 	{

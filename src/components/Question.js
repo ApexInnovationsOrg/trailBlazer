@@ -168,6 +168,7 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
                 questionNode.setMaster();
             }
             questionNode.setPosition(parseInt(question.PositionX), parseInt(question.PositionY));
+            questionNode.enableSavePositions();
             // console.log(questionNode);
             // var inPort = questionNode.addInPort(' ');
             // inPort.inletPort = true;
@@ -249,24 +250,24 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
 
 
 
-    addNode = () =>
-    {
+    // addNode = () =>
+    // {
 
-        let questionText = prompt('What is your question text?')
-        // let newNode = new SRD.DefaultLabelModel('New Question',"#666");
-        // // newNode.setPosition(200,200);
-        var node2 = new SRD.DefaultNodeModel(questionText, "rgb(192,255,0)");
-        // let port2 = node2.addInPort("In");
-        node2.setPosition(400, 100);
+    //     let questionText = prompt('What is your question text?')
+    //     // let newNode = new SRD.DefaultLabelModel('New Question',"#666");
+    //     // // newNode.setPosition(200,200);
+    //     var node2 = new SRD.DefaultNodeModel(questionText, "rgb(192,255,0)");
+    //     // let port2 = node2.addInPort("In");
+    //     node2.setPosition(400, 100);
 
-        var inPort = node2.addInPort(' ');
-        inPort.inletPort = true;
+    //     var inPort = node2.addInPort(' ');
+    //     inPort.inletPort = true;
 
-        // console.log(node2);
-        this.model.addAll(node2,inPort);
+    //     // console.log(node2);
+    //     this.model.addAll(node2,inPort);
 
-        this.engine.repaintCanvas();
-    }
+    //     this.engine.repaintCanvas();
+    // }
     
     removeAnswer(index)
     {
