@@ -2,42 +2,51 @@
 @import "./margin.scss";
 @import "./padding.scss";
 @import "./buttons.scss";
+@import "./index.scss";
 
-@media all and (min-width: 1281px) {
+// @media all and (min-width: 1281px) {
 
+//   .container {
+//     max-width:1980px !important;
+//     grid-template-rows: 100px auto 100px;
+//     grid-template-columns: 64px auto;
+//     grid-template-areas:
+//       "nav header header"
+//       "nav main main"
+//       "nav footer footer";
+//   }
+// }
+
+@media all and (min-width: 1280px) {
   .container {
-    max-width:1980px !important;
-    grid-template-rows: 100px auto 300px;
+    grid-template-rows: 5fr 53fr 15fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
-      "nav header header"
-      "nav main main"
-      "nav footer footer";
+      "header header"
+      "main main"
+      "footer footer";
   }
 }
 
 @media all and (max-width: 1280px) {
-  
   .container {
-    
-    grid-template-rows: 100px auto 300px;
+    grid-template-rows: 5fr 53fr 15fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
-      "nav header header"
-      "nav main main"
-      "nav footer footer";
+      "header header"
+      "main main"
+      "footer footer";
   }
 }
 
 @media all and (max-width: 980px) {
   .container {
-    
-    grid-template-rows: 100px auto 300px;
+    grid-template-rows: 5fr 53fr 15fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
-      "nav header header"
-      "nav main main"
-      "nav footer footer";
+      "header header"
+      "main main"
+      "footer footer";
 
 
   }
@@ -45,11 +54,11 @@
 
 @media all and (max-width: 736px) {
   .container {
-    grid-template-rows: 100px auto 300px;
+    grid-template-rows: 5fr 53fr 15fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
       "header header header"
-      "nav main main"
+      "main main"
       "footer footer footer";
   }
 }
@@ -57,11 +66,11 @@
 @media all and (max-width: 480px) {
 
   .container {
-    grid-template-rows: 100px auto 300px;
+    grid-template-rows: 5fr 53fr 15fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
       "header header header"
-      "nav main main"
+      "main main"
       "footer footer footer";
   }
 }
@@ -73,6 +82,7 @@
   height: 100%;
   min-width: 360px;
   
+  
 }
 
 header {
@@ -82,6 +92,9 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  min-height: 60px;
+  max-height: 90px;
+  border-bottom: 1px solid rgba(black, 0.05);
 
   .logo {
     max-height: 70%;
@@ -91,6 +104,7 @@ header {
 
 nav {
   grid-area: nav;
+  position:fixed !important;
 }
 
 main {
@@ -239,6 +253,23 @@ background-size: 50px 50px;
   padding:.5em;
   margin-top:5px;
   position:relative;
+
+  &.newAnswer
+  {
+    border: #676767 dashed;
+    background-color:rgb(231, 231, 231);
+      margin-top: 20px;
+    transition: all 0.2s ease-out;
+    cursor:pointer;
+    &:hover{
+      border: #676767 dashed 5px;
+      font-weight: 800;
+      font-size:1.25em;
+      border-radius:10px;
+      background:#ffff;
+    }
+  }
+
 }
 .answerListNode
 {

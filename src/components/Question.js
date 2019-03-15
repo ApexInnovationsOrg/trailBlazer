@@ -7,6 +7,7 @@ import * as SRD from "storm-react-diagrams"
 import {saveQuestion} from '../actions/questionActions';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Fullscreen from 'react-full-screen';
 import AnswerInput from './AnswerInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -16,6 +17,8 @@ import { QuestionNodeModel } from "./customNodes/QuestionNodeModel";
 import { QuestionNodeFactory } from "./customNodes/QuestionNodeFactory";
 import { SimplePortFactory } from "./customNodes/SimplePortFactory";
 import { QuestionPortModel } from "./customNodes/QuestionPortModel";
+
+import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagramWidget";
 
 
   class Questions extends Component {
@@ -41,7 +44,8 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
         this.clearAllNodes = this.clearAllNodes.bind(this);
         this.state = {
             show: false,
-            renderedTree:-1
+            renderedTree:-1,
+            fullscreen:false
         };
 
 
@@ -169,16 +173,6 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
             }
             questionNode.setPosition(parseInt(question.PositionX), parseInt(question.PositionY));
             questionNode.enableSavePositions();
-            // console.log(questionNode);
-            // var inPort = questionNode.addInPort(' ');
-            // inPort.inletPort = true;
-            // question.Answers.map((answer)=>{
-            //     let answerPort = questionNode.addOutPort(answer.AnswerText);
-                
-            //     answerPort.NextQuestionID = answer.NextQuestionID;
-            //     answerPort.inletPort = false;
-                
-            // })
 
             return questionNode;
 
@@ -367,13 +361,20 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
     
 
         return <div>
-         
-            <SRD.DiagramWidget diagramEngine={this.engine} />
+            <Fullscreen
+                enabled={this.state.fullscreen}
+                onChange={fullscreen=>this.setState({fullscreen})}
+            >
+                <TrailBlazerDiagramWidget deleteKeys={[]} diagramEngine={this.engine} />
+            </Fullscreen>
 
             <Button variant="primary" onClick={this.handleShow}>
                 Add Question
             </Button>
             
+            <Button variant="primary" onClick={() => this.setState({fullscreen:true})}>
+                Fullscreen
+            </Button>
 
             <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>

@@ -60,7 +60,7 @@ export class QuestionNodeModel extends NodeModel {
 		this.savePositions = true;
 	}
 
-	
+
 
 	setMaster()
 	{
@@ -97,20 +97,47 @@ export class QuestionNodeModel extends NodeModel {
 
 		this.question['Answers'].map((answer,index)=>{
 			let answerID = answer.ID;
+			let questionID = this.question['ID'];
 			let answerText = answer.AnswerText;
-			fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
-				method:'POST',
-				headers:{
-					'content-type':'application/json'
-				},
-				body:JSON.stringify({
-					controller:'Answer',
-					action:'updateAnswer',
-					answerID: answerID,				
-					answerText: answerText				
+
+			if(answerID == -1)
+			{
+				
+				fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+					method:'POST',
+					headers:{
+						'content-type':'application/json'
+					},
+					body:JSON.stringify({
+						controller:'Answer',
+						action:'createnewAnswer',
+						questionID: questionID,				
+						answerText: answerText				
+					})
+				}).then(res=>res.json())
+				.then(json=>{
+					answer.ID = json.data;
 				})
-			})
+			}
+			else
+			{
+
+				fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+					method:'POST',
+					headers:{
+						'content-type':'application/json'
+					},
+					body:JSON.stringify({
+						controller:'Answer',
+						action:'updateAnswer',
+						answerID: answerID,				
+						answerText: answerText				
+					})
+				})
+			}
 		})
+
+
 
 		this.toggleEdit();
 
@@ -187,7 +214,19 @@ export class QuestionNodeModel extends NodeModel {
 		},1000)
 	}
 
-	
+	newAnswer = ()=>
+	{
+		console.log(this.answers);
+
+		this.answers.push({
+			ID:"-1",
+			AnswerText:"New Answer",
+			QuestionID:this.question['ID'],
+			NextQuestionID:"-1"
+		})
+
+		this.repaintCanvas();
+	}
 
 	removeLink = (answerName)=>
 	{

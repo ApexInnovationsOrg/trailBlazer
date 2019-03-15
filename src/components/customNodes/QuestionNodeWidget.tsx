@@ -95,7 +95,8 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 				style={{
 					position: "relative",
 					width: this.props.size * 1.5,
-					height: this.props.size
+					height: this.props.size,
+					cursor: this.props.node.editing ? 'auto':'move'
 				}}
 			>
 			<div
@@ -132,7 +133,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 				>
 					<div className={"questionAreaNode"}
 					>
-						<ContentEditable style={{cursor:this.props.node.editing?'pointer':'auto', background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}html={this.props.node.question['QuestionText']} onChange={this.updateTitle} disabled={!this.props.node.editing}></ContentEditable>
+						<ContentEditable style={{cursor:this.props.node.editing?'pointer':'move', background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}html={this.props.node.question['QuestionText']} onChange={this.updateTitle} disabled={!this.props.node.editing}></ContentEditable>
 					</div>
 					<div className={"answerAreaNode"}
 					/>
@@ -148,7 +149,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 								return <li key={index}>
 								
-									<ContentEditable className="answerText" onChange={(e)=> this.updateAnswer(e,answer)} html={answer['AnswerText']} disabled={!this.props.node.editing} style={{cursor:this.props.node.editing?'pointer':'auto',background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}></ContentEditable>
+									<ContentEditable className="answerText" onChange={(e)=> this.updateAnswer(e,answer)} html={answer['AnswerText']} disabled={!this.props.node.editing} style={{cursor:this.props.node.editing?'pointer':'move',background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}></ContentEditable>
 									<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} className={"port answerPort"}>
 										<PortWidget  name={answerName} node={this.props.node} />
 									</div>
@@ -157,7 +158,8 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 							
 							}
 							
-
+							 <li style={{display:this.props.node.editing ? 'block':'none'}} className={"newAnswer"} onClick={this.props.node.newAnswer}>New Answer</li>
+							
 						</ul>
 					</div>
 				{this.editButtons()}
