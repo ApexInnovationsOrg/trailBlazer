@@ -361,20 +361,17 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
     
 
         return <div>
-            <Fullscreen
-                enabled={this.state.fullscreen}
-                onChange={fullscreen=>this.setState({fullscreen})}
-            >
+
                 <TrailBlazerDiagramWidget deleteKeys={[]} diagramEngine={this.engine} />
-            </Fullscreen>
+
 
             <Button variant="primary" onClick={this.handleShow}>
                 Add Question
             </Button>
-            
+{/*             
             <Button variant="primary" onClick={() => this.setState({fullscreen:true})}>
                 Fullscreen
-            </Button>
+            </Button> */}
 
             <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>

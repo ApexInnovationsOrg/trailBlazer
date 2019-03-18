@@ -148,7 +148,9 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 								let answerName = "answer" + index;
 
 								return <li key={index}>
-								
+									<div 
+									style={{display:this.props.node.editing ? 'block':'none',float:'left'}}
+									className="editQuestionContainer" ><FontAwesomeIcon icon="cogs"></FontAwesomeIcon></div>
 									<ContentEditable className="answerText" onChange={(e)=> this.updateAnswer(e,answer)} html={answer['AnswerText']} disabled={!this.props.node.editing} style={{cursor:this.props.node.editing?'pointer':'move',background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}></ContentEditable>
 									<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} className={"port answerPort"}>
 										<PortWidget  name={answerName} node={this.props.node} />
