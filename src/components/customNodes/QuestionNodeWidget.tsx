@@ -4,19 +4,27 @@ import { PortWidget } from "storm-react-diagrams";
 import { QuestionPortModel } from "./QuestionPortModel";
 import Mousetrap from "mousetrap";
 import ContentEditable from 'react-contenteditable';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { EditAnswer } from './EditAnswer';
 
 export interface QuestionNodeWidgetProps {
 	node: QuestionNodeModel;
 	size?: number;
+	answer?:object;
 }
 
-export interface QuestionNodeWidgetState {}
+export interface QuestionNodeWidgetState {
+	editingAnswer:boolean;
+	
+}
 
 /**
  * @author Dylan Vorster
  */
 export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps, QuestionNodeWidgetState> {
+	answer:object;
+	editingAnswer:boolean;
+
 	public static defaultProps: QuestionNodeWidgetProps = {
 		size: 300,
 		node: null
@@ -24,12 +32,15 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 	constructor(props: QuestionNodeWidgetProps) {
 		super(props);
-		this.state = {};
+		this.state = {
+			editingAnswer:false
+
+		};
+		this.answer = {};
 	}
 
 	destroyLink(answerName)
 	{
-		console.log('destroyyyyyyyyyyyy');
 
 		// console.log(answerName);
 		this.props.node.removeLink(answerName);
@@ -87,6 +98,41 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	{
 		answer['AnswerText'] = evt.target.value;
 	}
+	editAnswerComplete = ()=>
+	{
+		this.props.node.editingAnswer = false;
+		this.props.node.editingAnswerIndex = -1;
+		this.props.node.editing = true;
+		this.setState({
+			editingAnswer:false
+		})
+		this.props.node.repaintCanvas();
+	}
+	editAnswer = (index)=>
+	{
+		this.props.node.editingAnswer = true;
+		this.props.node.editingAnswerIndex = index;
+		this.props.node.editing = false;
+		this.setState({
+			editingAnswer:true
+		})
+
+		this.props.node.repaintCanvas();
+	}
+	EditContainer = ()=>
+	{
+		if(this.state.editingAnswer)
+		{
+
+			return	<div>
+						<EditAnswer node={this.props.node} parent={this} answer={this.answer} />
+					</div>
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	render() {
 
@@ -129,11 +175,13 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 				<FontAwesomeIcon style={{cursor:'pointer',display: this.props.node.editing ? 'block' : 'none'}} icon="lock-open"/></span>
 			</div>
 			</div>
-				<div className={"questionAndAnswerAreaOnNodeContainer"}//that's a little verbose
+				{this.EditContainer()}
+				
+				<div style={{display:this.props.node.editingAnswer ? 'none':'block'}}className={"questionAndAnswerAreaOnNodeContainer"}//that's a little verbose
 				>
 					<div className={"questionAreaNode"}
 					>
-						<ContentEditable style={{cursor:this.props.node.editing?'pointer':'move', background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}html={this.props.node.question['QuestionText']} onChange={this.updateTitle} disabled={!this.props.node.editing}></ContentEditable>
+						<ContentEditable style={{cursor:this.props.node.editing?'pointer':'move', background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}} html={this.props.node.question['QuestionText']} onChange={this.updateTitle} disabled={!this.props.node.editing}></ContentEditable>
 					</div>
 					<div className={"answerAreaNode"}
 					/>
@@ -150,7 +198,8 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 								return <li key={index}>
 									<div 
 									style={{display:this.props.node.editing ? 'block':'none',float:'left'}}
-									className="editQuestionContainer" ><FontAwesomeIcon icon="cogs"></FontAwesomeIcon></div>
+									className="editAnswerButtonContainer" 
+									onClick={()=>{this.editAnswer(index)}} ><FontAwesomeIcon icon="cogs"></FontAwesomeIcon></div>
 									<ContentEditable className="answerText" onChange={(e)=> this.updateAnswer(e,answer)} html={answer['AnswerText']} disabled={!this.props.node.editing} style={{cursor:this.props.node.editing?'pointer':'move',background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}></ContentEditable>
 									<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} className={"port answerPort"}>
 										<PortWidget  name={answerName} node={this.props.node} />

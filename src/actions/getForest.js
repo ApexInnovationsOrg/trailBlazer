@@ -12,7 +12,7 @@ import {
 export function getAllForests(){
     return dispatch => {
         dispatch(fetchAllForestsBegin());
-        return fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+        return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{
                 'content-type':'application/json'
@@ -45,7 +45,7 @@ export function getSingleForest(forest){
 
         dispatch(setActiveForest(forest));
         dispatch(fetchSingleForestBegin());
-        return fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+        return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{
                 'content-type':'application/json'
@@ -65,7 +65,6 @@ export function getSingleForest(forest){
                 }
                 else
                 {
-                    console.log('single success',json.data);
                     dispatch(fetchSingleSuccess(json.data));
                     return json.data;
                 }

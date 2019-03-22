@@ -7,10 +7,9 @@ import {
 
 export function getTree(tree){
     return dispatch =>{
-        console.log('getting tree',tree);
         dispatch(setActiveTree(tree));
         dispatch(fetchTreeBegin());
-        return fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+        return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{
                 'content-type':'application/json'

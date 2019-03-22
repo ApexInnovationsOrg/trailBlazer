@@ -11,7 +11,6 @@ const initialState = {
 
 
 export default function(state=initialState, action){
-    console.log('saving question reducer', action);
     switch(action.type){
         case SAVE_QUESTION_BEGIN:
             return {

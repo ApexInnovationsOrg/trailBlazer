@@ -26,7 +26,6 @@ export default function(state=initialState, action){
                     trees:[]
                 }
         case FETCH_FOREST_SUCCESS:
-                console.log('heres the payload',action);
                 return Object.assign({},action.payload,{
                     loading:false,
                     error:null,

@@ -5,6 +5,8 @@ import {
     SAVE_QUESTION_FAILURE
 } from './types';
 
+import {getTree} from './getTree';
+
 export function updateNewQuestion(question,answers){
     return dispatch =>{
         // console.log('updating new question');
@@ -29,7 +31,7 @@ export function updateNewQuestion(question,answers){
 export function saveQuestion(data){
     return dispatch => {
         dispatch(savingQuestion());
-        return fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+        return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{
                 'content-type':'application/json'
@@ -50,9 +52,13 @@ export function saveQuestion(data){
             }
             else
             {
-                dispatch(savedQuestion());
+                dispatch(savedQuestion())
             }
         })
+        .then(()=>{
+            dispatch(getTree({ID:data.treeID}));
+        })
+        
     }
 }
 

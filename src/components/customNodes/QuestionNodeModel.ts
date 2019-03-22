@@ -8,10 +8,12 @@ export class QuestionNodeModel extends NodeModel {
 	_id:string;
 	_x:number;
 	_y:number;
+	editingAnswerIndex:number;
 	waiting:boolean;
 	masterQuestion:boolean;
 	editing:boolean;
 	savePositions:boolean;
+	editingAnswer:boolean;
 
 	constructor(name: string = "Question", question: Object = {}, answers: Array<Object> = []) {
 		super("question");
@@ -37,6 +39,7 @@ export class QuestionNodeModel extends NodeModel {
 		this.editing = false;
 		this.setMaster.bind(this);
 		this.savePositions = false;
+		this.editingAnswer = false;
 	}
 
 	set x(newVal) {
@@ -74,12 +77,17 @@ export class QuestionNodeModel extends NodeModel {
 		this.repaintCanvas();
 	}
 
+	toggleEditingAnswer = ()=>
+	{
+		this.editingAnswer = !this.editingAnswer;
+		this.repaintCanvas();
+	}
+
 	saveChanges = ()=>
 	{
-		console.log('saving changes');
 		let questionID = this.question['ID'];
 		let questionText = this.question['QuestionText'];
-		fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
 				'content-type':'application/json'
@@ -103,7 +111,7 @@ export class QuestionNodeModel extends NodeModel {
 			if(answerID == -1)
 			{
 				
-				fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+				fetch(process.env.REACT_APP_API_LOCATION,{
 					method:'POST',
 					headers:{
 						'content-type':'application/json'
@@ -122,7 +130,7 @@ export class QuestionNodeModel extends NodeModel {
 			else
 			{
 
-				fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+				fetch(process.env.REACT_APP_API_LOCATION,{
 					method:'POST',
 					headers:{
 						'content-type':'application/json'
@@ -165,7 +173,7 @@ export class QuestionNodeModel extends NodeModel {
 
 		
 
-		fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
 				'content-type':'application/json'
@@ -185,7 +193,7 @@ export class QuestionNodeModel extends NodeModel {
 	{
 		console.log('deleting node');
 		let questionID = this.question['ID'];
-		fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
 				'content-type':'application/json'
@@ -239,7 +247,7 @@ export class QuestionNodeModel extends NodeModel {
 				let answer = this.answers[answerIndex];
 				for(let q in answerPort.links)
 				{
-					fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+					fetch(process.env.REACT_APP_API_LOCATION,{
 						method:'POST',
 						headers:{
 							'content-type':'application/json'

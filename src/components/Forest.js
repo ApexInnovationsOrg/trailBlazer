@@ -137,7 +137,6 @@ class Forest extends Component {
 }
 
 function mapStateToProps(state){
-    console.log('what state are we in',state);
     return {
         forests: state.forests,
         activeForest: state.activeForest,

@@ -29,6 +29,7 @@ class Journeys extends Component {
     return (
     <Provider store={store}>
       <div className="container">
+        
         <SideNav>
           <Toggle/>
           <SideNav.Nav defaultSelected="home">

@@ -39,7 +39,6 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 		var diagramModel = diagramEngine.getDiagramModel();
 		//select items so draw a bounding box
 		if (this.state.action instanceof SelectingAction) {
-            console.log('selecting action');
             
             var relative = diagramEngine.getRelativePoint(event.clientX, event.clientY);
             
@@ -74,8 +73,6 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			this.setState({ action: this.state.action });
 			return;
 		} else if (this.state.action instanceof MoveItemsAction) {
-            console.log('NOT selecting action');
-            // alert('ding dong');
             let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
@@ -83,7 +80,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			_.forEach(this.state.action.selectionModels, model => {
                 // in this case we need to also work out the relative grid position
                 
-                if(model.model.editing)
+                if(model.model.editing || model.model.editingAnswer)
                 {
                     return
                 }

@@ -41,7 +41,7 @@ export class AnswerLinkModel extends DefaultLinkModel {
 		let answer = this.sourcePort.parent['answers'][parseInt(this.sourcePort.name.slice(-1))];
 		let question = this.targetPort.parent['question'];
 
-		fetch("https://devbox2.apexinnovations.com/JourneyAPI/",{
+		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
 				'content-type':'application/json'

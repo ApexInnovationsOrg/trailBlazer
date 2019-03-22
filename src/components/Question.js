@@ -7,7 +7,6 @@ import * as SRD from "storm-react-diagrams"
 import {saveQuestion} from '../actions/questionActions';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Fullscreen from 'react-full-screen';
 import AnswerInput from './AnswerInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -335,6 +334,7 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
             question:this.state.newQuestionText,
             answers:this.state.newAnswersArray
        }));
+       this.handleClose();
     }
 
     saveButton()
@@ -343,7 +343,7 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
         {
             return <Button variant="primary" disabled={true}><FontAwesomeIcon icon="spinner" spin /></Button>
         }
-        return <Button variant="primary" onClick={this.handleClose && this.saveNewQuestion}>
+        return <Button variant="primary" onClick={this.saveNewQuestion}>
                 Save Changes
                 </Button>
     }
