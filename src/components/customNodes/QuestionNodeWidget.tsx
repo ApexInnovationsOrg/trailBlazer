@@ -7,6 +7,8 @@ import ContentEditable from 'react-contenteditable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EditAnswer } from './EditAnswer';
 
+import {connect} from 'react-redux';
+
 export interface QuestionNodeWidgetProps {
 	node: QuestionNodeModel;
 	size?: number;
@@ -15,7 +17,7 @@ export interface QuestionNodeWidgetProps {
 
 export interface QuestionNodeWidgetState {
 	editingAnswer:boolean;
-	
+
 }
 
 /**
@@ -60,10 +62,28 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 		}
 	}
 
+	setMaster = ()=>
+	{
+		this.props.node.setMasterQuestion();
+	}
+
+	getMasterQuestionButton = () =>
+	{
+		if(this.props.node.masterQuestion)
+		{
+			return <span onDoubleClick={this.setMaster}><FontAwesomeIcon style={{cursor:'pointer',color:'gold'}} icon="star"/></span>
+		}
+		else
+		{
+			return <span onDoubleClick={this.setMaster}><FontAwesomeIcon style={{cursor:'pointer',color:'white'}} icon="star"/></span>
+		}
+	}
+
 	editButtons = () =>
 	{
 		if(this.props.node.editing)
 		{
+
 
 			return (
 				<div>
@@ -168,7 +188,9 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 			}}>
 				{this.props.node.name}
 			</div>
-
+			<div className={"editNodeContainer"}>
+				{this.getMasterQuestionButton()}
+			</div>
 			<div className={"editNodeContainer"}>
 				
 				<span  onClick={this.toggleEdit}><FontAwesomeIcon style={{cursor:'pointer',display: this.props.node.editing ? 'none' : 'block'}} icon="lock"/>
@@ -219,3 +241,19 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 		);
 	}
 }
+
+
+function mapStateToProps(state)
+{
+    return {
+        tree: state.tree,
+        activeTree:state.activeTree,
+        connections:state.connections.connections,
+        nodes:state.connections.nodes,
+        newQuestion:state.newQuestion,
+        savingQuestion:state.savingQuestion
+    }
+}
+
+
+export default connect(mapStateToProps)(QuestionNodeModel);

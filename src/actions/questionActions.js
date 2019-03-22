@@ -28,6 +28,14 @@ export function updateNewQuestion(question,answers){
 
 }
 
+export function setMasterQuestion(tree)
+{
+    console.log('what is the tree?',tree);
+    return dispatch => {
+        return dispatch(getTree(tree));
+    }
+}
+
 export function saveQuestion(data){
     return dispatch => {
         dispatch(savingQuestion());

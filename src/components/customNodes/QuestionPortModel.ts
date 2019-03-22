@@ -60,10 +60,7 @@ export class QuestionPortModel extends PortModel {
 	}
 
 	createLinkModel(save:boolean = true): AnswerLinkModel {
-		// console.log('creating link model');
-		// let link = new AnswerLinkModel('got damnit');
-		// link._dontSave = true;
-		// return link || new DefaultLinkModel();
+
 		return new AnswerLinkModel(save);
 	}
 }

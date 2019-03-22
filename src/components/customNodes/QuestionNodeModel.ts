@@ -1,5 +1,10 @@
 import { NodeModel } from "storm-react-diagrams";
 import { QuestionPortModel } from "./QuestionPortModel";
+import {connect} from 'react-redux';
+import store from '../../store';
+import {getSingleForest} from '../../actions/getForest';
+import {getTree} from '../../actions/getTree';
+
 
 export class QuestionNodeModel extends NodeModel {
 	name: string;
@@ -14,6 +19,7 @@ export class QuestionNodeModel extends NodeModel {
 	editing:boolean;
 	savePositions:boolean;
 	editingAnswer:boolean;
+	props?:object;
 
 	constructor(name: string = "Question", question: Object = {}, answers: Array<Object> = []) {
 		super("question");
@@ -155,6 +161,30 @@ export class QuestionNodeModel extends NodeModel {
 		this.toggleEdit();
 
 	}
+	setMasterQuestion=()=>
+	{
+
+		let masterQuestionID = this.question['ID'];
+		let activeTreeID = this.question['TreeID'];
+		fetch(process.env.REACT_APP_API_LOCATION,{
+			method:'POST',
+			headers:{
+				'content-type':'application/json'
+			},
+			body:JSON.stringify({
+				controller:'Forest',
+				action:'setMasterQuestion',
+				masterQuestionID: masterQuestionID,	
+				treeID:activeTreeID			
+			})
+		}).then(()=>{
+			let state = store.getState();
+			state.activeTree.MasterQuestionID = masterQuestionID;
+
+			store.dispatch(getTree(state['activeTree']));
+
+		})		
+	}
 	
 	repaintCanvas=()=>
 	{	
@@ -196,7 +226,7 @@ export class QuestionNodeModel extends NodeModel {
 
 	deleteNode()
 	{
-		console.log('deleting node');
+		// console.log('deleting node');
 		let questionID = this.question['ID'];
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
@@ -278,3 +308,18 @@ export class QuestionNodeModel extends NodeModel {
 		return this.addPort(new QuestionPortModel(false,label));
 	}
 }
+
+function mapStateToProps(state)
+{
+    return {
+        tree: state.tree,
+        activeTree:state.activeTree,
+        connections:state.connections.connections,
+        nodes:state.connections.nodes,
+        newQuestion:state.newQuestion,
+        savingQuestion:state.savingQuestion
+    }
+}
+
+
+export default connect(mapStateToProps,null)(QuestionNodeModel);

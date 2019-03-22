@@ -56,11 +56,7 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
             newQuestionText:this.props.newQuestion.questionText,
             newAnswersArray:this.props.newQuestion.answers
         })
-
-        
-        
-
-       
+     
     }
 
 
@@ -185,35 +181,31 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
         {
 
             let question = questionNodes[q];
-            // console.log('my question',question);
-            // console.log(Object.keys(question.ports));
-            // return questionNodes.map((question)=>{
 
-                    for(let i in question.ports)
-                    {
-                        // console.log('mah question port',question.ports[i]);
+            for(let i in question.ports)
+            {
+                // console.log('mah question port',question.ports[i]);
+                
+                let port = question.ports[i];
+                if(port.NextQuestionID && !port.in)
+                {
+                    // console.log('the thing');   
+                    try{
+                        let questionPort = this.findQuestionNodePort(port.NextQuestionID,questionNodes);
                         
-                        let port = question.ports[i];
-                        if(port.NextQuestionID && !port.in)
-                        {
-                            // console.log('the thing');   
-                            try{
-                                let questionPort = this.findQuestionNodePort(port.NextQuestionID,questionNodes);
-                                
-                                if(questionPort)
-                                {   
-                                    links.push(port.link(questionPort,false));
-                                }
-                                
-                            }catch(e)
-                            {
-                                return console.error('could not find or draw question/answer connection');
-                            }
+                        if(questionPort)
+                        {   
+                            links.push(port.link(questionPort,false));
                         }
                         
+                    }catch(e)
+                    {
+                        return console.error('could not find or draw question/answer connection');
                     }
-                    // this.model.addAll(links);
-            // })
+                }
+                
+            }
+  
         }
         
         return links;
@@ -238,28 +230,6 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
             }
         }
     }
-
-
-
-
-    // addNode = () =>
-    // {
-
-    //     let questionText = prompt('What is your question text?')
-    //     // let newNode = new SRD.DefaultLabelModel('New Question',"#666");
-    //     // // newNode.setPosition(200,200);
-    //     var node2 = new SRD.DefaultNodeModel(questionText, "rgb(192,255,0)");
-    //     // let port2 = node2.addInPort("In");
-    //     node2.setPosition(400, 100);
-
-    //     var inPort = node2.addInPort(' ');
-    //     inPort.inletPort = true;
-
-    //     // console.log(node2);
-    //     this.model.addAll(node2,inPort);
-
-    //     this.engine.repaintCanvas();
-    // }
     
     removeAnswer(index)
     {

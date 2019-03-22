@@ -43,7 +43,6 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
             var relative = diagramEngine.getRelativePoint(event.clientX, event.clientY);
             
 			_.forEach(diagramModel.getNodes(), node => {
-                console.log(node);
 				if ((this.state.action as SelectingAction).containsElement(node.x, node.y, diagramModel)) {
                     
                     node.setSelected(true);
