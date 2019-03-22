@@ -47,6 +47,11 @@ export class QuestionPortModel extends PortModel {
 		return link;
 	}
 
+	getName = () =>
+	{
+		return this.label;
+	}
+
 	canLinkToPort(port: PortModel): boolean {
 		if (port instanceof QuestionPortModel) {
 			return this.in !== port.in;

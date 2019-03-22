@@ -23,7 +23,7 @@ export class QuestionNodeModel extends NodeModel {
 		this.answers = answers;
 		this._id = question['ID'];
 
-		let questionPort = this.addInPort("question");
+		
 
 		// console.log('question port time',question);
 		
@@ -65,9 +65,14 @@ export class QuestionNodeModel extends NodeModel {
 
 
 
-	setMaster()
+	setMaster(masterQuestion)
 	{
-		this.masterQuestion = true;
+		if(!masterQuestion)
+		{
+			this.addInPort("question");
+		}
+
+		this.masterQuestion = masterQuestion;
 	}
 
 	toggleEdit=()=>

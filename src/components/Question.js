@@ -166,10 +166,9 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
             questionNode._engine = this.engine;
 
             // console.log(this.props.activeTree.MasterQuestionID,question.ID);
-            if(this.props.activeTree.MasterQuestionID === question.ID)
-            {
-                questionNode.setMaster();
-            }
+            
+            questionNode.setMaster(this.props.activeTree.MasterQuestionID === question.ID);
+            
             questionNode.setPosition(parseInt(question.PositionX), parseInt(question.PositionY));
             questionNode.enableSavePositions();
 
@@ -334,6 +333,7 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
             question:this.state.newQuestionText,
             answers:this.state.newAnswersArray
        }));
+       
        this.handleClose();
     }
 
