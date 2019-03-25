@@ -1,14 +1,23 @@
 import * as _ from "lodash";
-import { DiagramWidget, BaseWidgetProps, SelectingAction, MoveItemsAction, NodeModel, PointModel, MoveCanvasAction, LinkLayerWidget, NodeLayerWidget, PortModel, DiagramProps } from "storm-react-diagrams";
+import { DiagramWidget, BaseWidgetProps, SelectingAction, MoveItemsAction, NodeModel, PointModel, MoveCanvasAction, LinkLayerWidget, NodeLayerWidget, PortModel, DiagramProps, DiagramEngine, BaseAction } from "storm-react-diagrams";
 import React from 'react';
 import Fullscreen from 'react-full-screen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fullscreen } from "glamor";
+import store from '../../../store';
+import { saveQuestion } from '../../../actions/questionActions';
+
+
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
+
+export interface TrailblazerDiagramProps extends DiagramProps{
+	mouseDownCoords:object;
+}
 
 export class TrailBlazerDiagramWidget extends DiagramWidget{
 	fullScreen:boolean;
 
-	public static defaultProps: DiagramProps = {
+	public static defaultProps: TrailblazerDiagramProps = {
 		diagramEngine: null,
 		allowLooseLinks: true,
 		allowCanvasTranslation: true,
@@ -16,14 +25,15 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 		inverseZoom: false,
 		maxNumberPointsPerLink: Infinity, // backwards compatible default
 		smartRouting: false,
-		deleteKeys: [46, 8]
+		deleteKeys: [46, 8],
+		mouseDownCoords:{x:0,y:0}
 	}
 
-	constructor(props: DiagramProps)
+	constructor(props: TrailblazerDiagramProps)
 	{
 		super(props);
 		// this.state = {
-		// 	fullScreen:false
+			
 		// }
 		this.fullScreen = false;
 	}
@@ -31,6 +41,58 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 	{
 		this.fullScreen = !this.fullScreen;
 		this.props.diagramEngine.repaintCanvas();
+	}
+
+	handleClick = (e,data)=>
+	{
+
+		let state = store.getState();
+		let contextCoords = this.props['mouseDownCoords'];
+		store.dispatch(saveQuestion({
+            treeID:state.activeTree.ID,
+			question:"New Question",
+			positionX:contextCoords.x,
+			positionY:contextCoords.y,
+            answers:[
+				{
+					answerText:'Answer1'
+				},
+				{
+					answerText:'Answer2'
+				},
+				{
+					answerText:'Answer3'
+				}
+			]
+       }));
+		// let masterQuestionID = this.question['ID'];
+		// let activeTreeID = this.question['TreeID'];
+		// fetch(process.env.REACT_APP_API_LOCATION,{
+		// 	method:'POST',
+		// 	headers:{
+		// 		'content-type':'application/json'
+		// 	},
+		// 	body:JSON.stringify({
+		// 		controller:'Forest',
+		// 		action:'setMasterQuestion',
+		// 		masterQuestionID: masterQuestionID,	
+		// 		treeID:activeTreeID			
+		// 	})
+		// }).then(()=>{
+		// 	let state = store.getState();
+		// 	state.activeTree.MasterQuestionID = masterQuestionID;
+
+		// 	store.dispatch(getTree(state['activeTree']));
+
+		// })		
+	}
+
+	showMenu = (e)=>
+	{
+		// console.log(e);
+		// console.log(this.props['mouseDownCoords']);
+		console.log(this.props);
+
 	}
 
 	onMouseMove(event) {
@@ -144,7 +206,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 				enabled={this.fullScreen}
 				onChange={fullScreen=>this.fullScreen = fullScreen}
 			>
-
+			<ContextMenuTrigger id="diagram_trigger" >
 				
 				<div
 					{...this.getProps()}
@@ -199,10 +261,14 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						}
 					}}
 					onMouseDown={event => {
+
+
+						this.props['mouseDownCoords']['x'] = event.clientX;
+						this.props['mouseDownCoords']['y'] = event.clientY;
 						
 						if (event.nativeEvent.which === 3) return;
 						this.setState({ ...this.state, wasMoved: false });
-
+						
 						diagramEngine.clearRepaintEntities();
 						var model = this.getMouseElement(event);
 						//the canvas was selected
@@ -277,10 +343,27 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					)}
 					<NodeLayerWidget diagramEngine={diagramEngine} />
 					{this.state.action instanceof SelectingAction && this.drawSelectionBox()}
+					<div>
+						<ContextMenu id="diagram_trigger" onShow={this.showMenu} className={"contextMenu"}>
+							<MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+								New Question
+							</MenuItem>
+							<MenuItem onClick={this.toggleFullScreen}>
+								Fullscreen
+							</MenuItem>
+							{/* <MenuItem divider />
+							<MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+								ContextMenu Item 3
+							</MenuItem> */}
+						</ContextMenu>
+
+					</div>
 					<div className="fullScreenIconContainer"><div className="fullScreenIcon" onClick={this.toggleFullScreen}><FontAwesomeIcon icon="expand" /></div></div>
 				</div>
+				</ContextMenuTrigger>
 			</Fullscreen>
 		);
 	}
 
 }
+

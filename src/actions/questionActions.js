@@ -37,6 +37,7 @@ export function setMasterQuestion(tree)
 }
 
 export function saveQuestion(data){
+
     return dispatch => {
         dispatch(savingQuestion());
         return fetch(process.env.REACT_APP_API_LOCATION,{
@@ -49,7 +50,9 @@ export function saveQuestion(data){
                 action:'createNewQuestion',
                 treeID:data.treeID,
                 question:data.question,
-                answers:data.answers
+                answers:data.answers,
+                positionX:data.positionX,
+                positionY:data.positionY
             })
         })
         .then(res=>res.json())
