@@ -32,6 +32,7 @@ export function getAllForests(){
                 else
                 {
                     dispatch(fetchAllForestsSuccess(json.data));
+                    
                     return json.data;
                 }
             })

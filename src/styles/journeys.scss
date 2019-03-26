@@ -320,3 +320,21 @@ background-size: 50px 50px;
   padding:2em 0 0 1em;
   
 }
+
+.bubble{
+  background:rgb(240, 240, 240);
+  margin-top:1em;
+  padding: 1.25em;
+  border:3px solid rgb(199, 199, 199);
+  .bubbleBody{
+    margin-top:1em;
+  }
+}
+.mediaContainer
+{
+  img{
+    width:100%;
+  }
+}
+
+

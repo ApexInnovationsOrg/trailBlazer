@@ -19,6 +19,8 @@ import { QuestionPortModel } from "./customNodes/QuestionPortModel";
 
 import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagramWidget";
 
+import ls from 'local-storage';
+
 
   class Questions extends Component {
       
@@ -86,7 +88,16 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
         setTimeout(()=>{
             this.engine.repaintCanvas();
             this.engine.zoomToFit()
+            let storedDiagram = ls.get('diagramPosition');
+
+            if(storedDiagram[this.props.activeTree.ID] !== undefined)
+            {
+                // this.model.setZoomLevel(storedDiagram[this.props.activeTree.ID]['zoom']);
+                // this.model.setOffset(storedDiagram[this.props.activeTree.ID]['x'],storedDiagram[this.props.activeTree.ID]['y']);
+            }
         },250);
+
+      
     }
 
     clearAllNodes()
@@ -292,9 +303,6 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
         this.setState({
             newQuestionText:e.target.value
         })
-        // this.props.dispatch(updateNewQuestion(
-        //     e.target.value,this.props.newQuestion.answers
-        //     ));
     }
 
     saveNewQuestion = ()=>{
@@ -320,13 +328,8 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
 
     render(){
 
-    //     console.log(this.props.activeTree.ID,this.state.renderedTree,'what?');
-    //    if(this.props.activeTree.ID !== this.state.renderedTree && this.props.activeTree.ID !== "-1")
-    //    {
-    //         console.log('what the fuck are you',this.props.activeTree.ID);
-        //    this.setState({'renderedTree':this.props.activeTree.ID});
             this.drawDiagram();
-    //    }
+
         
     
 
@@ -335,12 +338,8 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
                 <TrailBlazerDiagramWidget deleteKeys={[]} diagramEngine={this.engine} />
 
 
-            <Button variant="primary" onClick={this.handleShow}>
+            {/* <Button variant="primary" onClick={this.handleShow}>
                 Add Question
-            </Button>
-{/*             
-            <Button variant="primary" onClick={() => this.setState({fullscreen:true})}>
-                Fullscreen
             </Button> */}
 
             <Modal show={this.state.show} onHide={this.handleClose}>

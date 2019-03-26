@@ -29,7 +29,17 @@ export function getTree(tree){
                 }
                 else
                 {
-                    dispatch(fetchTreeSuccess(json.data));
+
+                    
+
+                    dispatch(fetchTreeSuccess(json.data.map((question) => {
+                        question.Contents.map((content)=>{
+                            content.Content = JSON.parse(content.Content);
+                            return content;
+                        })
+
+                        return question;
+                    })));
                     return json.data;
                 }
             })

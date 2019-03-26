@@ -6,6 +6,8 @@ import Mousetrap from "mousetrap";
 import ContentEditable from 'react-contenteditable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EditAnswer } from './EditAnswer';
+import { EditBubbles } from './EditBubbles';
+import { EditMedia } from './EditMedia';
 
 import {connect} from 'react-redux';
 
@@ -17,6 +19,8 @@ export interface QuestionNodeWidgetProps {
 
 export interface QuestionNodeWidgetState {
 	editingAnswer:boolean;
+	editingBubbles:boolean;
+	editingMedia:boolean;
 
 }
 
@@ -35,8 +39,9 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	constructor(props: QuestionNodeWidgetProps) {
 		super(props);
 		this.state = {
-			editingAnswer:false
-
+			editingAnswer:false,
+			editingBubbles:false,
+			editingMedia:false
 		};
 		this.answer = {};
 	}
@@ -139,7 +144,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 		this.props.node.repaintCanvas();
 	}
-	EditContainer = ()=>
+	editContainer = ()=>
 	{
 		if(this.state.editingAnswer)
 		{
@@ -153,6 +158,89 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 			return false;
 		}
 	}
+
+	editBubbleContainer = ()=>
+	{
+		if(this.state.editingBubbles)
+		{
+			return <div>
+					<EditBubbles node={this.props.node}/>
+			</div>
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	editMediaContainer = ()=>
+	{
+		if(this.state.editingMedia)
+		{
+			return <div>
+					<EditMedia node={this.props.node}/>
+			</div>
+		}
+		else{
+			return false;
+		}
+	}
+
+	hasBubbleContent = ()=>
+	{
+		let hasBubbles = false;
+
+		this.props.node.question['Contents'].forEach(content => {
+			if(content.Content.type === "bubble")
+			{
+				hasBubbles = true
+			}
+		});
+		if(hasBubbles)
+		{
+			return <span><FontAwesomeIcon icon="comment-slash"></FontAwesomeIcon></span>;
+		}
+		else
+		{
+			return <span  style={{opacity:0.5}}><FontAwesomeIcon icon="comment-dots"></FontAwesomeIcon></span>;
+		}
+	}
+	hasMediaContent = ()=>
+	{
+		let hasMedia = false;
+
+		this.props.node.question['Contents'].forEach(content => {
+			if(content.Content.type === "masterMedia")
+			{
+				hasMedia = true
+			}
+		});
+		if(hasMedia)
+		{
+			return <span><FontAwesomeIcon icon="film"></FontAwesomeIcon></span>;
+		}
+		else
+		{
+			return <span style={{opacity:0.5}}><FontAwesomeIcon icon="film"></FontAwesomeIcon></span>;
+		}
+	}
+
+	
+	editBubbles = ()=>{
+		this.props.node.editingAnswer = true;
+		this.setState({
+			editingBubbles:true,
+			editingMedia:false
+		})
+	}
+	editMedia = ()=>{
+		this.props.node.editingAnswer = true;
+		this.setState({
+			editingMedia:true,
+			editingBubbles:false
+		})
+	}
+
 
 	render() {
 
@@ -191,14 +279,20 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 			<div className={"editNodeContainer"}>
 				{this.getMasterQuestionButton()}
 			</div>
+			<div onClick={this.editBubbles} className={"editNodeContainer"}>
+				{this.hasBubbleContent()}
+			</div>
+			<div onClick={this.editMedia} className={"editNodeContainer"}>
+				{this.hasMediaContent()}
+			</div>
 			<div className={"editNodeContainer"}>
-				
-				<span  onClick={this.toggleEdit}><FontAwesomeIcon style={{cursor:'pointer',display: this.props.node.editing ? 'none' : 'block'}} icon="lock"/>
-				<FontAwesomeIcon style={{cursor:'pointer',display: this.props.node.editing ? 'block' : 'none'}} icon="lock-open"/></span>
+				<span onClick={this.toggleEdit}><FontAwesomeIcon style={{'marginTop':'6px',cursor:'pointer',display: this.props.node.editing ? 'none' : 'block'}} icon="lock"/>
+				<FontAwesomeIcon style={{'marginTop':'6px',cursor:'pointer',display: this.props.node.editing ? 'block' : 'none'}} icon="lock-open"/></span>
 			</div>
 			</div>
-				{this.EditContainer()}
-				
+				{this.editContainer()}
+				{this.editBubbleContainer()}
+				{this.editMediaContainer()}
 				<div style={{display:this.props.node.editingAnswer ? 'none':'block'}}className={"questionAndAnswerAreaOnNodeContainer"}//that's a little verbose
 				>
 					<div className={"questionAreaNode"}

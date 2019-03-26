@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fullscreen } from "glamor";
 import store from '../../../store';
 import { saveQuestion } from '../../../actions/questionActions';
+import ls from 'local-storage';
 
 
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
@@ -36,6 +37,10 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			
 		// }
 		this.fullScreen = false;
+		if(ls.get('diagramPosition') == null)
+		{
+			ls.set('diagramPosition',{});
+		}
 	}
 	toggleFullScreen = ()=>
 	{
@@ -95,6 +100,8 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 
 	}
 
+	
+
 	onMouseMove(event) {
         
 		var diagramEngine = this.props.diagramEngine;
@@ -137,7 +144,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
             let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
-            
+
 			_.forEach(this.state.action.selectionModels, model => {
                 // in this case we need to also work out the relative grid position
                 
@@ -176,13 +183,33 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 				diagramEngine.calculateCanvasMatrix();
 			}
 
+			
+
 			this.fireAction();
 			if (!this.state.wasMoved) {
 				this.setState({ wasMoved: true });
 			} else {
 				this.forceUpdate();
 			}
+			
 		} else if (this.state.action instanceof MoveCanvasAction) {
+			// let activeTree = store.getState().activeTree;
+			
+			// if(activeTree.ID !== "-1")
+			// {
+			// 	let storedDiagram = ls.get('diagramPosition');
+			// 	if(storedDiagram[activeTree.ID]  == undefined)
+			// 	{
+			// 		storedDiagram[activeTree.ID] = {};
+			// 	}
+
+			// 	let curView = storedDiagram[activeTree.ID];
+			// 	curView.x = this.state.action.initialOffsetX + (event.clientX - this.state.action.mouseX);
+			// 	curView.y = this.state.action.initialOffsetY + (event.clientY - this.state.action.mouseY);
+			// 	curView.zoom = diagramModel.getZoomLevel();
+			// 	ls.set('diagramPosition',storedDiagram);
+			// }
+
 			//translate the actual canvas
 			if (this.props.allowCanvasTranslation) {
 				diagramModel.setOffset(

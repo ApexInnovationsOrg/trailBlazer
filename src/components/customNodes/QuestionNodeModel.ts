@@ -259,7 +259,6 @@ export class QuestionNodeModel extends NodeModel {
 
 	newAnswer = ()=>
 	{
-		console.log(this.answers);
 
 		this.answers.push({
 			ID:"-1",
