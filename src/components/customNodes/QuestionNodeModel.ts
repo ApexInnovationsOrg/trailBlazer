@@ -81,14 +81,24 @@ export class QuestionNodeModel extends NodeModel {
 		this.masterQuestion = masterQuestion;
 	}
 
+	setEdit = (mode)=>
+	{
+		this.editing = mode;
+		this.setLocked(this.editing);
+		this.repaintCanvas();
+	}
 	toggleEdit=()=>
 	{
-		// console.log('why toggle',this['_engine']);
 		this.editing = !this.editing;
 		this.setLocked(this.editing);
 		this.repaintCanvas();
 	}
 
+	setEditingAnswer = (mode)=>
+	{
+		this.editingAnswer = mode;
+		this.repaintCanvas();
+	}
 	toggleEditingAnswer = ()=>
 	{
 		this.editingAnswer = !this.editingAnswer;

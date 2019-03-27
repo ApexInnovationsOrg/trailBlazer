@@ -57,6 +57,7 @@ export class EditMedia extends React.Component<AnswerProps,AnswerState> {
 	render() {
 
 		return (<div className={'questionAndAnswerAreaOnNodeContainer'}>
+            Media
             <div className={'mediaContainer'}>
             {this.getMasterMedia()}
             </div>

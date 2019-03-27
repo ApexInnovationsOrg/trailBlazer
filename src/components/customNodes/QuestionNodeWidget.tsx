@@ -127,7 +127,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	{
 		this.props.node.editingAnswer = false;
 		this.props.node.editingAnswerIndex = -1;
-		this.props.node.editing = true;
+		this.props.node.setEdit(true);
 		this.setState({
 			editingAnswer:false
 		})
@@ -137,7 +137,8 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	{
 		this.props.node.editingAnswer = true;
 		this.props.node.editingAnswerIndex = index;
-		this.props.node.editing = false;
+		this.props.node.setEdit(false);
+		this.props.node.setLocked(true);
 		this.setState({
 			editingAnswer:true
 		})

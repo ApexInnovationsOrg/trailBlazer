@@ -170,11 +170,14 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
                     value={this.props.node.answers[this.props.node.editingAnswerIndex]['Weight']}
                     onChange={this.handleInputChange} />
             </div>
-            <button onClick={this.cancel}>
-                Cancel
-            </button>
-            {this.saveButton()}
-            {this.deleteButton()}
+            <div style={{marginTop:'1.5em'}}>
+
+                <button onClick={this.cancel}>
+                    Cancel
+                </button>
+                {this.saveButton()}
+                {this.deleteButton()}
+            </div>
             
             
         </div>);
