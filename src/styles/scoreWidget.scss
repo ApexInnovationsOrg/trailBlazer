@@ -1,0 +1,52 @@
+.scoreWidget
+{
+    
+    width:20px;
+    height:20px;
+    right:5px;
+    position:absolute;
+    &._0
+    {
+        background:red !important
+    }
+    &._1
+    {
+        background:rgb(255, 94, 0)
+    }
+    &._2
+    {
+        background:rgb(255, 145, 0)
+    }
+    &._3
+    {
+        background:rgb(255, 174, 0)
+    }
+    &._4
+    {
+        background:rgb(255, 196, 0)
+    }
+    &._5
+    {
+        background:rgb(255, 217, 0)
+    }
+    &._6
+    {
+        background:rgb(238, 255, 0)
+    }
+    &._7
+    {
+        background:rgb(136, 255, 0)
+    }
+    &._8
+    {
+        background:rgb(123, 255, 0)
+    }
+    &._9
+    {
+        background:rgb(123, 255, 0)
+    }
+    &._10
+    {
+        background:rgb(9, 255, 0)
+    }
+}

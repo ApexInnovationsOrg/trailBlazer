@@ -312,16 +312,25 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 								let answerName = "answer" + index;
 
+								let weight = parseInt(answer['Weight']);
+								if(weight > 10)
+								{
+									weight = 10;
+								}
+
 								return <li key={index}>
-									<div 
-									style={{display:this.props.node.editing ? 'block':'none',float:'left'}}
-									className="editAnswerButtonContainer" 
-									onClick={()=>{this.editAnswer(index)}} ><FontAwesomeIcon icon="cogs"></FontAwesomeIcon></div>
-									<ContentEditable className="answerText" onChange={(e)=> this.updateAnswer(e,answer)} html={answer['AnswerText']} disabled={!this.props.node.editing} style={{cursor:this.props.node.editing?'pointer':'move',background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}></ContentEditable>
-									<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} className={"port answerPort"}>
-										<PortWidget  name={answerName} node={this.props.node} />
-									</div>
-								</li>;
+											<div 
+											style={{display:this.props.node.editing ? 'block':'none',float:'left'}}
+											className="editAnswerButtonContainer" 
+											onClick={()=>{this.editAnswer(index)}}> 
+												<FontAwesomeIcon icon="cogs"></FontAwesomeIcon>
+											</div>
+											<div className={"scoreWidget _" + weight} title={"Weight: " + weight}><span></span></div>
+											<ContentEditable className="answerText" onChange={(e)=> this.updateAnswer(e,answer)} html={answer['AnswerText']} disabled={!this.props.node.editing} style={{cursor:this.props.node.editing?'pointer':'move',background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}></ContentEditable>
+											<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} className={"port answerPort"}>
+												<PortWidget  name={answerName} node={this.props.node} />
+											</div>
+										</li>;
 							})
 							
 							}
