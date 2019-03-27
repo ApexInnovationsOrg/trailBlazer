@@ -1,6 +1,6 @@
 import { NodeModel } from "storm-react-diagrams";
 import { QuestionPortModel } from "./QuestionPortModel";
-import {connect} from 'react-redux';
+
 import store from '../../store';
 import {getSingleForest} from '../../actions/getForest';
 import {getTree} from '../../actions/getTree';
@@ -85,6 +85,7 @@ export class QuestionNodeModel extends NodeModel {
 	{
 		// console.log('why toggle',this['_engine']);
 		this.editing = !this.editing;
+		this.setLocked(this.editing);
 		this.repaintCanvas();
 	}
 
@@ -307,18 +308,3 @@ export class QuestionNodeModel extends NodeModel {
 		return this.addPort(new QuestionPortModel(false,label));
 	}
 }
-
-function mapStateToProps(state)
-{
-    return {
-        tree: state.tree,
-        activeTree:state.activeTree,
-        connections:state.connections.connections,
-        nodes:state.connections.nodes,
-        newQuestion:state.newQuestion,
-        savingQuestion:state.savingQuestion
-    }
-}
-
-
-export default connect(mapStateToProps,null)(QuestionNodeModel);

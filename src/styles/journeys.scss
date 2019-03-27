@@ -326,8 +326,12 @@ background-size: 50px 50px;
   margin-top:1em;
   padding: 1.25em;
   border:3px solid rgb(199, 199, 199);
+  cursor: pointer;
   .bubbleBody{
     margin-top:1em;
+  }
+  &:hover{
+    background:rgb(245,245,245);
   }
 }
 .mediaContainer

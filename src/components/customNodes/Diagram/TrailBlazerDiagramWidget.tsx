@@ -312,6 +312,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						} else if (model.model instanceof PortModel) {
 							//its a port element, we want to drag a link
 							if (!this.props.diagramEngine.isModelLocked(model.model)) {
+								
 								var relative = diagramEngine.getRelativeMousePoint(event);
 								var sourcePort = model.model;
 								var link = sourcePort.createLinkModel();
@@ -339,13 +340,16 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 								diagramModel.clearSelection();
 							}
 						} else {
-							//its some or other element, probably want to move it
-							if (!event.shiftKey && !model.model.isSelected()) {
-								diagramModel.clearSelection();
-							}
-							model.model.setSelected(true);
+							if (!this.props.diagramEngine.isModelLocked(model.model)) {
 
-							this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine));
+								//its some or other element, probably want to move it
+								if (!event.shiftKey && !model.model.isSelected()) {
+									diagramModel.clearSelection();
+								}
+								model.model.setSelected(true);
+
+								this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine));
+							}
 						}
 						this.state.document.addEventListener("mousemove", this.onMouseMove);
 						this.state.document.addEventListener("mouseup", this.onMouseUp);
