@@ -9,9 +9,7 @@ class Tree extends Component {
 
     render() {
         return(
-            <div>
-                <div>{this.props.activeForest.Name} - {this.props.activeTree.Name}</div>
-
+            <div className="fullHeight">
                 <Questions/>
             </div>
         )

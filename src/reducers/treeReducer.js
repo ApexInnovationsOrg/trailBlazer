@@ -23,24 +23,26 @@ export default function(state=initialState, action){
     switch(action.type){
 
         case FETCH_TREE_BEGIN:
+                console.log('fetching tree');
                 return {
                     ...state,
                     loading:true,
                     error:null,
                     questions:[
                         // {
-                        //     'ID' : '1',
-                        //     'QuestionText' :'Questions booting',
-                        //     'Active' : 'Y',
-                        //     'CreationDate' : '0000-00-00 00:00:00',
-                        //     'Weight' : '2',
-                        //     'TreeID' : '-1',
-                        //     'Answers' : []
-                        // }
-                    ]
-                }
+                            //     'ID' : '1',
+                            //     'QuestionText' :'Questions booting',
+                            //     'Active' : 'Y',
+                            //     'CreationDate' : '0000-00-00 00:00:00',
+                            //     'Weight' : '2',
+                            //     'TreeID' : '-1',
+                            //     'Answers' : []
+                            // }
+                        ]
+                    }
         case FETCH_TREE_SUCCESS:
-                // console.log('heres the payload',action);
+                    // console.log('heres the payload',action);
+                    console.log('fetched tree');
                 return Object.assign({},action.payload,{
                     loading:false,
                     error:null,

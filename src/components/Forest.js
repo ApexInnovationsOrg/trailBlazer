@@ -125,6 +125,7 @@ class Forest extends Component {
 
         if(this.props.forests.loading)
         {
+            console.log('forests loading');
             return (<div>Loading...</div>);
         }
 

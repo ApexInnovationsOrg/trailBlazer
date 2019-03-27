@@ -1,1 +1,52 @@
-$primary: #2a7bf5;
+$journeysPrimaryColor: #0f547a;
+$primary: lighten($journeysPrimaryColor, 15%);
+$red: #d20000;
+$green: #3fa82a;
+
+$translucent-light: rgba(white, 0.9);
+$translucent: rgba(grey, 0.9);
+$translucent-dark: rgba(black, 0.9);
+
+.primary-text {
+	color: $primary;
+}
+
+.secondary-text {
+	color: #555;
+}
+
+.white-text {
+	color: white;
+}
+
+.red-text {
+	color: $red;
+}
+
+.green-text {
+	color: $green;
+}
+
+.translucent-text {
+	color: $translucent;
+}
+
+.translucent-light-text {
+	color: $translucent-light
+}
+
+.translucent-dark-text {
+	color: $translucent-dark;
+}
+
+.translucent {
+	background-color: $translucent;
+}
+
+.translucent-light {
+	background-color: $translucent-light;
+}
+
+.translucent-dark {
+	background-color: $translucent-dark;
+}

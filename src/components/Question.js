@@ -333,9 +333,9 @@ import ls from 'local-storage';
         
     
 
-        return <div>
+        return <div className="fullHeight">
 
-                <TrailBlazerDiagramWidget deleteKeys={[]} diagramEngine={this.engine} />
+                <TrailBlazerDiagramWidget className="fullHeight" deleteKeys={[]} diagramEngine={this.engine} />
 
 
             {/* <Button variant="primary" onClick={this.handleShow}>

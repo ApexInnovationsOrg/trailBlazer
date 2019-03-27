@@ -30,7 +30,7 @@ class Journeys extends Component {
     <Provider store={store}>
       <div className="container">
         
-        <SideNav>
+        <SideNav className="mainNav">
           <Toggle/>
           <SideNav.Nav defaultSelected="home">
           <NavItem eventKey="home">
@@ -44,7 +44,7 @@ class Journeys extends Component {
           </SideNav.Nav>
         </SideNav>
         <HeaderComponent></HeaderComponent>
-        <main style={{position:'relative'}}>
+        <main className={"fullHeight"} style={{position:'relative'}}>
           {/* <Content /> */}
           <Tree/>
         </main>

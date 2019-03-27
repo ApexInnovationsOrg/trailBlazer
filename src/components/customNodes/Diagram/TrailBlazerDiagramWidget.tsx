@@ -232,10 +232,12 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			<Fullscreen 
 				enabled={this.fullScreen}
 				onChange={fullScreen=>this.fullScreen = fullScreen}
+				
 			>
 			<ContextMenuTrigger id="diagram_trigger" >
 				
 				<div
+					className="fullHeight"
 					{...this.getProps()}
 					ref={ref => {
 						if (ref) {

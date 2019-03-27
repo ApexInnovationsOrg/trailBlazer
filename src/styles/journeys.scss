@@ -22,7 +22,7 @@
 
 @media all and (min-width: 1280px) {
   .container {
-    grid-template-rows: 5fr 53fr 15fr;
+    grid-template-rows: 5fr 53fr 5fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
       "header header"
@@ -33,7 +33,7 @@
 
 @media all and (max-width: 1280px) {
   .container {
-    grid-template-rows: 5fr 53fr 15fr;
+    grid-template-rows: 5fr 53fr 5fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
       "header header"
@@ -44,7 +44,7 @@
 
 @media all and (max-width: 980px) {
   .container {
-    grid-template-rows: 5fr 53fr 15fr;
+    grid-template-rows: 5fr 53fr 5fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
       "header header"
@@ -57,7 +57,7 @@
 
 @media all and (max-width: 736px) {
   .container {
-    grid-template-rows: 5fr 53fr 15fr;
+    grid-template-rows: 5fr 53fr 5fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
       "header header header"
@@ -69,7 +69,7 @@
 @media all and (max-width: 480px) {
 
   .container {
-    grid-template-rows: 5fr 53fr 15fr;
+    grid-template-rows: 5fr 53fr 5fr;
     grid-template-columns: 64px auto;
     grid-template-areas:
       "header header header"
@@ -100,14 +100,16 @@ header {
   border-bottom: 1px solid rgba(black, 0.05);
 
   .logo {
-    max-height: 70%;
-    float: right;
+    max-height: 100%;
   }
 }
 
 nav {
-  grid-area: nav;
-  position:fixed !important;
+  &.mainNav{
+    background-color: $journeysPrimaryColor !important;
+    grid-area: nav;
+    position:fixed !important;
+  }
 }
 
 main {
@@ -116,8 +118,23 @@ main {
 }
 
 footer {
+  display: flex;
+  align-items: center;
   grid-area: footer;
   background-color: #333;
+  div{
+    
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height:100%;
+    img{
+      background:rgba(255, 255, 255, 0.911);
+      border:2px solid $journeysPrimaryColor;
+      padding:6px;
+      border-radius:15px;
+    }
+  }
 }
 
 .card {
@@ -145,7 +162,15 @@ footer {
   padding: $padding-lg;
 }
 
-
+.fullHeight
+{
+  height:100%;
+}
+.fullscreen
+{
+  height:100%;
+  padding-bottom:1em;
+}
 .answerSelections {
   list-style-position: inside;
 }
@@ -341,5 +366,20 @@ background-size: 50px 50px;
     width:100%;
   }
 }
-
-
+.forestName
+{
+  float:right;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.newForest
+{
+  transition: transform .5s cubic-bezier(0.19, 1, 0.22, 1);;
+  // transition: opacity .2s linear;
+}
+// @keyframes newForest {
+//   0% { transform: translateX(250%) }
+//   100% { transform: translateX(0%) }
+  
+// }
