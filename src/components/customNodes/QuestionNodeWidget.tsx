@@ -160,12 +160,19 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 		}
 	}
 
+	setEditBubbles = (mode = false)=>
+	{
+		this.setState({
+			editingBubbles: mode
+		})
+	}
+
 	editBubbleContainer = ()=>
 	{
 		if(this.state.editingBubbles)
 		{
 			return <div>
-					<EditBubbles node={this.props.node}/>
+					<EditBubbles parent={this} node={this.props.node}/>
 			</div>
 		}
 		else
@@ -199,11 +206,11 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 		});
 		if(hasBubbles)
 		{
-			return <span><FontAwesomeIcon icon="comment-slash"></FontAwesomeIcon></span>;
+			return <span><FontAwesomeIcon icon="comment-dots"></FontAwesomeIcon></span>;
 		}
 		else
 		{
-			return <span  style={{opacity:0.5}}><FontAwesomeIcon icon="comment-dots"></FontAwesomeIcon></span>;
+			return <span style={{opacity:0.5}}><FontAwesomeIcon icon="comment-dots"></FontAwesomeIcon></span>;
 		}
 	}
 	hasMediaContent = ()=>
