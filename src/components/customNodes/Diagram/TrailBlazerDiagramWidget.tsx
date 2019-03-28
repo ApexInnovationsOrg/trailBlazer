@@ -234,7 +234,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 				onChange={fullScreen=>this.fullScreen = fullScreen}
 				
 			>
-			<ContextMenuTrigger id="diagram_trigger" >
+			<ContextMenuTrigger holdToDisplay={-1} id="diagram_trigger" >
 				
 				<div
 					className="fullHeight"
