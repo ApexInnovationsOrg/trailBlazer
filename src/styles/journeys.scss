@@ -281,24 +281,24 @@ background-size: 50px 50px;
   padding:.5em;
   margin-top:5px;
   position:relative;
-
-  &.newAnswer
-  {
-    border: #676767 dashed;
-    background-color:rgb(231, 231, 231);
-      margin-top: 20px;
-    transition: all 0.2s ease-out;
-    cursor:pointer;
-    &:hover{
-      border: #676767 dashed 5px;
-      font-weight: 800;
-      font-size:1.25em;
-      border-radius:10px;
-      background:#ffff;
-    }
-  }
-
 }
+
+.newItem,.newAnswer
+{
+  border: #676767 dashed;
+  background-color:rgb(231, 231, 231);
+    margin-top: 20px;
+  transition: all 0.2s ease-out;
+  cursor:pointer;
+  &:hover{
+    border: #676767 dashed 5px;
+    font-weight: 800;
+    font-size:1.25em;
+    border-radius:10px;
+    background:#ffff;
+  }
+}
+
 .answerListNode
 {
   margin:25px 0 0 0;

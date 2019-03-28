@@ -23,11 +23,11 @@ class Forest extends Component {
 
                 if(this.props.activeTree.ID === tree.ID)
                 {
-                    return <li key={tree.ID} style={{'cursor':'pointer'}}><span style={{background:'rgba(228, 228, 225, 0.7)',padding:'1em'}} onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>
+                    return <li key={tree.ID} onClick={() => this.selectTree(tree)} style={{'cursor':'pointer'}}><span style={{background:'rgba(228, 228, 225, 0.7)',padding:'1em'}} >{tree.Name}</span></li>
                 }
                 else
                 {
-                    return <li key={tree.ID} style={{'cursor':'pointer'}}><span onClick={() => this.selectTree(tree)}>{tree.Name}</span></li>
+                    return <li key={tree.ID} onClick={() => this.selectTree(tree)} style={{'cursor':'pointer'}}><span>{tree.Name}</span></li>
                 }
             }
         )
@@ -125,7 +125,6 @@ class Forest extends Component {
 
         if(this.props.forests.loading)
         {
-            console.log('forests loading');
             return (<div>Loading...</div>);
         }
 

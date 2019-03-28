@@ -147,11 +147,6 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 
 			_.forEach(this.state.action.selectionModels, model => {
                 // in this case we need to also work out the relative grid position
-                
-                if(model.model.editing || model.model.editingAnswer)
-                {
-                    return
-                }
 				if (
 					model.model instanceof NodeModel ||
 					(model.model instanceof PointModel && !model.model.isConnectedToPort())
@@ -299,7 +294,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						this.setState({ ...this.state, wasMoved: false });
 						
 						diagramEngine.clearRepaintEntities();
-						diagramEngine.enableRepaintEntities([]);
+						diagramEngine.enableRepaintEntities([]);//All performance is held within this line.
 						var model = this.getMouseElement(event);
 						//the canvas was selected
 						if (model === null) {
