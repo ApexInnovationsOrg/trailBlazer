@@ -351,9 +351,8 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 											onClick={()=>{this.editAnswer(index)}}> 
 												<FontAwesomeIcon icon="cogs"></FontAwesomeIcon>
 											</div>
-											<div className={"scoreWidget _" + weight} title={"Weight: " + weight}><span></span></div>
 											<ContentEditable className="answerText" onChange={(e)=> this.updateAnswer(e,answer)} html={answer['AnswerText']} disabled={!this.props.node.editing} style={{cursor:this.props.node.editing?'pointer':'move',background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}}></ContentEditable>
-											<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} className={"port answerPort"}>
+											<div onClick={()=>{ this.deleteCheck(answerName) }} onDoubleClick={()=>{this.destroyLink(answerName)}} title={"Weight: " + weight} className={"port answerPort _" + weight}>
 												<PortWidget  name={answerName} node={this.props.node} />
 											</div>
 										</li>;
