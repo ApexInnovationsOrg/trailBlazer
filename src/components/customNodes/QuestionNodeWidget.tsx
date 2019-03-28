@@ -108,7 +108,17 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 	toggleEdit = ()=>
 	{
-		this.props.node.toggleEdit();
+		
+		// this.props.node.setEditingAnswer(this.props.node.editing);
+		this.props.node.editing = !this.props.node.editing;
+		this.props.node.editingAnswer = false;
+		this.props.node.setLocked(this.props.node.editing);
+		this.setState({
+			editingBubbles:false,
+			editingMedia:false,
+			editingAnswer:false			
+		})
+		console.log(this.props.node.editing,this.props.node.editingAnswer);
 	}
 
 	deleteNode = () =>
@@ -180,13 +190,18 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 			return false;
 		}
 	}
-
+	setEditMedia = (mode) =>
+	{
+		this.setState({
+			editingMedia: mode
+		})
+	}
 	editMediaContainer = ()=>
 	{
 		if(this.state.editingMedia)
 		{
 			return <div>
-					<EditMedia node={this.props.node}/>
+					<EditMedia parent={this} node={this.props.node}/>
 			</div>
 		}
 		else{
@@ -236,13 +251,17 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	
 	editBubbles = ()=>{
 		this.props.node.editingAnswer = true;
+		this.props.node.editing = false;
+		this.props.node.setLocked(true);
 		this.setState({
 			editingBubbles:true,
 			editingMedia:false
 		})
 	}
 	editMedia = ()=>{
+		this.props.node.editing = false;
 		this.props.node.editingAnswer = true;
+		this.props.node.setLocked(true);
 		this.setState({
 			editingMedia:true,
 			editingBubbles:false
@@ -258,7 +277,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 					position: "relative",
 					width: this.props.size * 1.5,
 					height: this.props.size,
-					cursor: this.props.node.editing ? 'auto':'move'
+					cursor: this.props.node.isLocked() ? 'auto':'move'
 				}}
 			>
 			<div

@@ -342,6 +342,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 								diagramModel.clearSelection();
 							}
 						} else {
+							console.log('over here',this.props.diagramEngine.isModelLocked(model.model));
 							if (!this.props.diagramEngine.isModelLocked(model.model)) {
 
 								//its some or other element, probably want to move it

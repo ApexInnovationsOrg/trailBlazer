@@ -84,7 +84,7 @@ export class QuestionNodeModel extends NodeModel {
 	setEdit = (mode)=>
 	{
 		this.editing = mode;
-		this.setLocked(this.editing);
+		this.setLocked(mode);
 		this.repaintCanvas();
 	}
 	toggleEdit=()=>

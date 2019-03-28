@@ -212,6 +212,7 @@ export class EditBubbles extends React.Component<AnswerProps,AnswerState> {
     {
         this.props.parent.setEditBubbles(false);
         this.props.node.setEditingAnswer(false);
+        this.props.node.setLocked(false);
     }
 
 	render() {
