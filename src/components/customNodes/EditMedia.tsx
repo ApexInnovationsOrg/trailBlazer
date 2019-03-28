@@ -30,7 +30,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
             saving:false,
             deleting:false
          }
-	}
+	} 
 
     getMasterMedia()
     {
@@ -43,8 +43,8 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
                 {
                     return <div><img src={media.src}/></div>;
                 }
-
-                if(type.key == 'video')
+                console.log('avvrfasdf ')
+                if(type.key == 'video')  
                 {
                     return <div><video src={media.src}/></div>
                 }

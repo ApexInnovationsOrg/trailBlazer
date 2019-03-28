@@ -299,6 +299,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						this.setState({ ...this.state, wasMoved: false });
 						
 						diagramEngine.clearRepaintEntities();
+						diagramEngine.enableRepaintEntities([]);
 						var model = this.getMouseElement(event);
 						//the canvas was selected
 						if (model === null) {
@@ -342,7 +343,6 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 								diagramModel.clearSelection();
 							}
 						} else {
-							console.log('over here',this.props.diagramEngine.isModelLocked(model.model));
 							if (!this.props.diagramEngine.isModelLocked(model.model)) {
 
 								//its some or other element, probably want to move it
