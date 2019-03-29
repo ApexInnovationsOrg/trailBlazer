@@ -4,6 +4,7 @@ import { QuestionPortModel } from "./QuestionPortModel";
 import store from '../../store';
 import {getSingleForest} from '../../actions/getForest';
 import {getTree} from '../../actions/getTree';
+import { savedQuestion } from "../../actions/questionActions";
 
 
 export class QuestionNodeModel extends NodeModel {
@@ -122,7 +123,8 @@ export class QuestionNodeModel extends NodeModel {
 			})
 		}).then(res=>res.json())
         .then(json=>{
-            console.log(json);
+			
+			store.dispatch(savedQuestion());
         })
 
 		this.question['Answers'].map((answer,index)=>{
@@ -196,7 +198,7 @@ export class QuestionNodeModel extends NodeModel {
 
 		})		
 	}
-	
+
 	repaintCanvas=()=>
 	{	
 		try{

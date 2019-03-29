@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QuestionNodeModel } from "./QuestionNodeModel";
 import { QuestionNodeWidget } from "./QuestionNodeWidget";
 import { Editor } from '@tinymce/tinymce-react';
+import store from '../../store';
+
+import { savedQuestion } from '../../actions/questionActions';
 
 export interface AnswerProps{
     node: QuestionNodeModel,
@@ -16,7 +19,9 @@ export interface AnswerProps{
 
 export interface AnswerState {
     saving:boolean,
-    deleting:boolean
+    saved:boolean,
+    deleting:boolean,
+    deleted:boolean
 }
 
 
@@ -32,7 +37,9 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
 		super(props);
 		this.state = { 
             saving:false,
-            deleting:false
+            saved:false,
+            deleting:false,
+            deleted:false
          }
         this.handleChange = this.handleChange.bind(this)
 	}
@@ -79,11 +86,20 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
 			})
 		}).then(res=>res.json())
         .then(json=>{
+            this.setState({
+                saved:true
+            })
             this.props.parent.editAnswerComplete();
         })
     }
 
     deleteAnswer = ()=>{
+
+        // console.log(this.props.node.getPorts());
+        let port = this.props.node.getPort('answer' + this.props.node.editingAnswerIndex);
+        // console.log(port);
+        this.props.node.removePort(port);
+
         let answerID = this.props.node.answers[this.props.node.editingAnswerIndex]['ID'];
         this.setState({
             deleting:true
@@ -100,8 +116,19 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
 			})
 		}).then(res=>res.json())
         .then(json=>{
+            this.setState({
+                deleted:true
+            })
             this.props.node.answers.splice(this.props.node.editingAnswerIndex,1);
+            
             this.props.parent.editAnswerComplete();
+            this.props.parent.forceUpdate();
+            // console.log(this.props.node.getPorts());
+            // let state = store.getState();
+
+
+			store.dispatch(savedQuestion());
+
         })
     }
 
@@ -133,21 +160,35 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
         }
     }
 
-	render() {
+    quickEditAnswer()
+    {
+        return    <ContentEditable className="answerText" onChange={this.updateAnswer} html={this.props.node.answers[this.props.node.editingAnswerIndex]['AnswerText']}  style={{cursor:'pointer',background:'white'}}></ContentEditable>
+    }
+    editor()
+    {
+ 
+        return <div>test</div>;
+       
+    }
 
-		return (<div className={'questionAndAnswerAreaOnNodeContainer'}>
+	render() {
+        if(this.state.deleted || this.state.saved)
+        {
+            return null;
+        }
+        else
+        {
+            return (<div className={'questionAndAnswerAreaOnNodeContainer'}>
+            
             <div>
                 <p>Answer Text:</p>
-                <div className={'questionAreaNode'}>
-                    <ContentEditable className="answerText" onChange={this.updateAnswer} html={this.props.node.answers[this.props.node.editingAnswerIndex]['AnswerText']}  style={{cursor:'pointer',background:'white'}}></ContentEditable>
-                </div>
+                {this.quickEditAnswer()}
             </div>
             <div>
                 <p>Follow Up Response:</p>
 
-                <div >
-                
-                <Editor
+                <div>
+                    <Editor
                     apiKey="bcs5ei9c3att51pb7mdwdz56liaaadza5bitfd5g5ukd7i1e"
                     init={{                     plugins: ['advlist autolink autosave lists link image charmap print preview hr anchor pagebreak',
                     'searchreplace wordcount visualblocks visualchars code fullscreen',
@@ -168,7 +209,7 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
                     name="answerWeight"
                     type="number"
                     value={this.props.node.answers[this.props.node.editingAnswerIndex]['Weight']}
-                    onChange={this.handleInputChange} />
+                onChange={this.handleInputChange} />
             </div>
             <div style={{marginTop:'1.5em'}}>
 
@@ -180,6 +221,7 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
             </div>
             
             
-        </div>);
+            </div>);
+        }
 	}
 }

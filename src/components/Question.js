@@ -87,15 +87,16 @@ import ls from 'local-storage';
         this.engine.setDiagramModel(this.model);
         setTimeout(()=>{
             this.engine.repaintCanvas();
-            this.engine.zoomToFit()
+            // this.engine.zoomToFit()
             let storedDiagram = ls.get('diagramPosition');
-
             if(storedDiagram[this.props.activeTree.ID] !== undefined)
             {
-                // this.model.setZoomLevel(storedDiagram[this.props.activeTree.ID]['zoom']);
-                // this.model.setOffset(storedDiagram[this.props.activeTree.ID]['x'],storedDiagram[this.props.activeTree.ID]['y']);
+                    this.model.setOffset(storedDiagram[this.props.activeTree.ID]['x'],storedDiagram[this.props.activeTree.ID]['y']);
+                    this.model.setZoomLevel(storedDiagram[this.props.activeTree.ID]['zoom']);
+                
             }
         },250);
+
 
       
     }

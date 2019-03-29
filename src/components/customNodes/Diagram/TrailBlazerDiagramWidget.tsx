@@ -7,6 +7,8 @@ import { fullscreen } from "glamor";
 import store from '../../../store';
 import { saveQuestion } from '../../../actions/questionActions';
 import ls from 'local-storage';
+import TweenMax from 'gsap';
+import Expo from 'gsap';
 
 
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
@@ -157,7 +159,6 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					// update port coordinates as well
 					if (model.model instanceof NodeModel) {
                         _.forEach(model.model.getPorts(), port => {
-                            
 							const portCoords = this.props.diagramEngine.getPortCoords(port);
 							port.updateCoords(portCoords);
 						});
@@ -188,23 +189,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			}
 			
 		} else if (this.state.action instanceof MoveCanvasAction) {
-			// let activeTree = store.getState().activeTree;
-			
-			// if(activeTree.ID !== "-1")
-			// {
-			// 	let storedDiagram = ls.get('diagramPosition');
-			// 	if(storedDiagram[activeTree.ID]  == undefined)
-			// 	{
-			// 		storedDiagram[activeTree.ID] = {};
-			// 	}
-
-			// 	let curView = storedDiagram[activeTree.ID];
-			// 	curView.x = this.state.action.initialOffsetX + (event.clientX - this.state.action.mouseX);
-			// 	curView.y = this.state.action.initialOffsetY + (event.clientY - this.state.action.mouseY);
-			// 	curView.zoom = diagramModel.getZoomLevel();
-			// 	ls.set('diagramPosition',storedDiagram);
-			// }
-
+			this.savePosition();
 			//translate the actual canvas
 			if (this.props.allowCanvasTranslation) {
 				diagramModel.setOffset(
@@ -215,6 +200,46 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 				this.forceUpdate();
 			}
 		}
+	}
+
+	savePosition = ()=>
+	{
+		var diagramEngine = this.props.diagramEngine;
+		var diagramModel = diagramEngine.getDiagramModel();
+		let activeTree = store.getState().activeTree;
+			
+		if(activeTree.ID !== "-1")
+		{
+			let storedDiagram = ls.get('diagramPosition');
+			if(storedDiagram[activeTree.ID]  == undefined)
+			{
+				storedDiagram[activeTree.ID] = {};
+			}
+
+			let curView = storedDiagram[activeTree.ID];
+			curView.x = diagramModel.offsetX;
+			curView.y = diagramModel.offsetY;
+			curView.zoom = diagramModel.getZoomLevel();
+			ls.set('diagramPosition',storedDiagram);
+		}
+
+	}
+	centerScreen = ()=>
+	{
+		var diagramEngine = this.props.diagramEngine;
+		var diagramModel = diagramEngine.getDiagramModel();
+		let temp = {x:diagramModel.getOffsetX(),y:diagramModel.getOffsetY(),z:diagramModel.getZoomLevel()};
+		TweenMax.to(temp,2,{x:0,y:0,z:50,
+		ease: Expo.easeOut,
+		onUpdate:()=>{
+			diagramModel.setOffset(temp.x,temp.y);
+			diagramModel.setZoomLevel(temp.z);
+			diagramEngine.repaintCanvas();
+			this.savePosition();
+		}});
+		// diagramModel.setOffset(
+			
+		// );
 	}
 
 	render() {
@@ -279,6 +304,8 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 								diagramModel.getOffsetX() - widthDiff * xFactor,
 								diagramModel.getOffsetY() - heightDiff * yFactor
 							);
+							
+							this.savePosition();
 
 							diagramEngine.enableRepaintEntities([]);
 							this.forceUpdate();
@@ -377,6 +404,9 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 							<MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
 								New Question
 							</MenuItem>
+							<MenuItem onClick={this.centerScreen}>
+								Center Canvas
+							</MenuItem>
 							<MenuItem onClick={this.toggleFullScreen}>
 								Fullscreen
 							</MenuItem>
@@ -387,7 +417,10 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						</ContextMenu>
 
 					</div>
-					<div className="fullScreenIconContainer"><div className="fullScreenIcon" onClick={this.toggleFullScreen}><FontAwesomeIcon icon="expand" /></div></div>
+					<div className="fullScreenIconContainer">
+						<div className="fullScreenIcon" onClick={this.toggleFullScreen}><FontAwesomeIcon icon="expand" /></div>
+						<div className="fullScreenIcon" onClick={this.centerScreen}><FontAwesomeIcon icon="compress-arrows-alt"/></div>
+					</div>
 				</div>
 				</ContextMenuTrigger>
 			</Fullscreen>

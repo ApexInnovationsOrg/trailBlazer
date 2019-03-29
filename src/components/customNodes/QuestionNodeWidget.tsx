@@ -10,6 +10,9 @@ import { EditBubbles } from './EditBubbles';
 import { EditMedia } from './EditMedia';
 
 import {connect} from 'react-redux';
+import store from "../../store";
+import { savedQuestion } from '../../actions/questionActions';
+
 
 export interface QuestionNodeWidgetProps {
 	node: QuestionNodeModel;
@@ -104,6 +107,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	{
 		// console.log('save changes');
 		this.props.node.saveChanges();
+		// store.dispatch(savedQuestion());
 	}
 
 	toggleEdit = ()=>
@@ -136,11 +140,12 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	editAnswerComplete = ()=>
 	{
 		this.props.node.editingAnswer = false;
-		// this.props.node.editingAnswerIndex = -1;
+		this.props.node.editingAnswerIndex = -1;
 		this.props.node.setEdit(false);
 		this.setState({
 			editingAnswer:false
-		})
+		});
+		
 		this.props.node.repaintCanvas();
 	}
 	editAnswer = (index)=>

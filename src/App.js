@@ -11,7 +11,7 @@ import store from './store';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTree, faSpinner, faHome, faLock, faLockOpen, faExpand, faCogs, faStar, faFilm, faCommentSlash, faCommentDots } from '@fortawesome/free-solid-svg-icons'
+import { faTree, faSpinner, faHome, faLock, faLockOpen, faExpand, faCogs, faStar, faFilm, faCommentSlash, faCommentDots, faCompressArrowsAlt } from '@fortawesome/free-solid-svg-icons'
 
 import SideNav, { Toggle, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
  
@@ -20,7 +20,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-library.add(...[faTree,faSpinner,faHome,faLock,faLockOpen,faExpand,faCogs,faStar,faFilm,faCommentSlash,faCommentDots])
+library.add(...[faTree,faSpinner,faHome,faLock,faLockOpen,faExpand,faCogs,faStar,faFilm,faCommentSlash,faCommentDots,faCompressArrowsAlt])
 
 
 
