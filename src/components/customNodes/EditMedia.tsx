@@ -5,8 +5,9 @@ import { QuestionNodeModel } from "./QuestionNodeModel";
 import { QuestionNodeWidget } from "./QuestionNodeWidget";
 import {getMediaType} from '../../utils/getMediaType';
 import Dropzone from 'react-dropzone';
-import hex64 from 'hex64';
 
+import store from '../../store';
+import { savedQuestion } from "../../actions/questionActions";
 
 export interface EditMediaProps{
     node: QuestionNodeModel,
@@ -102,7 +103,24 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
 
     saveMedia = ()=>
     {
-        console.log('my beef is more media');
+        this.setState({
+            saving:true
+        })
+            var data = new FormData();
+            data.append('files',this.state.previewUpload[0],this.state.previewUpload[0]['name']);
+            data.append('json',JSON.stringify({controller:'Content',action:'uploadMedia',questionID:this.props.node.question['ID']}));
+            return fetch(process.env.REACT_APP_API_LOCATION,{
+                method:'POST',
+                body:data
+            })
+            .then(res=>res.json())
+            .then(json=>{
+                // console.log(json);
+                store.dispatch(savedQuestion());
+            })
+
+
+        
     }
     cancel = ()=>
     {
@@ -113,9 +131,17 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
     }
     saveButton = () =>
     {
-        return  <button onClick={this.saveMedia}>
+        if(this.state.saving)
+        {
+            return <button disabled>Saving...</button>;
+        }
+        else
+        {
+
+            return  <button onClick={this.saveMedia}>
                     Save
                 </button>
+        }
     }
 
     getUploadOrPreview = () =>
