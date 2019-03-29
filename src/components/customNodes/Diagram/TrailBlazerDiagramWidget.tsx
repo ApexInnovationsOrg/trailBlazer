@@ -146,7 +146,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
             let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
-
+			
 			_.forEach(this.state.action.selectionModels, model => {
                 // in this case we need to also work out the relative grid position
 				if (
@@ -156,6 +156,8 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					model.model.x = diagramModel.getGridPosition(model.initialX + amountX / amountZoom);
 					model.model.y = diagramModel.getGridPosition(model.initialY + amountY / amountZoom);
 
+
+					console.log(model.initialX);
 					// update port coordinates as well
 					if (model.model instanceof NodeModel) {
                         _.forEach(model.model.getPorts(), port => {
@@ -190,6 +192,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			
 		} else if (this.state.action instanceof MoveCanvasAction) {
 			this.savePosition();
+			
 			//translate the actual canvas
 			if (this.props.allowCanvasTranslation) {
 				diagramModel.setOffset(
@@ -313,9 +316,15 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					}}
 					onMouseDown={event => {
 
-
-						this.props['mouseDownCoords']['x'] = event.clientX;
-						this.props['mouseDownCoords']['y'] = event.clientY;
+						let amountX = event.clientX;
+						let amountY = event.clientY;
+						let amountZoom = diagramModel.getZoomLevel() / 100;	
+						let relativeMouse = diagramEngine.getRelativeMousePoint(event);
+						this.props['mouseDownCoords']['x'] = relativeMouse.x;
+						this.props['mouseDownCoords']['y'] = relativeMouse.y;
+						
+						// console.log(this.props['mouseDownCoords']['x']);
+						// console.log(diagramModel.getGridPosition());
 						
 						if (event.nativeEvent.which === 3) return;
 						this.setState({ ...this.state, wasMoved: false });
@@ -323,6 +332,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						diagramEngine.clearRepaintEntities();
 						diagramEngine.enableRepaintEntities([]);//All performance is held within this line.
 						var model = this.getMouseElement(event);
+						
 						//the canvas was selected
 						if (model === null) {
 							//is it a multiple selection
