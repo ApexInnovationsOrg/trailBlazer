@@ -8,6 +8,7 @@ import Dropzone from 'react-dropzone';
 
 import store from '../../store';
 import { savedQuestion } from "../../actions/questionActions";
+import { getTree } from "../../actions/getTree";
 
 export interface EditMediaProps{
     node: QuestionNodeModel,
@@ -115,8 +116,10 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
             })
             .then(res=>res.json())
             .then(json=>{
-                // console.log(json);
-                store.dispatch(savedQuestion());
+                console.log(json);
+                let state = store.getState();
+
+                store.dispatch(getTree(state['activeTree']));
             })
 
 
