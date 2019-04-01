@@ -98,3 +98,27 @@ button {
 		top:1px;
 	}
 }
+.forestList
+{
+	li{
+		cursor:pointer;
+		padding: 0 0.5em;
+
+		&:hover{
+			background:lightblue;
+		}
+	}
+}
+.newTree
+{
+	
+	list-style: none;
+	text-align:center;
+	
+	div{
+		margin: 0;
+	}
+	&:hover{
+		box-shadow:inset 0 0 15px #666666
+	}
+}

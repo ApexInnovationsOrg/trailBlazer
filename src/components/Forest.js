@@ -4,10 +4,16 @@ import {getAllForests,getSingleForest} from '../actions/getForest';
 import {getTree} from '../actions/getTree';
 import store from '../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import { NewTree } from './NewTree';
 
 class Forest extends Component {
 
+    constructor(){
+        super();
+        this.state = {
+            savingTree:false
+        }
+    }
     componentDidMount()
     {
         this.props.dispatch(getAllForests());
@@ -97,10 +103,15 @@ class Forest extends Component {
             if(this.props.activeForest.ID === forest.ID)
             {
                 return (
+                    <ul>
+
                     <li key={forest.ID}>
                        <span className="forest">  > {forest.Name} - {forest['Tree Count']} Trees {getTrees(forest)}</span>
                            {this.treeList()}
                     </li>
+                    <li className="newTree" activeForest={this.props.activeForest}><NewTree/></li>
+                    </ul>
+                    
                     )
             }
             else
@@ -129,8 +140,9 @@ class Forest extends Component {
         }
 
         return (
-            <ul>
+            <ul className="forestList">
                 { this.listForests() }
+                
             </ul>
         );
     }
