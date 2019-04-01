@@ -49,12 +49,12 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
                 let deleteButton = <div><button onClick={this.deleteMedia}>Delete</button></div>;
                 if(type.key == 'image')
                 {
-                    return <div><img src={media.src}/>{deleteButton}</div>;
+                    return <div><img src={media.src}  style={{width:'100%'}}/>{deleteButton}</div>;
                 }
 
                 if(type.key == 'video')
                 {
-                    return <div><video src={media.src}/>{deleteButton}</div>
+                    return <div><video src={media.src} style={{width:'100%'}} controls autoPlay/>{deleteButton}</div>
                 }
                 
             }
@@ -202,7 +202,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
                    X
             </button>
             <div className={'mediaContainer'}>
-            {this.getMasterMedia()}
+                {this.getMasterMedia()}
             </div>
             <div>
             Upload/Preview
