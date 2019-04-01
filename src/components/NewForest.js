@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { saveTree } from '../actions/saveTree'
+import { saveForest } from '../actions/saveForest'
 
-class NewTree extends Component {
+class NewForest extends Component {
     constructor(){
         super();
         this.state = {
             editing:false,
-            savingTree:false,
+            savingForest:false,
             editingName:'',
         }
     }
@@ -45,12 +45,10 @@ class NewTree extends Component {
     saveChanges =()=>
     {
         this.setState({
-            savingTree:true
+            savingForest:true
         })
-        // console.log(this.props);
         let nameParam = this.state.editingName;
-        let forestID = this.props.activeForest.ID;
-        this.props.dispatch(saveTree({ name: nameParam, forestID:forestID} ));
+        this.props.dispatch(saveForest({ name: nameParam}));
     }
     render() {
         if(this.state.editing)
@@ -66,7 +64,7 @@ class NewTree extends Component {
         }
 
         return(
-            <div onClick={this.showEditingButtons}> New Tree </div>
+            <div onClick={this.showEditingButtons}> New Forest </div>
         )
     }
 }
@@ -82,4 +80,4 @@ function mapStateToProps(state)
 }
 
 
-export default connect(mapStateToProps)(NewTree);
+export default connect(mapStateToProps)(NewForest);

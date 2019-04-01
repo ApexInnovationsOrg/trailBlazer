@@ -4,7 +4,8 @@ import {getAllForests,getSingleForest} from '../actions/getForest';
 import {getTree} from '../actions/getTree';
 import store from '../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { NewTree } from './NewTree';
+import NewTree from './NewTree';
+import NewForest from './NewForest';
 
 class Forest extends Component {
 
@@ -53,26 +54,23 @@ class Forest extends Component {
                 <div>Loading...</div>
             )
         }
+
+        let treeListItems = '';
         if(this.props.singleForest.trees.length === 0)
         {
-            return (
-                <ul>
-                    <li>No Trees</li>
-                </ul>
-            )
+            treeListItems = <li>No Trees</li>;
         }
         else
         {
-            return(
-                <div>
-                    <ul>
-                        {this.listTrees()}
+            treeListItems = this.listTrees();
+        }
+
+        return <div>
+                    <ul className="treeList">
+                        {treeListItems}
+                        <li className="newTree"><NewTree/></li>
                     </ul>
                 </div>
-            )
-            
-
-        }
     }
 
 
@@ -103,13 +101,13 @@ class Forest extends Component {
             if(this.props.activeForest.ID === forest.ID)
             {
                 return (
-                    <ul>
+                    <ul key={forest.ID} className="activeForestContainer">
 
-                    <li key={forest.ID}>
-                       <span className="forest">  > {forest.Name} - {forest['Tree Count']} Trees {getTrees(forest)}</span>
-                           {this.treeList()}
-                    </li>
-                    <li className="newTree" activeForest={this.props.activeForest}><NewTree/></li>
+                        <li className="activeForest">
+                        <span className="forest">{forest.Name} - {forest['Tree Count']} Trees {getTrees(forest)}</span>
+                            {this.treeList()}
+                        </li>
+                    
                     </ul>
                     
                     )
@@ -143,6 +141,7 @@ class Forest extends Component {
             <ul className="forestList">
                 { this.listForests() }
                 
+                <li className="newTree"><NewForest/></li>
             </ul>
         );
     }

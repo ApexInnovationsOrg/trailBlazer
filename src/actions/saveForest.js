@@ -4,12 +4,10 @@ import {
     FETCH_TREE_FAILURE,
     SET_ACTIVE_TREE
 } from './types';
-import {getSingleForest} from './getForest';
-import {getTree} from './getTree'
+import {getAllForests} from './getForest';
 
-export function saveTree(data){
+export function saveForest(data){
     return dispatch =>{
-        console.log('int he savetree funct',data);
         return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{
@@ -17,25 +15,18 @@ export function saveTree(data){
             },
             body:JSON.stringify({
                 controller:'Forest',
-                action:'createTree',
-                name:data.name,
-                forestID:data.forestID
+                action:'createForest',
+                name:data.name
             })
         })
             .then(handleErrors)
             .then(res => res.json())
             .then(json => { 
-                if(!json.success) 
-                {
-                    dispatch(fetchTreeFailure(json.errormsg));
-                }
-                else
-                {
-                    const forest = dispatch(getSingleForest({ID:data.forestID}));
-                    forest.then(dispatch(getTree({ID:json.data})));
-                }
+
+                    dispatch(getAllForests());
+
             })
-            .catch(error => dispatch(fetchTreeFailure(error)));
+
     }
     
 }
