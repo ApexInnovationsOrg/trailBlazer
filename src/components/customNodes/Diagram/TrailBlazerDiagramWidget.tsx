@@ -11,6 +11,7 @@ import TweenMax from 'gsap';
 import Expo from 'gsap';
 
 
+
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 export interface TrailblazerDiagramProps extends DiagramProps{
@@ -35,9 +36,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 	constructor(props: TrailblazerDiagramProps)
 	{
 		super(props);
-		// this.state = {
-			
-		// }
+
 		this.fullScreen = false;
 		if(ls.get('diagramPosition') == null)
 		{
@@ -48,6 +47,19 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 	{
 		this.fullScreen = !this.fullScreen;
 		this.props.diagramEngine.repaintCanvas();
+	}
+
+	fullScreenTitle = ()=>
+	{	
+		if(this.fullScreen)
+		{
+			let state = store.getState();
+
+			return <div className="titleContainer">
+							<h3 className="newForest" style={{transform:'translateX(0%)'}}>{state.activeForest.Name} {state.activeTree.Name ? '-':<FontAwesomeIcon icon="tree" />} {state.activeTree.Name}</h3>
+					</div>
+		}
+		
 	}
 
 	handleClick = (e,data)=>
@@ -72,37 +84,8 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 				}
 			]
        }));
-		// let masterQuestionID = this.question['ID'];
-		// let activeTreeID = this.question['TreeID'];
-		// fetch(process.env.REACT_APP_API_LOCATION,{
-		// 	method:'POST',
-		// 	headers:{
-		// 		'content-type':'application/json'
-		// 	},
-		// 	body:JSON.stringify({
-		// 		controller:'Forest',
-		// 		action:'setMasterQuestion',
-		// 		masterQuestionID: masterQuestionID,	
-		// 		treeID:activeTreeID			
-		// 	})
-		// }).then(()=>{
-		// 	let state = store.getState();
-		// 	state.activeTree.MasterQuestionID = masterQuestionID;
-
-		// 	store.dispatch(getTree(state['activeTree']));
-
-		// })		
-	}
-
-	showMenu = (e)=>
-	{
-		// console.log(e);
-		// console.log(this.props['mouseDownCoords']);
-		console.log(this.props);
-
-	}
-
 	
+	}
 
 	onMouseMove(event) {
         
@@ -240,9 +223,6 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			diagramEngine.repaintCanvas();
 			this.savePosition();
 		}});
-		// diagramModel.setOffset(
-			
-		// );
 	}
 
 	render() {
@@ -255,8 +235,8 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			<Fullscreen 
 				enabled={this.fullScreen}
 				onChange={fullScreen=>this.fullScreen = fullScreen}
-				
 			>
+
 			<ContextMenuTrigger holdToDisplay={-1} id="diagram_trigger" >
 				
 				<div
@@ -410,7 +390,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					<NodeLayerWidget diagramEngine={diagramEngine} />
 					{this.state.action instanceof SelectingAction && this.drawSelectionBox()}
 					<div>
-						<ContextMenu id="diagram_trigger" onShow={this.showMenu} className={"contextMenu"}>
+						<ContextMenu id="diagram_trigger" className={"contextMenu"}>
 							<MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
 								New Question
 							</MenuItem>
@@ -427,10 +407,12 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						</ContextMenu>
 
 					</div>
+					
 					<div className="fullScreenIconContainer">
 						<div className="fullScreenIcon" onClick={this.toggleFullScreen}><FontAwesomeIcon icon="expand" /></div>
 						<div className="fullScreenIcon" onClick={this.centerScreen}><FontAwesomeIcon icon="compress-arrows-alt"/></div>
 					</div>
+					{this.fullScreenTitle()}
 				</div>
 				</ContextMenuTrigger>
 			</Fullscreen>
