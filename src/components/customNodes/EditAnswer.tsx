@@ -3,7 +3,7 @@ import * as React from "react";
 import ContentEditable from 'react-contenteditable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QuestionNodeModel } from "./QuestionNodeModel";
-import { QuestionNodeWidget } from "./QuestionNodeWidget";
+import QuestionNodeWidget from "./QuestionNodeWidget";
 import { Editor } from '@tinymce/tinymce-react';
 import store from '../../store';
 
@@ -11,7 +11,7 @@ import { savedQuestion } from '../../actions/questionActions';
 
 export interface AnswerProps{
     node: QuestionNodeModel,
-    parent:QuestionNodeWidget,
+    parent:any,
     answer?:object,
     followUp?:string,
     editorHtml?:string

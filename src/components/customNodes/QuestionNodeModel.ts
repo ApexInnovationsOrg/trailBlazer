@@ -270,19 +270,7 @@ export class QuestionNodeModel extends NodeModel {
 		},1000)
 	}
 
-	newAnswer = ()=>
-	{
-
-		this.answers.push({
-			ID:"-1",
-			AnswerText:"New Answer",
-			QuestionID:this.question['ID'],
-			NextQuestionID:"-1"
-		})
-
-		this.repaintCanvas();
-	}
-
+	
 	removeLink = (answerName)=>
 	{
 		for(let i in this.ports)

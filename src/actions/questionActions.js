@@ -6,6 +6,8 @@ import {
 } from './types';
 
 import {getTree} from './getTree';
+import store from '../store';
+
 
 export function updateNewQuestion(question,answers){
     return dispatch =>{
@@ -14,23 +16,12 @@ export function updateNewQuestion(question,answers){
             questionText:question,
             answers:answers
         }));
-
-        // const initialState = {
-        //     questionText:'',
-        //     answers:[
-        //     {
-        //         answerText:''
-        //     },{
-        //         answerText:''
-        //     }]
-        // }
     }
 
 }
 
 export function setMasterQuestion(tree)
 {
-    console.log('what is the tree?',tree);
     return dispatch => {
         return dispatch(getTree(tree));
     }
@@ -70,6 +61,28 @@ export function saveQuestion(data){
             dispatch(getTree({ID:data.treeID}));
         })
         
+    }
+}
+
+export function saveSingleAnswer(data){
+    return dispatch =>{
+        return fetch(process.env.REACT_APP_API_LOCATION,{
+            method:'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify({
+                controller:'Answer',
+                action:'createnewanswer',
+                questionID:data.questionID,
+                answerText:data.answerText
+            })
+        })
+        .then(res=>res.json())
+        .then(json=>{
+            let state = store.getState();
+			return store.dispatch(getTree(state['activeTree']));
+        })
     }
 }
 

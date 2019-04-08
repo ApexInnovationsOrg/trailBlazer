@@ -2,13 +2,15 @@ import * as React from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QuestionNodeModel } from "./QuestionNodeModel";
-import { QuestionNodeWidget } from "./QuestionNodeWidget";
+
+import {QuestionNodeWidget} from "./QuestionNodeWidget";
 import {getMediaType} from '../../utils/getMediaType';
 import Dropzone from 'react-dropzone';
 
 import store from '../../store';
 import { savedQuestion } from "../../actions/questionActions";
 import { getTree } from "../../actions/getTree";
+
 
 export interface EditMediaProps{
     node: QuestionNodeModel,

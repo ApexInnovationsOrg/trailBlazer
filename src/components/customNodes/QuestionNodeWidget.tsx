@@ -12,6 +12,9 @@ import { EditMedia } from './EditMedia';
 import {connect} from 'react-redux';
 import store from "../../store";
 import { savedQuestion } from '../../actions/questionActions';
+import { getMaxListeners } from "cluster";
+
+import {saveSingleAnswer} from '../../actions/questionActions';
 
 
 export interface QuestionNodeWidgetProps {
@@ -30,7 +33,7 @@ export interface QuestionNodeWidgetState {
 /**
  * @author Dylan Vorster
  */
-export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps, QuestionNodeWidgetState> {
+class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, QuestionNodeWidgetState> {
 	answer:object;
 	editingAnswer:boolean;
 
@@ -112,7 +115,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 	toggleEdit = ()=>
 	{
-		
+		// alert('thing?');	
 		// this.props.node.setEditingAnswer(this.props.node.editing);
 		this.props.node.editing = !this.props.node.editing;
 		this.props.node.editingAnswer = false;
@@ -160,6 +163,30 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 		this.props.node.repaintCanvas();
 	}
+	newAnswer = ()=>
+	{
+
+		// this.props.node.answers.push({
+		// 	ID:"-1",
+		// 	AnswerText:"New Answer",
+		// 	QuestionID:this.props.node.question['ID'],
+		// 	NextQuestionID:"-1"
+		// })
+		
+		let data = {
+			questionID: this.props.node.question['ID'],
+			answerText:"New Answer"
+		}
+		
+		const saving = this.props['dispatch'](saveSingleAnswer(data));
+		
+		saving.then(()=>{
+			console.log(this.props.node);
+			
+		});
+
+	}
+
 	editContainer = ()=>
 	{
 		if(this.state.editingAnswer)
@@ -179,7 +206,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 	{
 		this.setState({
 			editingBubbles: mode
-		})
+		}) 
 	}
 
 	editBubbleContainer = ()=>
@@ -365,7 +392,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 							
 							}
 							
-							 <li style={{display:this.props.node.editing ? 'block':'none'}} className={"newAnswer"} onClick={this.props.node.newAnswer}>New Answer</li>
+							 <li style={{display:this.props.node.editing ? 'block':'none'}} className={"newAnswer"} onClick={this.newAnswer}>New Answer</li>
 							
 						</ul>
 					</div>
@@ -379,6 +406,7 @@ export class QuestionNodeWidget extends React.Component<QuestionNodeWidgetProps,
 
 function mapStateToProps(state)
 {
+	console.log('you doing the thing');
     return {
         tree: state.tree,
         activeTree:state.activeTree,
@@ -389,5 +417,6 @@ function mapStateToProps(state)
     }
 }
 
+export type QuestionNodeWidget = QuestionNodeWidgetClass;
 
-export default connect(mapStateToProps)(QuestionNodeModel);
+export default connect(mapStateToProps)(QuestionNodeWidgetClass);

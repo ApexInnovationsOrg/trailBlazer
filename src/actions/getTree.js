@@ -32,7 +32,7 @@ export function getTree(tree){
 
                     
 
-                    dispatch(fetchTreeSuccess(json.data.map((question) => {
+                   dispatch(fetchTreeSuccess(json.data.map((question) => {
                         question.Contents.map((content)=>{
                             content.Content = JSON.parse(content.Content);
                             return content;
@@ -40,6 +40,7 @@ export function getTree(tree){
 
                         return question;
                     })));
+                    // console.log('fetch tree success');
                     return json.data;
                 }
             })

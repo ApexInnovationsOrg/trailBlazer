@@ -1,5 +1,5 @@
 import * as SRD from "storm-react-diagrams";
-import { QuestionNodeWidget } from "./QuestionNodeWidget";
+import QuestionNodeWidget from "./QuestionNodeWidget";
 import { QuestionNodeModel } from "./QuestionNodeModel";
 import * as React from "react";
 
