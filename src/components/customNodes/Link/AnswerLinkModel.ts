@@ -50,7 +50,7 @@ export class AnswerLinkModel extends DefaultLinkModel {
 				controller:'Answer',
 				action:'createNewLink',
 				answerID: answer.ID,
-				nextQuestionID:question.ID
+				nextNodeID:question.ID
 			})
 		})
 	}

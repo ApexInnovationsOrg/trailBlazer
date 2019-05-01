@@ -1,7 +1,7 @@
 import { FETCH_TREE_BEGIN, FETCH_TREE_SUCCESS, FETCH_TREE_FAILURE } from '../actions/types';
 
 const initialState = {
-    questions:[
+    nodes:[
         // {
         //     'ID' : '1',
         //     'QuestionText' :'Questions booting',
@@ -28,7 +28,7 @@ export default function(state=initialState, action){
                     ...state,
                     loading:true,
                     error:null,
-                    questions:[
+                    nodes:[
                         // {
                             //     'ID' : '1',
                             //     'QuestionText' :'Questions booting',
@@ -50,7 +50,7 @@ export default function(state=initialState, action){
                 })
         case FETCH_TREE_FAILURE:
             return {
-                questions:[
+                nodes:[
                     // {
                     //     'ID' : '1',
                     //     'QuestionText' :'Questions booting',

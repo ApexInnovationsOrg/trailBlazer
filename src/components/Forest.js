@@ -127,7 +127,7 @@ class Forest extends Component {
         {
             return (
                 <ul>
-                <li style={{color:'red'}}>Error! {this.props.forests.error}</li>
+                <li style={{color:'red'}}>Error loading forests!</li>
                 </ul>
             )
         }
