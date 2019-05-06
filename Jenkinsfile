@@ -3,13 +3,7 @@
 
 pipeline {
     agent any
-    stages {
-        stage('Prepare environment') {
-            steps {
-                sh "/var/lib/jenkins/scripts/prepenv.sh"
-                sh "ls -lha .env"
-            }
-        }        
+    stages {      
         stage('Install package') { 
             steps {
                 sh 'npm install' 
