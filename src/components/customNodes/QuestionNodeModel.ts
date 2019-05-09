@@ -10,6 +10,7 @@ import { savedQuestion } from "../../actions/questionActions";
 export class QuestionNodeModel extends NodeModel {
 	name: string;
 	question: Object;
+	node: Object;
 	answers: Array<Object>;
 	_id:string;
 	_x:number;
@@ -22,13 +23,13 @@ export class QuestionNodeModel extends NodeModel {
 	editingAnswer:boolean;
 	props?:object;
 
-	constructor(name: string = "Question", question: Object = {}, answers: Array<Object> = []) {
+	constructor(name: string = "Question", node: Object = {}, answers: Array<Object> = []) {
 		super("question");
 
 		this.name = name;
-		this.question = question;
+		this.node = node;
 		this.answers = answers;
-		this._id = question['ID'];
+		this._id = node['ID'];
 
 		
 
@@ -36,9 +37,9 @@ export class QuestionNodeModel extends NodeModel {
 		
 		this.answers.forEach((answer,index)=>{
 			let port = this.addOutPort("answer" + index);	
-			if(typeof answer['NextQuestionID'] !== undefined)
+			if(typeof answer['NextNodeID'] !== undefined)
 			{
-				port.NextQuestionID = answer['NextQuestionID'];
+				port.NextNodeID = answer['NextNodeID'];
 			}
 		})
 		// console.log('de question', this.question);
@@ -108,18 +109,18 @@ export class QuestionNodeModel extends NodeModel {
 
 	saveChanges = ()=>
 	{
-		let questionID = this.question['ID'];
-		let questionText = this.question['QuestionText'];
+		let nodeID = this.node['ID'];
+		let nodeText = this.node['NodeText'];
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
 				'content-type':'application/json'
 			},
 			body:JSON.stringify({
-				controller:'Question',
+				controller:'Node',
 				action:'updateQuestion',
-				questionID: questionID,				
-				questionText: questionText				
+				nodeID: nodeID,				
+				nodeText: nodeText				
 			})
 		}).then(res=>res.json())
         .then(json=>{
@@ -127,9 +128,9 @@ export class QuestionNodeModel extends NodeModel {
 			store.dispatch(savedQuestion());
         })
 
-		this.question['Answers'].map((answer,index)=>{
+		this.node['Answers'].map((answer,index)=>{
 			let answerID = answer.ID;
-			let questionID = this.question['ID'];
+			let nodeID = this.node['ID'];
 			let answerText = answer.AnswerText;
 
 			if(answerID == -1)
@@ -143,7 +144,7 @@ export class QuestionNodeModel extends NodeModel {
 					body:JSON.stringify({
 						controller:'Answer',
 						action:'createnewAnswer',
-						questionID: questionID,				
+						nodeID: nodeID,				
 						answerText: answerText				
 					})
 				}).then(res=>res.json())

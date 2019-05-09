@@ -134,7 +134,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 	}
 	updateTitle = evt =>
 	{
-		this.props.node.question['QuestionText'] = evt.target.value;
+		this.props.node.question['NodeText'] = evt.target.value;
 	}
 	updateAnswer = (evt,answer)=>
 	{
@@ -245,7 +245,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 	{
 		let hasBubbles = false;
 
-		this.props.node.question['Contents'].forEach(content => {
+		this.props.node.node['Contents'].forEach(content => {
 			if(content.Content.type === "bubble")
 			{
 				hasBubbles = true
@@ -264,7 +264,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 	{
 		let hasMedia = false;
 
-		this.props.node.question['Contents'].forEach(content => {
+		this.props.node.node['Contents'].forEach(content => {
 			if(content.Content.type === "masterMedia")
 			{
 				hasMedia = true
@@ -302,7 +302,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 
 
 	render() {
-
+		console.log('fffff',this.props.node);
 		return (
 			<div
 				style={{
@@ -356,7 +356,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 				>
 					<div className={"questionAreaNode"}
 					>
-						<ContentEditable style={{cursor:this.props.node.editing?'pointer':'move', background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}} html={this.props.node.question['QuestionText']} onChange={this.updateTitle} disabled={!this.props.node.editing}></ContentEditable>
+						<ContentEditable style={{cursor:this.props.node.editing?'pointer':'move', background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}} html={this.props.node.node['NodeText']} onChange={this.updateTitle} disabled={!this.props.node.editing}></ContentEditable>
 					</div>
 					<div className={"answerAreaNode"}
 					/>

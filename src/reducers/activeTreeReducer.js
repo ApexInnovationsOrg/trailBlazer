@@ -3,7 +3,7 @@ import { SET_ACTIVE_TREE } from '../actions/types';
 const initialState = {
     ID:'-1',
     treeName:'none selected',
-    MasterQuestionID:'-1'
+    MasterNodeID:'-1'
 }
     
 

@@ -65,10 +65,11 @@ import ls from 'local-storage';
     drawDiagram()
     {
         this.clearAllNodes();
-        const questionNodes = this.retrieveQuestionNodes(this.props.tree.questions);
+        console.log(this.props.tree,'???????????????????????????');
+        const nodes = this.retrieveNodes(this.props.tree.nodes);
 
         // console.log('what the heck',questionNodes);
-        const connectionData = this.retrieveConnections(questionNodes);
+        const connectionData = this.retrieveConnections(nodes);
 
 
         this.engine.registerPortFactory(new SimplePortFactory("question", config => new QuestionPortModel()));
@@ -79,7 +80,7 @@ import ls from 'local-storage';
         
 
         // 6) add the models to the root graph
-        this.model.addAll(...questionNodes,...connectionData);
+        this.model.addAll(...nodes,...connectionData);
         
         this.engine.repaintCanvas();
         
@@ -163,21 +164,21 @@ import ls from 'local-storage';
                 </div>
     }
 
-    retrieveQuestionNodes()
+    retrieveNodes()
     {
 
-
-        return this.props.tree.questions.map((question)=>{
+        console.log('reeeeeee', this.props.tree);
+        return this.props.tree.nodes.map((node)=>{
             
-            var questionNode = new QuestionNodeModel("Question", question ,question.Answers);
-            questionNode._id = question.ID;
+            var questionNode = new QuestionNodeModel("Question", node ,node.Answers);
+            questionNode._id = node.ID;
             questionNode._engine = this.engine;
 
             // console.log(this.props.activeTree.MasterQuestionID,question.ID);
             
-            questionNode.setMaster(this.props.activeTree.MasterQuestionID === question.ID);
+            questionNode.setMaster(this.props.activeTree.MasterNodeID === node.ID);
             
-            questionNode.setPosition(parseInt(question.PositionX), parseInt(question.PositionY));
+            questionNode.setPosition(parseInt(node.PositionX), parseInt(node.PositionY));
             questionNode.enableSavePositions();
 
             return questionNode;
@@ -185,29 +186,29 @@ import ls from 'local-storage';
         });
     }
 // 
-    retrieveConnections(questionNodes)
+    retrieveConnections(nodes)
     {
         let links = [];
-        // console.log('--------------------',questionNodes,this.model);
-        for(let q in questionNodes)
+        console.log('--------------------',nodes,this.model);
+        for(let q in nodes)
         {
 
-            let question = questionNodes[q];
+            let node = nodes[q];
 
-            for(let i in question.ports)
+            for(let i in node.ports)
             {
-                // console.log('mah question port',question.ports[i]);
+                console.log('mah question port',node.ports[i]);
                 
-                let port = question.ports[i];
-                if(port.NextQuestionID && !port.in)
+                let port = node.ports[i];
+                if(port.NextNodeID && !port.in)
                 {
-                    // console.log('the thing');   
+                    console.log('the thing');   
                     try{
-                        let questionPort = this.findQuestionNodePort(port.NextQuestionID,questionNodes);
+                        let nodePort = this.findNodePort(port.NextNodeID,nodes);
                         
-                        if(questionPort)
+                        if(nodePort)
                         {   
-                            links.push(port.link(questionPort,false));
+                            links.push(port.link(nodePort,false));
                         }
                         
                     }catch(e)
@@ -223,12 +224,12 @@ import ls from 'local-storage';
         return links;
     }    
         
-    findQuestionNodePort(id,questionNodes)
+    findNodePort(id,nodes)
     {
-        // console.log('finding question node port');
-        for(let i in questionNodes)
+        console.log('finding question node port');
+        for(let i in nodes)
         {
-            let node = questionNodes[i];
+            let node = nodes[i];
             // console.log('node id',node,id);
             if(node._id === id)
             {

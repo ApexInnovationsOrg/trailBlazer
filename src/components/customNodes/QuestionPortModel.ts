@@ -6,7 +6,7 @@ export class QuestionPortModel extends PortModel {
 	in: boolean;
 	label: string;
 	links: { [id: string]: AnswerLinkModel };
-	NextQuestionID:string;
+	NextNodeID:string;
 	_id:string;
 
 	constructor(isInput: boolean, name: string, label: string = null, id?: string) {
