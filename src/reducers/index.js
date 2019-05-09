@@ -16,6 +16,6 @@ export default combineReducers({
    tree:treeReducer,
    connections:connectionsReducer,
    newQuestion:questionReducer,
-   savingQuestion:saveingQuestionReducer
+   savingNode:saveingQuestionReducer
 })
 

@@ -75,7 +75,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 
 	setMaster = ()=>
 	{
-		this.props.node.setMasterQuestion();
+		this.props.node.setMasterNode();
 	}
 
 	getMasterQuestionButton = () =>
@@ -134,7 +134,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 	}
 	updateTitle = evt =>
 	{
-		this.props.node.question['NodeText'] = evt.target.value;
+		this.props.node.node['NodeText'] = evt.target.value;
 	}
 	updateAnswer = (evt,answer)=>
 	{
@@ -413,7 +413,7 @@ function mapStateToProps(state)
         connections:state.connections.connections,
         nodes:state.connections.nodes,
         newQuestion:state.newQuestion,
-        savingQuestion:state.savingQuestion
+        savingNode:state.savingNode
     }
 }
 

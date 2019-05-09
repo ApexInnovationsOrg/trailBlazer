@@ -42,7 +42,7 @@ export class QuestionNodeModel extends NodeModel {
 				port.NextNodeID = answer['NextNodeID'];
 			}
 		})
-		// console.log('de question', this.question);
+		// console.log('de question', this.node);
 		this.masterQuestion = false;
 		this.editing = false;
 		this.setMaster.bind(this);
@@ -175,11 +175,11 @@ export class QuestionNodeModel extends NodeModel {
 		this.toggleEdit();
 
 	}
-	setMasterQuestion=()=>
+	setMasterNode=()=>
 	{
 
-		let masterQuestionID = this.question['ID'];
-		let activeTreeID = this.question['TreeID'];
+		let masterNodeID = this.node['ID'];
+		let activeTreeID = this.node['TreeID'];
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
@@ -187,13 +187,13 @@ export class QuestionNodeModel extends NodeModel {
 			},
 			body:JSON.stringify({
 				controller:'Forest',
-				action:'setMasterQuestion',
-				masterQuestionID: masterQuestionID,	
+				action:'setMasterNode',
+				masterNodeID: masterNodeID,	
 				treeID:activeTreeID			
 			})
 		}).then(()=>{
 			let state = store.getState();
-			state.activeTree.MasterQuestionID = masterQuestionID;
+			state.activeTree.MasterNodeID = masterNodeID;
 
 			store.dispatch(getTree(state['activeTree']));
 
@@ -212,11 +212,11 @@ export class QuestionNodeModel extends NodeModel {
 	}
 	updatePosition()
 	{
-		if(!this.question)
+		if(!this.node)
 		{
 			return false;
 		}
-		let questionID = this.question['ID'];
+		let questionID = this.node['ID'];
 		let positionX = this.x;
 		let positionY = this.y;
 
@@ -241,7 +241,7 @@ export class QuestionNodeModel extends NodeModel {
 	deleteNode()
 	{
 		// console.log('deleting node');
-		let questionID = this.question['ID'];
+		let questionID = this.node['ID'];
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
