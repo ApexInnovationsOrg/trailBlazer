@@ -245,7 +245,7 @@ function mapStateToProps(state)
         connections:state.connections.connections,
         nodes:state.connections.nodes,
         newQuestion:state.newQuestion,
-        savingNode:state.savingNode
+        savingQuestion:state.savingQuestion
     }
 }
 

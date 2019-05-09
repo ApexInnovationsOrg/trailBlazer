@@ -1,8 +1,8 @@
 import {
     SET_NEW_ANSWERS,
-    SAVE_NODE_BEGIN,
-    SAVE_NODE_SUCCESS,
-    SAVE_NODE_FAILURE
+    SAVE_QUESTION_BEGIN,
+    SAVE_QUESTION_SUCCESS,
+    SAVE_QUESTION_FAILURE
 } from './types';
 
 import {getTree} from './getTree';
@@ -27,20 +27,20 @@ export function setMasterQuestion(tree)
     }
 }
 
-export function saveNode(data){
+export function saveQuestion(data){
 
     return dispatch => {
-        dispatch(savingNode());
+        dispatch(savingQuestion());
         return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{
                 'content-type':'application/json'
             },
             body:JSON.stringify({
-                controller:'Node',
-                action:'createNewNode',
+                controller:'Question',
+                action:'createNewQuestion',
                 treeID:data.treeID,
-                nodeText:data.nodeText,
+                question:data.question,
                 answers:data.answers,
                 positionX:data.positionX,
                 positionY:data.positionY
@@ -50,7 +50,7 @@ export function saveNode(data){
         .then(json=>{
             if(!json.success)
             {
-                dispatch(saveNodeErr(json.errormsg));
+                dispatch(saveQuestionErr(json.errormsg));
             }
             else
             {
@@ -94,18 +94,18 @@ export const alterQuestion = question => (
   });
 
 
-export const savingNode = ()=>(
+export const savingQuestion = ()=>(
     {
-        type:SAVE_NODE_BEGIN
+        type:SAVE_QUESTION_BEGIN
     });
 
 export const savedQuestion = ()=>(
     {
-        type:SAVE_NODE_SUCCESS
+        type:SAVE_QUESTION_SUCCESS
     });
 
-export const saveNodeErr = (error) =>(
+export const saveQuestionErr = (error) =>(
     {
-        type:SAVE_NODE_FAILURE,
+        type:SAVE_QUESTION_FAILURE,
         payload:{error}
     });    

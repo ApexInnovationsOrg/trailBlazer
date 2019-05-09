@@ -54,18 +54,18 @@ export function saveContent(data){
 //   });
 
 
-// export const savingNode = ()=>(
+// export const savingQuestion = ()=>(
 //     {
-//         type:SAVE_NODE_BEGIN
+//         type:SAVE_QUESTION_BEGIN
 //     });
 
 // export const savedQuestion = ()=>(
 //     {
-//         type:SAVE_NODE_SUCCESS
+//         type:SAVE_QUESTION_SUCCESS
 //     });
 
-// export const saveNodeErr = (error) =>(
+// export const saveQuestionErr = (error) =>(
 //     {
-//         type:SAVE_NODE_FAILURE,
+//         type:SAVE_QUESTION_FAILURE,
 //         payload:{error}
 //     });    

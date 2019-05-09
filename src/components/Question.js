@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 // import randomColor from 'randomcolor';
 import * as SRD from "storm-react-diagrams"
 
-import {saveNode} from '../actions/questionActions';
+import {saveQuestion} from '../actions/questionActions';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AnswerInput from './AnswerInput';
@@ -307,10 +307,10 @@ import ls from 'local-storage';
         })
     }
 
-    saveNewNode = ()=>{
-       this.props.dispatch(saveNode({
+    saveNewQuestion = ()=>{
+       this.props.dispatch(saveQuestion({
             treeID:this.props.activeTree.ID,
-            nodeText:this.state.newQuestionText,
+            question:this.state.newQuestionText,
             answers:this.state.newAnswersArray
        }));
        
@@ -319,11 +319,11 @@ import ls from 'local-storage';
 
     saveButton()
     {
-        if(this.props.savingNode.loading)
+        if(this.props.savingQuestion.loading)
         {
             return <Button variant="primary" disabled={true}><FontAwesomeIcon icon="spinner" spin /></Button>
         }
-        return <Button variant="primary" onClick={this.saveNewNode}>
+        return <Button variant="primary" onClick={this.saveNewQuestion}>
                 Save Changes
                 </Button>
     }
@@ -394,7 +394,7 @@ function mapStateToProps(state)
         connections:state.connections.connections,
         nodes:state.connections.nodes,
         newQuestion:state.newQuestion,
-        savingNode:state.savingNode
+        savingQuestion:state.savingQuestion
     }
 }
 
