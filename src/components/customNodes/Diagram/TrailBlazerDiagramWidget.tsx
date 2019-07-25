@@ -5,7 +5,7 @@ import Fullscreen from 'react-full-screen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fullscreen } from "glamor";
 import store from '../../../store';
-import { saveQuestion } from '../../../actions/questionActions';
+import { saveNode } from '../../../actions/nodeActions';
 import ls from 'local-storage';
 import TweenMax from 'gsap';
 import Expo from 'gsap';
@@ -67,9 +67,9 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 
 		let state = store.getState();
 		let contextCoords = this.props['mouseDownCoords'];
-		store.dispatch(saveQuestion({
+		store.dispatch(saveNode({
             treeID:state.activeTree.ID,
-			question:"New Question",
+			node:"New Node",
 			positionX:contextCoords.x,
 			positionY:contextCoords.y,
             answers:[
@@ -392,7 +392,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					<div>
 						<ContextMenu id="diagram_trigger" className={"contextMenu"}>
 							<MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-								New Question
+								New Node
 							</MenuItem>
 							<MenuItem onClick={this.centerScreen}>
 								Center Canvas

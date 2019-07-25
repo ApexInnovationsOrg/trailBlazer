@@ -56,9 +56,9 @@ export const fetchTreeBegin = () => ({
     type: FETCH_TREE_BEGIN
   });
   
-  export const fetchTreeSuccess = questions => ({
+  export const fetchTreeSuccess = nodes => ({
     type: FETCH_TREE_SUCCESS,
-    payload:{ questions }
+    payload:{ nodes }
   });
   
   export const fetchTreeFailure = error => ({

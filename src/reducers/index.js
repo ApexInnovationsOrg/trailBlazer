@@ -5,8 +5,8 @@ import activeTreeReducer from './activeTreeReducer';
 import singleForestReducer from './singleForestReducer';
 import treeReducer from './treeReducer';
 import connectionsReducer from './connectionsReducer';
-import questionReducer from './questionReducer';
-import saveingQuestionReducer from './saveingQuestionReducer';
+import nodeReducer from './nodeReducer';
+import saveingNodeReducer from './saveingNodeReducer';
 
 export default combineReducers({
    forests: forestReducer,
@@ -15,7 +15,7 @@ export default combineReducers({
    activeTree:activeTreeReducer,
    tree:treeReducer,
    connections:connectionsReducer,
-   newQuestion:questionReducer,
-   savingQuestion:saveingQuestionReducer
+   newNode:nodeReducer,
+   savingNode:saveingNodeReducer
 })
 

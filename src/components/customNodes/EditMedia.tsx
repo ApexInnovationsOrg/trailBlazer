@@ -8,7 +8,7 @@ import {getMediaType} from '../../utils/getMediaType';
 import Dropzone from 'react-dropzone';
 
 import store from '../../store';
-import { savedQuestion } from "../../actions/questionActions";
+import { savedNode } from "../../actions/nodeActions";
 import { getTree } from "../../actions/getTree";
 
 
@@ -43,7 +43,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
 
     getMasterMedia()
     {
-        return this.props.node.question['Contents'].map((content)=>{
+        return this.props.node.node['Contents'].map((content)=>{
             if(content.Content.type === "masterMedia")
             {
                 let media = content.Content;
@@ -92,10 +92,10 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
     }
     deleteMedia = ()=>
     {
-        return this.props.node.question['Contents'].map((content,index)=>{
+        return this.props.node.node['Contents'].map((content,index)=>{
             if(content.Content.type === "masterMedia")
             {
-                this.props.node.question['Contents'].splice(index,1);
+                this.props.node.node['Contents'].splice(index,1);
                 this.props.node.repaintCanvas();
                 this.forceUpdate();
             }
@@ -111,7 +111,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
         })
             var data = new FormData();
             data.append('files',this.state.previewUpload[0],this.state.previewUpload[0]['name']);
-            data.append('json',JSON.stringify({controller:'Content',action:'uploadMedia',questionID:this.props.node.question['ID']}));
+            data.append('json',JSON.stringify({controller:'Content',action:'uploadMedia',nodeID:this.props.node.node['ID']}));
             return fetch(process.env.REACT_APP_API_LOCATION,{
                 method:'POST',
                 body:data
@@ -198,7 +198,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
 
 	render() {
 
-		return (<div className={'questionAndAnswerAreaOnNodeContainer'}>
+		return (<div className={'nodeAndAnswerAreaOnNodeContainer'}>
             Media
             <button style={{float:'right', background:'red'}} onClick={this.exitMedia}>
                    X

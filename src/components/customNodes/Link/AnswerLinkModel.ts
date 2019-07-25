@@ -23,11 +23,11 @@ export class AnswerLinkModel extends DefaultLinkModel {
 		});
 	}
 
-	// getSourcePort(): QuestionPortModel {
+	// getSourcePort(): NodePortModel {
 	// 	return this.sourcePort;
 	// }
 
-	// getTargetPort(): QuestionPortModel {
+	// getTargetPort(): NodePortModel {
 	// 	return this.targetPort;
 	// }
 
@@ -39,7 +39,7 @@ export class AnswerLinkModel extends DefaultLinkModel {
 		}
 		
 		let answer = this.sourcePort.parent['answers'][parseInt(this.sourcePort.name.slice(-1))];
-		let question = this.targetPort.parent['question'];
+		let node = this.targetPort.parent['node'];
 
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
@@ -50,7 +50,7 @@ export class AnswerLinkModel extends DefaultLinkModel {
 				controller:'Answer',
 				action:'createNewLink',
 				answerID: answer.ID,
-				nextNodeID:question.ID
+				nextNodeID:node.ID
 			})
 		})
 	}

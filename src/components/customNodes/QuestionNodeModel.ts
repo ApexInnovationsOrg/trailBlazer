@@ -4,27 +4,27 @@ import { QuestionPortModel } from "./QuestionPortModel";
 import store from '../../store';
 import {getSingleForest} from '../../actions/getForest';
 import {getTree} from '../../actions/getTree';
-import { savedQuestion } from "../../actions/questionActions";
+import { savedNode } from "../../actions/nodeActions";
 
 
 export class QuestionNodeModel extends NodeModel {
 	name: string;
-	question: Object;
 	node: Object;
+	question: Object;
 	answers: Array<Object>;
 	_id:string;
 	_x:number;
 	_y:number;
 	editingAnswerIndex:number;
 	waiting:boolean;
-	masterQuestion:boolean;
+	masterNode:boolean;
 	editing:boolean;
 	savePositions:boolean;
 	editingAnswer:boolean;
 	props?:object;
 
-	constructor(name: string = "Question", node: Object = {}, answers: Array<Object> = []) {
-		super("question");
+	constructor(name: string = "Node", node: Object = {}, answers: Array<Object> = []) {
+		super("node");
 
 		this.name = name;
 		this.node = node;
@@ -33,7 +33,7 @@ export class QuestionNodeModel extends NodeModel {
 
 		
 
-		// console.log('question port time',question);
+		// console.log('node port time',node);
 		
 		this.answers.forEach((answer,index)=>{
 			let port = this.addOutPort("answer" + index);	
@@ -42,8 +42,8 @@ export class QuestionNodeModel extends NodeModel {
 				port.NextNodeID = answer['NextNodeID'];
 			}
 		})
-		// console.log('de question', this.question);
-		this.masterQuestion = false;
+		// console.log('de node', this.node);
+		this.masterNode = false;
 		this.editing = false;
 		this.setMaster.bind(this);
 		this.savePositions = false;
@@ -73,14 +73,14 @@ export class QuestionNodeModel extends NodeModel {
 
 
 
-	setMaster(masterQuestion)
+	setMaster(masterNode)
 	{
-		if(!masterQuestion)
+		if(!masterNode)
 		{
-			this.addInPort("question");
+			this.addInPort("node");
 		}
 
-		this.masterQuestion = masterQuestion;
+		this.masterNode = masterNode;
 	}
 
 	setEdit = (mode)=>
@@ -118,14 +118,14 @@ export class QuestionNodeModel extends NodeModel {
 			},
 			body:JSON.stringify({
 				controller:'Node',
-				action:'updateQuestion',
+				action:'updateNode',
 				nodeID: nodeID,				
 				nodeText: nodeText				
 			})
 		}).then(res=>res.json())
         .then(json=>{
 			
-			store.dispatch(savedQuestion());
+			store.dispatch(savedNode());
         })
 
 		this.node['Answers'].map((answer,index)=>{
@@ -175,11 +175,11 @@ export class QuestionNodeModel extends NodeModel {
 		this.toggleEdit();
 
 	}
-	setMasterQuestion=()=>
+	setMasterNode=()=>
 	{
 
-		let masterQuestionID = this.question['ID'];
-		let activeTreeID = this.question['TreeID'];
+		let masterNodeID = this.node['ID'];
+		let activeTreeID = this.node['TreeID'];
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
@@ -187,13 +187,13 @@ export class QuestionNodeModel extends NodeModel {
 			},
 			body:JSON.stringify({
 				controller:'Forest',
-				action:'setMasterQuestion',
-				masterQuestionID: masterQuestionID,	
+				action:'setMasterNode',
+				masterNodeID: masterNodeID,	
 				treeID:activeTreeID			
 			})
 		}).then(()=>{
 			let state = store.getState();
-			state.activeTree.MasterQuestionID = masterQuestionID;
+			state.activeTree.MasterNodeID = masterNodeID;
 
 			store.dispatch(getTree(state['activeTree']));
 
@@ -212,11 +212,11 @@ export class QuestionNodeModel extends NodeModel {
 	}
 	updatePosition()
 	{
-		if(!this.question)
+		if(!this.node)
 		{
 			return false;
 		}
-		let questionID = this.question['ID'];
+		let nodeID = this.node['ID'];
 		let positionX = this.x;
 		let positionY = this.y;
 
@@ -228,9 +228,9 @@ export class QuestionNodeModel extends NodeModel {
 				'content-type':'application/json'
 			},
 			body:JSON.stringify({
-				controller:'Question',
-				action:'moveQuestion',
-				questionID: questionID,
+				controller:'Node',
+				action:'moveNode',
+				nodeID: nodeID,
 				positionX:positionX,
 				positionY:positionY
 			})
@@ -241,16 +241,16 @@ export class QuestionNodeModel extends NodeModel {
 	deleteNode()
 	{
 		// console.log('deleting node');
-		let questionID = this.question['ID'];
+		let nodeID = this.node['ID'];
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
 				'content-type':'application/json'
 			},
 			body:JSON.stringify({
-				controller:'Question',
-				action:'deleteQuestion',
-				questionID: questionID				
+				controller:'Node',
+				action:'deleteNode',
+				nodeID: nodeID				
 			})
 		})
 		this.remove();

@@ -7,7 +7,7 @@ import QuestionNodeWidget from "./QuestionNodeWidget";
 import { Editor } from '@tinymce/tinymce-react';
 import store from '../../store';
 
-import { savedQuestion } from '../../actions/questionActions';
+import { savedNode } from '../../actions/nodeActions';
 
 export interface AnswerProps{
     node: QuestionNodeModel,
@@ -63,7 +63,7 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
         let answerWeight = this.props.node.answers[this.props.node.editingAnswerIndex]['Weight'];
         let followupText = this.props.node.answers[this.props.node.editingAnswerIndex]['FollowupText'];
         let followupTextID = this.props.node.answers[this.props.node.editingAnswerIndex]['FollowupTextID'];
-        let questionID = this.props.node.question['ID'];
+        let nodeID = this.props.node.node['ID'];
         this.setState({
             saving:true
         })
@@ -82,7 +82,7 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
                 answerWeight: answerWeight,
                 followupText:followupText,			
                 followupTextID:followupTextID,	
-                questionID:questionID		
+                nodeID:nodeID		
 			})
 		}).then(res=>res.json())
         .then(json=>{
@@ -127,7 +127,7 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
             // let state = store.getState();
 
 
-			store.dispatch(savedQuestion());
+			store.dispatch(savedNode());
 
         })
     }
@@ -178,7 +178,7 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
         }
         else
         {
-            return (<div className={'questionAndAnswerAreaOnNodeContainer'}>
+            return (<div className={'nodeAndAnswerAreaOnNodeContainer'}>
             
             <div>
                 <p>Answer Text:</p>

@@ -242,7 +242,7 @@ footer {
 // }
 
 
-.question{
+.node{
   border:1px solid black;
   background:#d0e5ff;
   padding:1em;
@@ -261,13 +261,13 @@ background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.0
 background-size: 50px 50px;
 }
 
-.questionAndAnswerAreaOnNodeContainer
+.nodeAndAnswerAreaOnNodeContainer
 {
   background:rgb(226,227,226);
   padding:1em;
 }
 
-.questionAreaNode
+.nodeAreaNode
 {
   min-height:70px;
   padding:0.5em;
@@ -314,7 +314,7 @@ background-size: 50px 50px;
   border-radius:100%;
   cursor:pointer; 
 }
-.questionPort
+.nodePort
 {
   left:-10px;
   top:35px
@@ -327,7 +327,7 @@ background-size: 50px 50px;
   top:50%;
 }
 
-.questionNotch
+.nodeNotch
 {
   position:absolute;
 	width:100%;
@@ -337,7 +337,7 @@ background-size: 50px 50px;
 	background:rgb(32,53,105);
 }
 
-.questionLabel
+.nodeLabel
 {
   
   position:relative;

@@ -15,7 +15,7 @@ export function saveContent(data){
             body:JSON.stringify({
                 controller:'Content',
                 action: data.ID === -1 ? 'createNewContent' : 'updateContent',
-                questionID:data.questionID,
+                nodeID:data.nodeID,
                 contentID:data.ID,
                 content:JSON.stringify(data.content)
             })
@@ -47,24 +47,24 @@ export function saveContent(data){
     }
 
 
-// export const alterQuestion = question => (
+// export const alterNode = node => (
 //     {
 //     type: SET_NEW_ANSWERS,
-//     payload:{question}
+//     payload:{node}
 //   });
 
 
-// export const savingQuestion = ()=>(
+// export const savingNode = ()=>(
 //     {
 //         type:SAVE_QUESTION_BEGIN
 //     });
 
-// export const savedQuestion = ()=>(
+// export const savedNode = ()=>(
 //     {
 //         type:SAVE_QUESTION_SUCCESS
 //     });
 
-// export const saveQuestionErr = (error) =>(
+// export const saveNodeErr = (error) =>(
 //     {
 //         type:SAVE_QUESTION_FAILURE,
 //         payload:{error}

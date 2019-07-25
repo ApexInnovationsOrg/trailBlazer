@@ -4,7 +4,7 @@ const initialState = {
     nodes:[
         // {
         //     'ID' : '1',
-        //     'QuestionText' :'Questions booting',
+        //     'NodeText' :'Nodes booting',
         //     'Active' : 'Y',
         //     'CreationDate' : '0000-00-00 00:00:00',
         //     'Weight' : '2',
@@ -31,7 +31,7 @@ export default function(state=initialState, action){
                     nodes:[
                         // {
                             //     'ID' : '1',
-                            //     'QuestionText' :'Questions booting',
+                            //     'NodeText' :'Nodes booting',
                             //     'Active' : 'Y',
                             //     'CreationDate' : '0000-00-00 00:00:00',
                             //     'Weight' : '2',
@@ -53,7 +53,7 @@ export default function(state=initialState, action){
                 nodes:[
                     // {
                     //     'ID' : '1',
-                    //     'QuestionText' :'Questions booting',
+                    //     'NodeText' :'Nodes booting',
                     //     'Active' : 'Y',
                     //     'CreationDate' : '0000-00-00 00:00:00',
                     //     'Weight' : '2',

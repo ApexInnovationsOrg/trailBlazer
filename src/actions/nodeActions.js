@@ -9,38 +9,38 @@ import {getTree} from './getTree';
 import store from '../store';
 
 
-export function updateNewQuestion(question,answers){
+export function updateNewNode(node,answers){
     return dispatch =>{
-        // console.log('updating new question');
-        dispatch(alterQuestion({
-            questionText:question,
+        // console.log('updating new node');
+        dispatch(alterNode({
+            nodeText:node,
             answers:answers
         }));
     }
 
 }
 
-export function setMasterQuestion(tree)
+export function setMasterNode(tree)
 {
     return dispatch => {
         return dispatch(getTree(tree));
     }
 }
 
-export function saveQuestion(data){
+export function saveNode(data){
 
     return dispatch => {
-        dispatch(savingQuestion());
+        dispatch(savingNode());
         return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{
                 'content-type':'application/json'
             },
             body:JSON.stringify({
-                controller:'Question',
-                action:'createNewQuestion',
+                controller:'Node',
+                action:'createNewNode',
                 treeID:data.treeID,
-                question:data.question,
+                node:data.node,
                 answers:data.answers,
                 positionX:data.positionX,
                 positionY:data.positionY
@@ -50,11 +50,11 @@ export function saveQuestion(data){
         .then(json=>{
             if(!json.success)
             {
-                dispatch(saveQuestionErr(json.errormsg));
+                dispatch(saveNodeErr(json.errormsg));
             }
             else
             {
-                dispatch(savedQuestion())
+                dispatch(savedNode())
             }
         })
         .then(()=>{
@@ -74,7 +74,7 @@ export function saveSingleAnswer(data){
             body:JSON.stringify({
                 controller:'Answer',
                 action:'createnewanswer',
-                questionID:data.questionID,
+                nodeID:data.nodeID,
                 answerText:data.answerText
             })
         })
@@ -87,24 +87,24 @@ export function saveSingleAnswer(data){
 }
 
 
-export const alterQuestion = question => (
+export const alterNode = node => (
     {
     type: SET_NEW_ANSWERS,
-    payload:{question}
+    payload:{node}
   });
 
 
-export const savingQuestion = ()=>(
+export const savingNode = ()=>(
     {
         type:SAVE_QUESTION_BEGIN
     });
 
-export const savedQuestion = ()=>(
+export const savedNode = ()=>(
     {
         type:SAVE_QUESTION_SUCCESS
     });
 
-export const saveQuestionErr = (error) =>(
+export const saveNodeErr = (error) =>(
     {
         type:SAVE_QUESTION_FAILURE,
         payload:{error}

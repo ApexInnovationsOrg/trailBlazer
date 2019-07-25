@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 // import randomColor from 'randomcolor';
 import * as SRD from "storm-react-diagrams"
 
-import {saveQuestion} from '../actions/questionActions';
+import {saveNode} from '../actions/nodeActions';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AnswerInput from './AnswerInput';
@@ -22,7 +22,7 @@ import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagr
 import ls from 'local-storage';
 
 
-  class Questions extends Component {
+  class Nodes extends Component {
       
     constructor()
     {
@@ -55,8 +55,8 @@ import ls from 'local-storage';
     componentDidMount()
     {
         this.setState({
-            newQuestionText:this.props.newQuestion.questionText,
-            newAnswersArray:this.props.newQuestion.answers
+            newNodeText:this.props.newNode.nodeText,
+            newAnswersArray:this.props.newNode.answers
         })
      
     }
@@ -68,13 +68,13 @@ import ls from 'local-storage';
         console.log(this.props.tree,'???????????????????????????');
         const nodes = this.retrieveNodes(this.props.tree.nodes);
 
-        // console.log('what the heck',questionNodes);
+        // console.log('what the heck',nodeNodes);
         const connectionData = this.retrieveConnections(nodes);
 
 
-        this.engine.registerPortFactory(new SimplePortFactory("question", config => new QuestionPortModel()));
+        this.engine.registerPortFactory(new SimplePortFactory("node", config => new QuestionPortModel()));
         this.engine.registerNodeFactory(new QuestionNodeFactory());
-        // var node2 = new QuestionNodeModel('This should be the question');
+        // var node2 = new QuestionNodeModel('This should be the node');
         // node2.setPosition(250, 108);
         // this.model.addAll(node2);
         
@@ -125,42 +125,42 @@ import ls from 'local-storage';
     }
 
     
-    findQuestion(questionID)
+    findNode(nodeID)
     {
-        for(let i in this.props.tree.questions)
+        for(let i in this.props.tree.nodes)
         {
-            let question = this.props.tree.questions[i];
-            if(question.ID === questionID)
+            let node = this.props.tree.nodes[i];
+            if(node.ID === nodeID)
             {
-                return question;
+                return node;
             }
         }
         return false;
     }
   
 
-    questionFunction(question,masterQuestion,backgroundColor = '#fff')
+    nodeFunction(node,masterNode,backgroundColor = '#fff')
     {
         
-        let classes = "question";
-        if(masterQuestion)
+        let classes = "node";
+        if(masterNode)
         {
-            classes = classes + " masterQuestion";
+            classes = classes + " masterNode";
         }
         return  <div>
 
-                    <div style={{'background':backgroundColor}} className={classes}>Question: {question.QuestionText}
-                        <div className="weight">Weight: {question.Weight}</div>
+                    <div style={{'background':backgroundColor}} className={classes}>Node: {node.NodeText}
+                        <div className="weight">Weight: {node.Weight}</div>
                         <div className="answerArea">
                             
-                            Answers:{this.renderAnswers(question)}
+                            Answers:{this.renderAnswers(node)}
                         </div>
                         <div>
                                     
                         </div>
                     </div>
                     
-                    {this.renderNextQuestions(question)}
+                    {this.renderNextNodes(node)}
                 </div>
     }
 
@@ -170,18 +170,18 @@ import ls from 'local-storage';
         console.log('reeeeeee', this.props.tree);
         return this.props.tree.nodes.map((node)=>{
             
-            var questionNode = new QuestionNodeModel("Question", node ,node.Answers);
-            questionNode._id = node.ID;
-            questionNode._engine = this.engine;
+            var nodeNode = new QuestionNodeModel("Node", node ,node.Answers);
+            nodeNode._id = node.ID;
+            nodeNode._engine = this.engine;
 
-            // console.log(this.props.activeTree.MasterQuestionID,question.ID);
+            // console.log(this.props.activeTree.MasterNodeID,node.ID);
             
-            questionNode.setMaster(this.props.activeTree.MasterNodeID === node.ID);
+            nodeNode.setMaster(this.props.activeTree.MasterNodeID === node.ID);
             
-            questionNode.setPosition(parseInt(node.PositionX), parseInt(node.PositionY));
-            questionNode.enableSavePositions();
+            nodeNode.setPosition(parseInt(node.PositionX), parseInt(node.PositionY));
+            nodeNode.enableSavePositions();
 
-            return questionNode;
+            return nodeNode;
 
         });
     }
@@ -197,7 +197,7 @@ import ls from 'local-storage';
 
             for(let i in node.ports)
             {
-                console.log('mah question port',node.ports[i]);
+                console.log('mah node port',node.ports[i]);
                 
                 let port = node.ports[i];
                 if(port.NextNodeID && !port.in)
@@ -213,7 +213,7 @@ import ls from 'local-storage';
                         
                     }catch(e)
                     {
-                        return console.error('could not find or draw question/answer connection');
+                        return console.error('could not find or draw node/answer connection');
                     }
                 }
                 
@@ -226,7 +226,7 @@ import ls from 'local-storage';
         
     findNodePort(id,nodes)
     {
-        console.log('finding question node port');
+        console.log('finding node node port');
         for(let i in nodes)
         {
             let node = nodes[i];
@@ -303,14 +303,14 @@ import ls from 'local-storage';
     stepFunction(e)
     {
         this.setState({
-            newQuestionText:e.target.value
+            newNodeText:e.target.value
         })
     }
 
-    saveNewQuestion = ()=>{
-       this.props.dispatch(saveQuestion({
+    saveNewNode = ()=>{
+       this.props.dispatch(saveNode({
             treeID:this.props.activeTree.ID,
-            question:this.state.newQuestionText,
+            nodeText:this.state.newNodeText,
             answers:this.state.newAnswersArray
        }));
        
@@ -319,11 +319,11 @@ import ls from 'local-storage';
 
     saveButton()
     {
-        if(this.props.savingQuestion.loading)
+        if(this.props.savingNode.loading)
         {
             return <Button variant="primary" disabled={true}><FontAwesomeIcon icon="spinner" spin /></Button>
         }
-        return <Button variant="primary" onClick={this.saveNewQuestion}>
+        return <Button variant="primary" onClick={this.saveNewNode}>
                 Save Changes
                 </Button>
     }
@@ -341,20 +341,20 @@ import ls from 'local-storage';
 
 
             {/* <Button variant="primary" onClick={this.handleShow}>
-                Add Question
+                Add Node
             </Button> */}
 
             <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Question</Modal.Title>
+                <Modal.Title>Add Node</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form className="form-horizontal">
                 <fieldset>
                 <div className="form-group">
-                    <label className="col-md-4 control-label">Question Text</label>  
+                    <label className="col-md-4 control-label">Node Text</label>  
                     <div className="col-md-12 p-4" style={{'background':'#e8e8e8'}}>
-                    <input id="textinput" name="textinput" type="text" placeholder="What time is it?" className="form-control input-lg" onChange={this.stepFunction} value={this.state.newQuestionText}/>
+                    <input id="textinput" name="textinput" type="text" placeholder="What time is it?" className="form-control input-lg" onChange={this.stepFunction} value={this.state.newNodeText}/>
                     </div>
                 </div>
                 <div className="form-group">
@@ -393,10 +393,10 @@ function mapStateToProps(state)
         activeTree:state.activeTree,
         connections:state.connections.connections,
         nodes:state.connections.nodes,
-        newQuestion:state.newQuestion,
-        savingQuestion:state.savingQuestion
+        newNode:state.newNode,
+        savingNode:state.savingNode
     }
 }
 
 
-export default connect(mapStateToProps)(Questions);
+export default connect(mapStateToProps)(Nodes);

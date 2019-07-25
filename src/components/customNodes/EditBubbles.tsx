@@ -116,7 +116,7 @@ class Bubble extends React.Component<BubbleProps,BubbleState>{
         const save = saveContent({
             ID:this.props.data['ID'],
             content:this.props.data['Content'],
-            questionID:this.props.data['QuestionID']
+            nodeID:this.props.data['NodeID']
         });
 
         save.then((json)=>{
@@ -182,13 +182,13 @@ export class EditBubbles extends React.Component<AnswerProps,AnswerState> {
     
     removeBubble = (index)=>
     {
-        this.props.node.question['Contents'].splice(index,1);
+        this.props.node.node['Contents'].splice(index,1);
         this.props.node.repaintCanvas();
     }
 
     getBubbles = ()=>
     {
-        return this.props.node.question['Contents'].map((content,index)=>{
+        return this.props.node.node['Contents'].map((content,index)=>{
             if(content.Content.type === "bubble")
             {
                 let bubble = content.Content;
@@ -200,10 +200,10 @@ export class EditBubbles extends React.Component<AnswerProps,AnswerState> {
 
     newBubble = ()=>
     {
-        this.props.node.question['Contents'].push({
+        this.props.node.node['Contents'].push({
             Content:{type:"bubble",title:"Untitled",text:""},
             ID:-1,
-            QuestionID:this.props.node.question["ID"]            
+            NodeID:this.props.node.node["ID"]            
         })
         this.forceUpdate();
     }
@@ -216,7 +216,7 @@ export class EditBubbles extends React.Component<AnswerProps,AnswerState> {
     }
 
 	render() {
-		return (<div className={'questionAndAnswerAreaOnNodeContainer'}>
+		return (<div className={'nodeAndAnswerAreaOnNodeContainer'}>
             <div>
             Bubbles 
             <button style={{float:'right', background:'red'}} onClick={this.exitBubbles}>
@@ -244,8 +244,8 @@ function mapStateToProps(state)
         activeTree:state.activeTree,
         connections:state.connections.connections,
         nodes:state.connections.nodes,
-        newQuestion:state.newQuestion,
-        savingQuestion:state.savingQuestion
+        newNode:state.newNode,
+        savingNode:state.savingNode
     }
 }
 

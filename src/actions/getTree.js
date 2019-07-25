@@ -32,13 +32,13 @@ export function getTree(tree){
 
                     
 
-                   dispatch(fetchTreeSuccess(json.data.map((question) => {
-                        question.Contents.map((content)=>{
+                   dispatch(fetchTreeSuccess(json.data.map((node) => {
+                        node.Contents.map((content)=>{
                             content.Content = JSON.parse(content.Content);
                             return content;
                         })
 
-                        return question;
+                        return node;
                     })));
                     // console.log('fetch tree success');
                     return json.data;

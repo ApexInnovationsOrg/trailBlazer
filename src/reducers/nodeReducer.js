@@ -1,7 +1,7 @@
 import { SET_NEW_ANSWERS } from '../actions/types';
 
 const initialState = {
-    questionText:'',
+    nodeText:'',
     answers:[
     {
         answerText:''

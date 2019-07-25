@@ -11,10 +11,10 @@ import { EditMedia } from './EditMedia';
 
 import {connect} from 'react-redux';
 import store from "../../store";
-import { savedQuestion } from '../../actions/questionActions';
+import { savedNode } from '../../actions/nodeActions';
 import { getMaxListeners } from "cluster";
 
-import {saveSingleAnswer} from '../../actions/questionActions';
+import {saveSingleAnswer} from '../../actions/nodeActions';
 
 
 export interface QuestionNodeWidgetProps {
@@ -63,24 +63,24 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 		console.log('possibleDelete');
 		// Mousetrap
 	}
-	getQuestionPort = ()=>
+	getNodePort = ()=>
 	{	
-		if(!this.props.node.masterQuestion)
+		if(!this.props.node.masterNode)
 		{
-			return <div className={"port questionPort"}>
-						<PortWidget name="question" node={this.props.node} />
+			return <div className={"port nodePort"}>
+						<PortWidget name="node" node={this.props.node} />
 					</div>
 		}
 	}
 
 	setMaster = ()=>
 	{
-		this.props.node.setMasterQuestion();
+		this.props.node.setMasterNode();
 	}
 
-	getMasterQuestionButton = () =>
+	getMasterNodeButton = () =>
 	{
-		if(this.props.node.masterQuestion)
+		if(this.props.node.masterNode)
 		{
 			return <span onDoubleClick={this.setMaster}><FontAwesomeIcon style={{cursor:'pointer',color:'gold'}} icon="star"/></span>
 		}
@@ -110,7 +110,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 	{
 		// console.log('save changes');
 		this.props.node.saveChanges();
-		// store.dispatch(savedQuestion());
+		// store.dispatch(savedNode());
 	}
 
 	toggleEdit = ()=>
@@ -134,7 +134,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 	}
 	updateTitle = evt =>
 	{
-		this.props.node.question['NodeText'] = evt.target.value;
+		this.props.node.node['NodeText'] = evt.target.value;
 	}
 	updateAnswer = (evt,answer)=>
 	{
@@ -169,12 +169,12 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 		// this.props.node.answers.push({
 		// 	ID:"-1",
 		// 	AnswerText:"New Answer",
-		// 	QuestionID:this.props.node.question['ID'],
-		// 	NextQuestionID:"-1"
+		// 	NodeID:this.props.node.node['ID'],
+		// 	NextNodeID:"-1"
 		// })
 		
 		let data = {
-			questionID: this.props.node.question['ID'],
+			nodeID: this.props.node.node['ID'],
 			answerText:"New Answer"
 		}
 		
@@ -316,15 +316,15 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 				style={{
 					width:"100%",
 					height:"70px",
-					background: this.props.node.masterQuestion ? 'green' : "rgb(0,87,157)"
+					background: this.props.node.masterNode ? 'green' : "rgb(0,87,157)"
 				}}
 			>
 
-			<div className={"questionNotch"}/>
+			<div className={"nodeNotch"}/>
 
 
 
-				{this.getQuestionPort()}
+				{this.getNodePort()}
 				
 			
 			<div style={{
@@ -336,7 +336,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 				{this.props.node.name}
 			</div>
 			<div className={"editNodeContainer"}>
-				{this.getMasterQuestionButton()}
+				{this.getMasterNodeButton()}
 			</div>
 			<div onClick={this.editBubbles} className={"editNodeContainer"}>
 				{this.hasBubbleContent()}
@@ -352,9 +352,9 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 				{this.editContainer()}
 				{this.editBubbleContainer()}
 				{this.editMediaContainer()}
-				<div style={{display:this.props.node.editingAnswer ? 'none':'block'}}className={"questionAndAnswerAreaOnNodeContainer"}//that's a little verbose
+				<div style={{display:this.props.node.editingAnswer ? 'none':'block'}}className={"nodeAndAnswerAreaOnNodeContainer"}//that's a little verbose
 				>
-					<div className={"questionAreaNode"}
+					<div className={"nodeAreaNode"}
 					>
 						<ContentEditable style={{cursor:this.props.node.editing?'pointer':'move', background:this.props.node.editing?'rgba(106, 193, 255, 0.17)':'white'}} html={this.props.node.node['NodeText']} onChange={this.updateTitle} disabled={!this.props.node.editing}></ContentEditable>
 					</div>
@@ -412,8 +412,8 @@ function mapStateToProps(state)
         activeTree:state.activeTree,
         connections:state.connections.connections,
         nodes:state.connections.nodes,
-        newQuestion:state.newQuestion,
-        savingQuestion:state.savingQuestion
+        newNode:state.newNode,
+        savingNode:state.savingNode
     }
 }
 
