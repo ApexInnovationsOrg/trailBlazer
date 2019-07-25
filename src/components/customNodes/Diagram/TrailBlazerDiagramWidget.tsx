@@ -12,7 +12,7 @@ import Expo from 'gsap';
 
 
 
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
+import { ContextMenu, MenuItem, ContextMenuTrigger, SubMenu } from "react-contextmenu";
 
 export interface TrailblazerDiagramProps extends DiagramProps{
 	mouseDownCoords:object;
@@ -70,6 +70,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 		store.dispatch(saveNode({
             treeID:state.activeTree.ID,
 			node:"New Node",
+			type:data.type,
 			positionX:contextCoords.x,
 			positionY:contextCoords.y,
             answers:[
@@ -83,7 +84,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					answerText:'Answer3'
 				}
 			]
-       }));
+		}));
 	
 	}
 
@@ -391,9 +392,14 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					{this.state.action instanceof SelectingAction && this.drawSelectionBox()}
 					<div>
 						<ContextMenu id="diagram_trigger" className={"contextMenu"}>
-							<MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-								New Node
-							</MenuItem>
+							
+							<SubMenu title="New Node">
+								<MenuItem onClick={this.handleClick} data={{ type: '1' }}>Question</MenuItem>
+								<MenuItem onClick={this.handleClick} data={{ type: '2' }}>Preliminary</MenuItem>
+								<MenuItem onClick={this.handleClick} data={{ type: '3' }}>Post Node</MenuItem>
+								
+							</SubMenu>
+							<MenuItem divider />
 							<MenuItem onClick={this.centerScreen}>
 								Center Canvas
 							</MenuItem>

@@ -41,6 +41,7 @@ export function saveNode(data){
                 action:'createNewNode',
                 treeID:data.treeID,
                 node:data.node,
+                typeID:data.type,
                 answers:data.answers,
                 positionX:data.positionX,
                 positionY:data.positionY
