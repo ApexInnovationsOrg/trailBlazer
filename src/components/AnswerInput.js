@@ -6,7 +6,7 @@ class AnswerInput extends Component {
     {
         super(props);
 
-        console.log(props);
+        //console.log(props);
 
         this.state = {
             'showAnswer':true

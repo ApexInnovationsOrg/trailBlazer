@@ -65,10 +65,10 @@ import ls from 'local-storage';
     drawDiagram()
     {
         this.clearAllNodes();
-        console.log(this.props.tree,'???????????????????????????');
+        //console.log(this.props.tree,'???????????????????????????');
         const nodes = this.retrieveNodes(this.props.tree.nodes);
 
-        // console.log('what the heck',nodeNodes);
+        // //console.log('what the heck',nodeNodes);
         const connectionData = this.retrieveConnections(nodes);
 
 
@@ -167,14 +167,14 @@ import ls from 'local-storage';
     retrieveNodes()
     {
 
-        console.log('reeeeeee', this.props.tree);
+        //console.log('reeeeeee', this.props.tree);
         return this.props.tree.nodes.map((node)=>{
             
             var nodeNode = new QuestionNodeModel("Node", node ,node.Answers);
             nodeNode._id = node.ID;
             nodeNode._engine = this.engine;
 
-            // console.log(this.props.activeTree.MasterNodeID,node.ID);
+            // //console.log(this.props.activeTree.MasterNodeID,node.ID);
             
             nodeNode.setMaster(this.props.activeTree.MasterNodeID === node.ID);
             
@@ -189,7 +189,7 @@ import ls from 'local-storage';
     retrieveConnections(nodes)
     {
         let links = [];
-        console.log('--------------------',nodes,this.model);
+        //console.log('--------------------',nodes,this.model);
         for(let q in nodes)
         {
 
@@ -197,12 +197,12 @@ import ls from 'local-storage';
 
             for(let i in node.ports)
             {
-                console.log('mah node port',node.ports[i]);
+                //console.log('mah node port',node.ports[i]);
                 
                 let port = node.ports[i];
                 if(port.NextNodeID && !port.in)
                 {
-                    console.log('the thing');   
+                    //console.log('the thing');   
                     try{
                         let nodePort = this.findNodePort(port.NextNodeID,nodes);
                         
@@ -226,11 +226,11 @@ import ls from 'local-storage';
         
     findNodePort(id,nodes)
     {
-        console.log('finding node node port');
+        //console.log('finding node node port');
         for(let i in nodes)
         {
             let node = nodes[i];
-            // console.log('node id',node,id);
+            // //console.log('node id',node,id);
             if(node._id === id)
             {
                 for(let q in node.ports)

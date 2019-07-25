@@ -9,7 +9,7 @@ import {getTree} from './getTree'
 
 export function saveTree(data){
     return dispatch =>{
-        console.log('int he savetree funct',data);
+        //console.log('int he savetree funct',data);
         return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{

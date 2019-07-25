@@ -8,7 +8,7 @@ import { AnswerLinkModel } from "./AnswerLinkModel";
 export class AnswerLinkFactory extends AbstractLinkFactory<AnswerLinkModel> {
 	constructor() {
 		super("default");
-		console.log('link factory hit');
+		//console.log('link factory hit');
 	}
 
 	generateReactWidget(diagramEngine: DiagramEngine, link: AnswerLinkModel): JSX.Element {

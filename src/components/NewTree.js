@@ -47,7 +47,7 @@ class NewTree extends Component {
         this.setState({
             savingTree:true
         })
-        // console.log(this.props);
+        // //console.log(this.props);
         let nameParam = this.state.editingName;
         let forestID = this.props.activeForest.ID;
         this.props.dispatch(saveTree({ name: nameParam, forestID:forestID} ));

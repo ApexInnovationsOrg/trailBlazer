@@ -40,7 +40,7 @@ export function getTree(tree){
 
                         return node;
                     })));
-                    // console.log('fetch tree success');
+                    // //console.log('fetch tree success');
                     return json.data;
                 }
             })

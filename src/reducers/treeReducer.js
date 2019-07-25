@@ -23,7 +23,7 @@ export default function(state=initialState, action){
     switch(action.type){
 
         case FETCH_TREE_BEGIN:
-                console.log('fetching tree');
+                //console.log('fetching tree');
                 return {
                     ...state,
                     loading:true,
@@ -41,8 +41,8 @@ export default function(state=initialState, action){
                         ]
                     }
         case FETCH_TREE_SUCCESS:
-                    // console.log('heres the payload',action);
-                    console.log('fetched tree');
+                    // //console.log('heres the payload',action);
+                    //console.log('fetched tree');
                 return Object.assign({},action.payload,{
                     loading:false,
                     error:null,

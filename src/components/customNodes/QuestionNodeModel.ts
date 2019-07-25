@@ -33,7 +33,7 @@ export class QuestionNodeModel extends NodeModel {
 
 		
 
-		// console.log('node port time',node);
+		// //console.log('node port time',node);
 		
 		this.answers.forEach((answer,index)=>{
 			let port = this.addOutPort("answer" + index);	
@@ -42,7 +42,7 @@ export class QuestionNodeModel extends NodeModel {
 				port.NextNodeID = answer['NextNodeID'];
 			}
 		})
-		// console.log('de node', this.node);
+		// //console.log('de node', this.node);
 		this.masterNode = false;
 		this.editing = false;
 		this.setMaster.bind(this);
@@ -240,7 +240,7 @@ export class QuestionNodeModel extends NodeModel {
 
 	deleteNode()
 	{
-		// console.log('deleting node');
+		// //console.log('deleting node');
 		let nodeID = this.node['ID'];
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',

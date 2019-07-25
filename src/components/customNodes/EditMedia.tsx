@@ -74,11 +74,11 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
     {
         const reader = new FileReader()
 
-        reader.onabort = () => console.log('file reading was aborted')
-        reader.onerror = () => console.log('file reading has failed')
+        reader.onabort = () => //console.log('file reading was aborted')
+        reader.onerror = () => //console.log('file reading has failed')
         reader.onload = () => {
           // Do whatever you want with the file contents
-          console.log(files);
+          //console.log(files);
 
           const dataURL = reader.result
 
@@ -118,7 +118,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
             })
             .then(res=>res.json())
             .then(json=>{
-                console.log(json);
+                //console.log(json);
                 let state = store.getState();
 
                 store.dispatch(getTree(state['activeTree']));
@@ -153,7 +153,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
     {
         if(this.state.previewAvailable)
         {
-            console.log(this.state.previewUpload);
+            //console.log(this.state.previewUpload);
             let type = getMediaType(this.state.previewUpload[0].path);
             let media;
             if(type.key == 'image')

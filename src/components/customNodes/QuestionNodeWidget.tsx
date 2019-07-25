@@ -55,12 +55,12 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 	destroyLink(answerName)
 	{
 
-		// console.log(answerName);
+		// //console.log(answerName);
 		this.props.node.removeLink(answerName);
 	}
 	deleteCheck(answerName)
 	{
-		console.log('possibleDelete');
+		//console.log('possibleDelete');
 		// Mousetrap
 	}
 	getNodePort = ()=>
@@ -108,7 +108,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 
 	saveChanges = ()=>
 	{
-		// console.log('save changes');
+		// //console.log('save changes');
 		this.props.node.saveChanges();
 		// store.dispatch(savedNode());
 	}
@@ -125,7 +125,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 			editingMedia:false,
 			editingAnswer:false			
 		})
-		console.log(this.props.node.editing,this.props.node.editingAnswer);
+		//console.log(this.props.node.editing,this.props.node.editingAnswer);
 	}
 
 	deleteNode = () =>
@@ -181,7 +181,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 		const saving = this.props['dispatch'](saveSingleAnswer(data));
 		
 		saving.then(()=>{
-			console.log(this.props.node);
+			//console.log(this.props.node);
 			
 		});
 
@@ -302,7 +302,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 
 
 	render() {
-		console.log('fffff',this.props.node);
+		//console.log('fffff',this.props.node);
 		return (
 			<div
 				style={{
@@ -406,7 +406,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 
 function mapStateToProps(state)
 {
-	console.log('you doing the thing');
+	//console.log('you doing the thing');
     return {
         tree: state.tree,
         activeTree:state.activeTree,

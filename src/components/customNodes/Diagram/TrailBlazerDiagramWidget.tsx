@@ -104,7 +104,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 			});
             
 			_.forEach(diagramModel.getLinks(), link => {
-                // console.log('link');
+                // //console.log('link');
 				var allSelected = true;
 				_.forEach(link.points, point => {
                     if ((this.state.action as SelectingAction).containsElement(point.x, point.y, diagramModel)) {
@@ -140,7 +140,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					model.model.y = diagramModel.getGridPosition(model.initialY + amountY / amountZoom);
 
 
-					console.log(model.initialX);
+					//console.log(model.initialX);
 					// update port coordinates as well
 					if (model.model instanceof NodeModel) {
                         _.forEach(model.model.getPorts(), port => {
@@ -303,8 +303,8 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 						this.props['mouseDownCoords']['x'] = relativeMouse.x;
 						this.props['mouseDownCoords']['y'] = relativeMouse.y;
 						
-						// console.log(this.props['mouseDownCoords']['x']);
-						// console.log(diagramModel.getGridPosition());
+						// //console.log(this.props['mouseDownCoords']['x']);
+						// //console.log(diagramModel.getGridPosition());
 						
 						if (event.nativeEvent.which === 3) return;
 						this.setState({ ...this.state, wasMoved: false });

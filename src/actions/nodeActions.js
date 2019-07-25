@@ -11,7 +11,7 @@ import store from '../store';
 
 export function updateNewNode(node,answers){
     return dispatch =>{
-        // console.log('updating new node');
+        // //console.log('updating new node');
         dispatch(alterNode({
             nodeText:node,
             answers:answers

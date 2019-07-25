@@ -67,8 +67,8 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
         this.setState({
             saving:true
         })
-        // console.log('should be fetching');
-        // console.log(this.props.answer['FollowupText']);
+        // //console.log('should be fetching');
+        // //console.log(this.props.answer['FollowupText']);
 		fetch(process.env.REACT_APP_API_LOCATION,{
 			method:'POST',
 			headers:{
@@ -95,9 +95,9 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
 
     deleteAnswer = ()=>{
 
-        // console.log(this.props.node.getPorts());
+        // //console.log(this.props.node.getPorts());
         let port = this.props.node.getPort('answer' + this.props.node.editingAnswerIndex);
-        // console.log(port);
+        // //console.log(port);
         this.props.node.removePort(port);
 
         let answerID = this.props.node.answers[this.props.node.editingAnswerIndex]['ID'];
@@ -123,7 +123,7 @@ export class EditAnswer extends React.Component<AnswerProps,AnswerState> {
             
             this.props.parent.editAnswerComplete();
             this.props.parent.forceUpdate();
-            // console.log(this.props.node.getPorts());
+            // //console.log(this.props.node.getPorts());
             // let state = store.getState();
 
 

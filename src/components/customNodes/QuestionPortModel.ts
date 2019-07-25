@@ -30,7 +30,7 @@ export class QuestionPortModel extends PortModel {
 		});
 	}
 	addLink = function (link,save?:boolean) {
-		// console.log('adding link',save);
+		// //console.log('adding link',save);
 
 		this.links[link.getID()] = link;
 	};
@@ -39,7 +39,7 @@ export class QuestionPortModel extends PortModel {
 
 	link(port: QuestionPortModel): AnswerLinkModel {
 		
-		// console.log('link hit',dontSave);
+		// //console.log('link hit',dontSave);
 		let link = this.createLinkModel(false);
 		link.setSourcePort(this);
 		link.setTargetPort(port);

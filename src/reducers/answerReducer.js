@@ -18,14 +18,14 @@ const initialState = {
 export default function(state=initialState, action){
     switch(action.type){
         // case SELECT_ANSWER:
-        //     console.log('heres the action',action)
+        //     //console.log('heres the action',action)
         //     return {
 
         //         ...state,
         //         answer:action
         //     }
         // case SUBMIT_ANSWER:
-        //     console.log('submitting answer');
+        //     //console.log('submitting answer');
         //     // return {
 
         //     //     ...state,
@@ -55,7 +55,7 @@ export default function(state=initialState, action){
                 loading:false
             }
         default:
-            // console.log('is default immediately hit');
+            // //console.log('is default immediately hit');
             return state;
     }
 }
