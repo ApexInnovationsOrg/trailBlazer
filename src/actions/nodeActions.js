@@ -40,7 +40,7 @@ export function saveNode(data){
                 controller:'Node',
                 action:'createNewNode',
                 treeID:data.treeID,
-                node:data.node,
+                nodeText:data.node,
                 typeID:data.type,
                 answers:data.answers,
                 positionX:data.positionX,
