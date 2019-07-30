@@ -1,5 +1,5 @@
 import { DefaultLinkModel, LinkModelListener } from "storm-react-diagrams";
-import { QuestionPortModel } from "../QuestionPortModel";
+import { QuestionPortModel } from "../QuestionNode/QuestionPortModel";
 
 export class AnswerLinkModel extends DefaultLinkModel {
 	save:boolean;

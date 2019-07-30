@@ -2,8 +2,8 @@ import * as React from "react";
 
 import ContentEditable from 'react-contenteditable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { QuestionNodeModel } from "./QuestionNodeModel";
-import QuestionNodeWidget from "./QuestionNodeWidget";
+import { QuestionNodeModel } from "./QuestionNode/QuestionNodeModel";
+import QuestionNodeWidget from "./QuestionNode/QuestionNodeWidget";
 import { Editor } from '@tinymce/tinymce-react';
 import store from '../../store';
 

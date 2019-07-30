@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { QuestionNodeModel } from "./QuestionNodeModel";
+import { QuestionNodeModel } from "./QuestionNode/QuestionNodeModel";
 
-import {QuestionNodeWidget} from "./QuestionNodeWidget";
+import {QuestionNodeWidget} from "./QuestionNode/QuestionNodeWidget";
 import {getMediaType} from '../../utils/getMediaType';
 import Dropzone from 'react-dropzone';
 

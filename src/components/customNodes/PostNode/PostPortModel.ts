@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import { DiagramEngine, PortModel } from "storm-react-diagrams";
-import { AnswerLinkModel } from "./Link/AnswerLinkModel";
+import { AnswerLinkModel } from "../Link/AnswerLinkModel";
 
-export class QuestionPortModel extends PortModel {
+export class PostPortModel extends PortModel {
 	in: boolean;
 	label: string;
 	links: { [id: string]: AnswerLinkModel };
@@ -37,7 +37,7 @@ export class QuestionPortModel extends PortModel {
 	
 
 
-	link(port: QuestionPortModel): AnswerLinkModel {
+	link(port: PostPortModel): AnswerLinkModel {
 		
 		// //console.log('link hit',dontSave);
 		let link = this.createLinkModel(false);
@@ -53,7 +53,7 @@ export class QuestionPortModel extends PortModel {
 	}
 
 	canLinkToPort(port: PortModel): boolean {
-		if (port instanceof QuestionPortModel) {
+		if (port instanceof PostPortModel) {
 			return this.in !== port.in;
 		}
 		return true;

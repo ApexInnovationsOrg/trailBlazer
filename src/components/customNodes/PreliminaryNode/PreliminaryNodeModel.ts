@@ -1,13 +1,13 @@
 import { NodeModel } from "storm-react-diagrams";
-import { QuestionPortModel } from "./QuestionPortModel";
+import { PreliminaryPortModel } from "./PreliminaryPortModel";
 
-import store from '../../store';
-import {getSingleForest} from '../../actions/getForest';
-import {getTree} from '../../actions/getTree';
-import { savedNode } from "../../actions/nodeActions";
+import store from '../../../store';
+import {getSingleForest} from '../../../actions/getForest';
+import {getTree} from '../../../actions/getTree';
+import { savedNode } from "../../../actions/nodeActions";
 
 
-export class QuestionNodeModel extends NodeModel {
+export class PreliminaryNodeModel extends NodeModel {
 	name: string;
 	node: Object;
 	question: Object;
@@ -301,11 +301,11 @@ export class QuestionNodeModel extends NodeModel {
 		}
 	}
 
-	addInPort(label: string): QuestionPortModel {
-		return this.addPort(new QuestionPortModel(true,label));
+	addInPort(label: string): PreliminaryPortModel {
+		return this.addPort(new PreliminaryPortModel(true,label));
 	}
 
-	addOutPort(label: string): QuestionPortModel {
-		return this.addPort(new QuestionPortModel(false,label));
+	addOutPort(label: string): PreliminaryPortModel {
+		return this.addPort(new PreliminaryPortModel(false,label));
 	}
 }

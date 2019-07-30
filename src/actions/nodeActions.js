@@ -31,6 +31,7 @@ export function saveNode(data){
 
     return dispatch => {
         dispatch(savingNode());
+
         return fetch(process.env.REACT_APP_API_LOCATION,{
             method:'POST',
             headers:{

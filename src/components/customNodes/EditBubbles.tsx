@@ -2,8 +2,8 @@ import * as React from "react";
 
 import {connect} from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { QuestionNodeModel } from "./QuestionNodeModel";
-import QuestionNodeWidget from "./QuestionNodeWidget";
+import { QuestionNodeModel } from "./QuestionNode/QuestionNodeModel";
+import QuestionNodeWidget from "./QuestionNode/QuestionNodeWidget";
 import ContentEditable from 'react-contenteditable';
 import { Editor } from '@tinymce/tinymce-react';
 import {saveContent, deleteContent} from '../../actions/contentActions';

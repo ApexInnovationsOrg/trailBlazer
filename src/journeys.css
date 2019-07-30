@@ -181,8 +181,14 @@ footer{
 
 .node{
   border:1px solid black;
-  background:#d0e5ff;
   padding:1em;
+}
+
+.questionNode{
+  background:#d0e5ff;
+}
+.preliminaryNode{
+  background:blue; 
 }
 
 .srd-diagram

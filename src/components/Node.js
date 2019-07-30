@@ -12,10 +12,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 // import the custom models
-import { QuestionNodeModel } from "./customNodes/QuestionNodeModel";
-import { QuestionNodeFactory } from "./customNodes/QuestionNodeFactory";
+import { QuestionNodeModel } from "./customNodes/QuestionNode/QuestionNodeModel";
+import { QuestionNodeFactory } from "./customNodes/QuestionNode/QuestionNodeFactory";
+import { QuestionPortModel } from "./customNodes/QuestionNode/QuestionPortModel";
+import { PreliminaryNodeModel } from "./customNodes/PreliminaryNode/PreliminaryNodeModel";
+import { PreliminaryNodeFactory } from "./customNodes/PreliminaryNode/PreliminaryNodeFactory";
+import { PreliminaryPortModel } from "./customNodes/PreliminaryNode/PreliminaryPortModel";
 import { SimplePortFactory } from "./customNodes/SimplePortFactory";
-import { QuestionPortModel } from "./customNodes/QuestionPortModel";
 
 import { TrailBlazerDiagramWidget } from "./customNodes/Diagram/TrailBlazerDiagramWidget";
 
@@ -74,6 +77,9 @@ import ls from 'local-storage';
 
         this.engine.registerPortFactory(new SimplePortFactory("node", config => new QuestionPortModel()));
         this.engine.registerNodeFactory(new QuestionNodeFactory());
+
+        this.engine.registerPortFactory(new SimplePortFactory("node", config => new PreliminaryPortModel()));
+        this.engine.registerNodeFactory(new PreliminaryNodeFactory());
         // var node2 = new QuestionNodeModel('This should be the node');
         // node2.setPosition(250, 108);
         // this.model.addAll(node2);
@@ -169,8 +175,17 @@ import ls from 'local-storage';
 
         //console.log('reeeeeee', this.props.tree);
         return this.props.tree.nodes.map((node)=>{
+            let nodeNode = new QuestionNodeModel("Node", node ,node.Answers);
+            switch(parseInt(node.TypeID))
+            {
+                case 2:
+                    nodeNode = new PreliminaryNodeModel("Node", node ,node.Answers);
+                break;
+
+                default:
+            }
+
             
-            var nodeNode = new QuestionNodeModel("Node", node ,node.Answers);
             nodeNode._id = node.ID;
             nodeNode._engine = this.engine;
 

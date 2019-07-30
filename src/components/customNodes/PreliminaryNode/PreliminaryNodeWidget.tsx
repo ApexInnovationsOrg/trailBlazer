@@ -1,29 +1,32 @@
 import * as React from "react";
-import { QuestionNodeModel } from "./QuestionNodeModel";
+import { PreliminaryNodeModel } from "./PreliminaryNodeModel";
 import { PortWidget } from "storm-react-diagrams";
-import { QuestionPortModel } from "./QuestionPortModel";
+import { PreliminaryPortModel } from "./PreliminaryPortModel";
 import Mousetrap from "mousetrap";
 import ContentEditable from 'react-contenteditable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { EditAnswer } from './EditAnswer';
-import { EditBubbles } from './EditBubbles';
-import { EditMedia } from './EditMedia';
+import { EditAnswer } from '../EditAnswer';
+import { EditBubbles } from '../EditBubbles';
+import { EditMedia } from '../EditMedia';
 
 import {connect} from 'react-redux';
-import store from "../../store";
-import { savedNode } from '../../actions/nodeActions';
+import store from "../../../store";
+import { savedNode } from '../../../actions/nodeActions';
 import { getMaxListeners } from "cluster";
 
-import {saveSingleAnswer} from '../../actions/nodeActions';
+import {saveSingleAnswer} from '../../../actions/nodeActions';
 
 
-export interface QuestionNodeWidgetProps {
-	node: QuestionNodeModel;
+import { ContextMenu, MenuItem, ContextMenuTrigger, SubMenu } from "react-contextmenu";
+
+
+export interface PreliminaryNodeWidgetProps {
+	node: PreliminaryNodeModel;
 	size?: number;
 	answer?:object;
 }
 
-export interface QuestionNodeWidgetState {
+export interface PreliminaryNodeWidgetState {
 	editingAnswer:boolean;
 	editingBubbles:boolean;
 	editingMedia:boolean;
@@ -33,16 +36,16 @@ export interface QuestionNodeWidgetState {
 /**
  * @author Dylan Vorster
  */
-class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, QuestionNodeWidgetState> {
+class PreliminaryNodeWidgetClass extends React.Component<PreliminaryNodeWidgetProps, PreliminaryNodeWidgetState> {
 	answer:object;
 	editingAnswer:boolean;
 
-	public static defaultProps: QuestionNodeWidgetProps = {
+	public static defaultProps: PreliminaryNodeWidgetProps = {
 		size: 300,
 		node: null
 	};
 
-	constructor(props: QuestionNodeWidgetProps) {
+	constructor(props: PreliminaryNodeWidgetProps) {
 		super(props);
 		this.state = {
 			editingAnswer:false,
@@ -311,7 +314,7 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 					height: this.props.size,
 					cursor: this.props.node.isLocked() ? 'auto':'move'
 				}}
-			>
+			>				
 			<div
 				style={{
 					width:"100%",
@@ -319,7 +322,6 @@ class QuestionNodeWidgetClass extends React.Component<QuestionNodeWidgetProps, Q
 					background: this.props.node.masterNode ? 'green' : "rgb(0,87,157)"
 				}}
 			>
-
 			<div className={"nodeNotch"}/>
 
 
@@ -417,6 +419,6 @@ function mapStateToProps(state)
     }
 }
 
-export type QuestionNodeWidget = QuestionNodeWidgetClass;
+export type PreliminaryNodeWidget = PreliminaryNodeWidgetClass;
 
-export default connect(mapStateToProps)(QuestionNodeWidgetClass);
+export default connect(mapStateToProps)(PreliminaryNodeWidgetClass);

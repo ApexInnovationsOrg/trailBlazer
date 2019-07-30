@@ -67,23 +67,49 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 
 		let state = store.getState();
 		let contextCoords = this.props['mouseDownCoords'];
+		let nodeText = "New Node";
+		console.log(data);
+		let answers = [
+			{
+				answerText:'Answer1'
+			},
+			{
+				answerText:'Answer2'
+			},
+			{
+				answerText:'Answer3'
+			}
+		];
+
+		switch(parseInt(data.type))
+		{
+			case 2:
+				nodeText = "Preliminary Node"
+				break;
+			case 3:
+				nodeText = "Post Node"
+				break;
+			default:
+				nodeText = "New Node"
+				break;
+					
+		}
+
+
+
+		if(parseInt(data.type) !== 1)
+        {
+            data.answers = null;
+		}
+		
+
 		store.dispatch(saveNode({
             treeID:state.activeTree.ID,
-			node:"New Node",
+			node:nodeText,
 			type:data.type,
 			positionX:contextCoords.x,
 			positionY:contextCoords.y,
-            answers:[
-				{
-					answerText:'Answer1'
-				},
-				{
-					answerText:'Answer2'
-				},
-				{
-					answerText:'Answer3'
-				}
-			]
+            answers:answers
 		}));
 	
 	}
