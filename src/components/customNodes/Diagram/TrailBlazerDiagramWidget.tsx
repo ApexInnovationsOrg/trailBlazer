@@ -419,7 +419,7 @@ export class TrailBlazerDiagramWidget extends DiagramWidget{
 					<div>
 						<ContextMenu id="diagram_trigger" className={"contextMenu"}>
 							
-							<SubMenu title="New Node">
+							<SubMenu title={<span>New Node</span>}>
 								<MenuItem onClick={this.handleClick} data={{ type: '1' }}>Question</MenuItem>
 								<MenuItem onClick={this.handleClick} data={{ type: '2' }}>Preliminary</MenuItem>
 								<MenuItem onClick={this.handleClick} data={{ type: '3' }}>Post Node</MenuItem>

@@ -2,7 +2,7 @@
   "name": "journeys",
   "version": "0.1.0",
   "private": true,
-  "homepage":"https://wwww.apexinnovations.com/admin/trailBlazer",
+  "homepage": "https://wwww.apexinnovations.com/admin/trailBlazer",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
@@ -11,6 +11,8 @@
     "@material-ui/icons": "^3.0.1",
     "@tinymce/tinymce-react": "^3.0.1",
     "@trendmicro/react-sidenav": "^0.4.5",
+    "@types/node": "^12.7.2",
+    "@types/react": "^16.9.2",
     "babel-plugin-react-css-modules": "^5.2.3",
     "bootstrap": "^4.3.1",
     "dns": "^0.2.2",
@@ -48,7 +50,7 @@
     "storm-react-diagrams": "^5.2.1",
     "sweetalert2": "^8.7.0",
     "thunk": "0.0.1",
-    "typescript": "^3.3.4000",
+    "typescript": "^3.5.3",
     "uuid-v4": "^0.1.0"
   },
   "scripts": {
