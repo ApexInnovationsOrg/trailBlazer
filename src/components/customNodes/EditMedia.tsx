@@ -51,12 +51,12 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
                 let deleteButton = <div><button onClick={this.deleteMedia}>Delete</button></div>;
                 if(type.key == 'image')
                 {
-                    return <div><img src={media.src}  style={{width:'100%'}}/>{deleteButton}</div>;
+                    return <div key={media.src}><img src={media.src}  key={media.src} style={{width:'100%'}}/>{deleteButton}</div>;
                 }
 
                 if(type.key == 'video')
                 {
-                    return <div><video src={media.src} style={{width:'100%'}} controls autoPlay/>{deleteButton}</div>
+                    return <div key={media.src}><video src={media.src} style={{width:'100%'}} controls autoPlay/>{deleteButton}</div>
                 }
                 
             }
@@ -72,13 +72,18 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
 
     droppedFile = (files) =>
     {
+        console.log('dropped file');
         const reader = new FileReader()
 
-        reader.onabort = () => //console.log('file reading was aborted')
-        reader.onerror = () => //console.log('file reading has failed')
+        reader.onabort = () => {
+            console.log('file reading was aborted')
+        }
+        reader.onerror = () => {
+            console.log('file reading has failed')
+        }
         reader.onload = () => {
           // Do whatever you want with the file contents
-          //console.log(files);
+          console.log(files);
 
           const dataURL = reader.result
 
@@ -92,6 +97,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
     }
     deleteMedia = ()=>
     {
+        console.log('deleting media');
         return this.props.node.node['Contents'].map((content,index)=>{
             if(content.Content.type === "masterMedia")
             {
@@ -109,6 +115,7 @@ export class EditMedia extends React.Component<EditMediaProps,EditMediaState> {
         this.setState({
             saving:true
         })
+        console.log('saving media');
             var data = new FormData();
             data.append('files',this.state.previewUpload[0],this.state.previewUpload[0]['name']);
             data.append('json',JSON.stringify({controller:'Content',action:'uploadMedia',nodeID:this.props.node.node['ID']}));
