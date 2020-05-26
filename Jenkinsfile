@@ -3,10 +3,15 @@
 
 pipeline {
     agent any
-    stages {      
+    stages {    
+        stage('Start'){
+            steps{
+                rocketSend message: "Build for Trailblazer Started", channel: 'jenkins'
+            }
+        }	
         stage('Install package') { 
             steps {
-                sh 'npm install' 
+                sh 'npm install .' 
             }
         }
         stage('Build Package'){
@@ -16,8 +21,19 @@ pipeline {
         }
         stage('Push to staging'){
             steps{
-               sh 'rsync -avz build/* bwhite@app4.apexinnovations.com:~/apexwebtest/admin/trailBlazer'
+                sh 'rsync -avz --no-perms --no-owner --no-group ./* bitnami@apexwebtest.apexinnovations.com:/apex/htdocs'
             }
+        }
+    }
+	post {
+        success{
+            rocketSend message: "Build for trailblazer great success! (●´ω｀●)",emoji:':dab:', channel: 'jenkins'
+        }
+        unstable{
+            rocketSend message: "Build for trailblazer unstable (∩︵∩)", channel: 'jenkins'
+        }
+        failure{
+            rocketSend message: "I have failed for trailblazer senpai ಥ_ಥ", channel: 'jenkins'
         }
     }
 }
