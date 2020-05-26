@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Push to staging'){
             steps{
-                sh 'rsync -avz --no-perms --no-owner --no-group ./* bitnami@apexwebtest.apexinnovations.com:/apex/htdocs/admin'
+                sh 'rsync -avz --no-perms --no-owner --no-group ./* bitnami@apexwebtest.apexinnovations.com:/apex/htdocs/admin/trailBlazer'
             }
         }
     }
