@@ -20,7 +20,7 @@
     "draft-js": "^0.10.5",
     "draft-js-plugins-editor": "^2.1.1",
     "glamor": "^2.20.40",
-    "gsap": "^2.1.2",
+    "gsap": "^3.6.0",
     "hex64": "^0.4.0",
     "ioredis": "^4.9.0",
     "jsplumb": "^2.9.0",
